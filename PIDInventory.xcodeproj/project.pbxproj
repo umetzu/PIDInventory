@@ -14,6 +14,7 @@
 		3A9D413C1A702832004D7113 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A9D413B1A702832004D7113 /* Images.xcassets */; };
 		3A9D413F1A702832004D7113 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A9D413D1A702832004D7113 /* LaunchScreen.xib */; };
 		3A9D414B1A702832004D7113 /* PIDInventoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D414A1A702832004D7113 /* PIDInventoryTests.swift */; };
+		3A9D41571A703310004D7113 /* RefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41561A703310004D7113 /* RefreshViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,8 @@
 		3A9D41441A702832004D7113 /* PIDInventoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PIDInventoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A9D41491A702832004D7113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A9D414A1A702832004D7113 /* PIDInventoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIDInventoryTests.swift; sourceTree = "<group>"; };
+		3A9D41541A702CA7004D7113 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		3A9D41561A703310004D7113 /* RefreshViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 		3A9D41241A702832004D7113 = {
 			isa = PBXGroup;
 			children = (
+				3A9D41541A702CA7004D7113 /* README.md */,
 				3A9D412F1A702832004D7113 /* PIDInventory */,
 				3A9D41471A702832004D7113 /* PIDInventoryTests */,
 				3A9D412E1A702832004D7113 /* Products */,
@@ -86,6 +90,7 @@
 				3A9D413B1A702832004D7113 /* Images.xcassets */,
 				3A9D413D1A702832004D7113 /* LaunchScreen.xib */,
 				3A9D41301A702832004D7113 /* Supporting Files */,
+				3A9D41561A703310004D7113 /* RefreshViewController.swift */,
 			);
 			path = PIDInventory;
 			sourceTree = "<group>";
@@ -215,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A9D41571A703310004D7113 /* RefreshViewController.swift in Sources */,
 				3A9D41371A702832004D7113 /* SecondViewController.swift in Sources */,
 				3A9D41331A702832004D7113 /* AppDelegate.swift in Sources */,
 				3A9D41351A702832004D7113 /* FirstViewController.swift in Sources */,
