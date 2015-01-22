@@ -20,18 +20,6 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     let usersList = [ "John", "Thomas", "Richard", "Peter", "John" , "Chuck", "Richie", "Dane", "Emery", "Keith" ]
     let server = "0.0.0.0"
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        changePickerCellVisibility(false)
-        toolBarLabel.title = "Sever: \(server) - Status: Unreachable"
-        labelSelectedUsername.text = usersList[0]
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     // MARK: - UIPickerViewDataSource
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -55,7 +43,6 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         //var height = self.tableView.rowHeight
         var height = super.tableView(tableView, heightForRowAtIndexPath: indexPath)
@@ -67,7 +54,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         return height
     }
     
-    //MARK: - UIPickerViewz
+    //MARK: - UIPickerView
     func changePickerCellVisibility(shouldDisplay: Bool) {
         if shouldDisplay {
             isPickerVisible = true
@@ -88,4 +75,27 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         labelSelectedUsername.text = usersList[row]
     }
+    
+    //MARK: - Overrides
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.toolbarHidden = false
+        self.navigationController?.navigationBarHidden = true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        changePickerCellVisibility(false)
+        toolBarLabel.title = "Sever: \(server) - Status: Unreachable"
+        labelSelectedUsername.text = usersList[0]
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        self.navigationController?.toolbarHidden = true
+    }
+    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) { }
 }
