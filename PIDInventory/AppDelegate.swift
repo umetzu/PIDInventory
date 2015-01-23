@@ -175,16 +175,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return nil
     }
     
-    func queryList(name: String, ToRetrieve property: String) -> [Int] {
+    func queryList(name: String, ToRetrieve aProperty: String) -> [Int] {
         var request = NSFetchRequest(entityName: name)
-        request.propertiesToFetch = [ property ]
+        request.propertiesToFetch = [ aProperty ]
         request.resultType = NSFetchRequestResultType.DictionaryResultType
-        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: aProperty, ascending: true)]
         
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-            return objects!.valueForKey("id") as [Int]
+            return objects!.valueForKey(aProperty) as [Int]
+        }
+        
+        return []
+    }
+    
+    func queryList(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String) -> [Int] {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ aProperty ]
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.predicate = NSPredicate(format: "\(aCondition) like[c] %@", "\(aValue)*")
+        request.sortDescriptors = [NSSortDescriptor(key: aProperty, ascending: true)]
+        
+        var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if objects != nil {
+            return objects!.valueForKey(aProperty) as [Int]
         }
         
         return []

@@ -97,5 +97,5 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         self.navigationController?.toolbarHidden = true
     }
     
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) { }
+    @IBAction func unwindToRefreshTableViewController(segue: UIStoryboardSegue) { }
 }

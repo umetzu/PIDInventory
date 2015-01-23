@@ -19,7 +19,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //MARK: - Actions
     @IBAction func pidValueChanged(sender: UITextField) {
+        pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve: PIDObjectName.id, aCondition: PIDObjectName.pid, aValue: sender.text)
         tableViewPID.reloadData()
+    }
+    
+    @IBAction func unwindToListViewController(segue: UIStoryboardSegue) {
+        var source: AnyObject = segue.sourceViewController
+        if (source is CameraViewController) {
+            textFieldPID.text = (source as CameraViewController).capturedCode
+        }
     }
     
     //MARK: - UITableViewDataSource
@@ -48,9 +56,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell!
     }
     
+    // MARK: UITableViewDelegate
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
     //MARK: - Overrides
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBarHidden = true
         pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve:PIDObjectName.id)
     }
     
@@ -61,5 +75,39 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        view.endEditing(true)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

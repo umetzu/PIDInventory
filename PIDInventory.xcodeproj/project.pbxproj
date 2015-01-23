@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22271A72D5230077B97E /* CameraViewController.swift */; };
+		3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */; };
 		3A9D41331A702832004D7113 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41321A702832004D7113 /* AppDelegate.swift */; };
 		3A9D41351A702832004D7113 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41341A702832004D7113 /* MapViewController.swift */; };
 		3A9D41371A702832004D7113 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41361A702832004D7113 /* ListViewController.swift */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A7B22271A72D5230077B97E /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		3A9D412D1A702832004D7113 /* PIDInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PIDInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A9D41311A702832004D7113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A9D41321A702832004D7113 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 				3A9D413B1A702832004D7113 /* Images.xcassets */,
 				3A9D413D1A702832004D7113 /* LaunchScreen.xib */,
 				3A9D41301A702832004D7113 /* Supporting Files */,
+				3A7B22271A72D5230077B97E /* CameraViewController.swift */,
+				3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */,
 			);
 			path = PIDInventory;
 			sourceTree = "<group>";
@@ -234,6 +240,8 @@
 				3A9D41571A703310004D7113 /* RefreshTableViewController.swift in Sources */,
 				3A9D41371A702832004D7113 /* ListViewController.swift in Sources */,
 				3A9D41331A702832004D7113 /* AppDelegate.swift in Sources */,
+				3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */,
+				3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */,
 				3A9D41351A702832004D7113 /* MapViewController.swift in Sources */,
 				3A9D418D1A715FEC004D7113 /* PIDInventory.xcdatamodeld in Sources */,
 			);
@@ -433,6 +441,7 @@
 				3A9D41501A702832004D7113 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3A9D41511A702832004D7113 /* Build configuration list for PBXNativeTarget "PIDInventoryTests" */ = {
 			isa = XCConfigurationList;
@@ -441,6 +450,7 @@
 				3A9D41531A702832004D7113 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
