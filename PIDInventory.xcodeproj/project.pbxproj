@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A7586721A79822800CBE60B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7586711A79822800CBE60B /* TabBarViewController.swift */; };
 		3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22271A72D5230077B97E /* CameraViewController.swift */; };
 		3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */; };
 		3A9D41331A702832004D7113 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41321A702832004D7113 /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 		3A9D418A1A715447004D7113 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9D41891A715447004D7113 /* MapKit.framework */; };
 		3A9D418D1A715FEC004D7113 /* PIDInventory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D418B1A715FEC004D7113 /* PIDInventory.xcdatamodeld */; };
 		3A9D418F1A7160C1004D7113 /* PIDObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D418E1A7160C1004D7113 /* PIDObject.swift */; };
+		3AA147151A79507C0058133C /* ValuesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA147141A79507C0058133C /* ValuesTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A7586711A79822800CBE60B /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3A7B22271A72D5230077B97E /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		3A9D412D1A702832004D7113 /* PIDInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PIDInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +54,7 @@
 		3A9D41891A715447004D7113 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3A9D418C1A715FEC004D7113 /* PIDInventory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PIDInventory.xcdatamodel; sourceTree = "<group>"; };
 		3A9D418E1A7160C1004D7113 /* PIDObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PIDObject.swift; path = ../PIDObject.swift; sourceTree = "<group>"; };
+		3AA147141A79507C0058133C /* ValuesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuesTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				3A9D41301A702832004D7113 /* Supporting Files */,
 				3A7B22271A72D5230077B97E /* CameraViewController.swift */,
 				3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */,
+				3AA147141A79507C0058133C /* ValuesTableViewController.swift */,
+				3A7586711A79822800CBE60B /* TabBarViewController.swift */,
 			);
 			path = PIDInventory;
 			sourceTree = "<group>";
@@ -242,7 +248,9 @@
 				3A9D41331A702832004D7113 /* AppDelegate.swift in Sources */,
 				3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */,
 				3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */,
+				3AA147151A79507C0058133C /* ValuesTableViewController.swift in Sources */,
 				3A9D41351A702832004D7113 /* MapViewController.swift in Sources */,
+				3A7586721A79822800CBE60B /* TabBarViewController.swift in Sources */,
 				3A9D418D1A715FEC004D7113 /* PIDInventory.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,11 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="PIDObject" representedClassName="PIDInventory.PIDObject" syncable="YES">
-        <attribute name="attribute1" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="barcode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="gps" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="caseBent" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseColor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="caseComingApart" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="caseGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseOther" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="casePitted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseRusted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coverCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="coverCracked" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverDiscolored" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverNoCover" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverOther" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="insertCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="insertDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="insertFaded" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="insertMissing" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="insertOther" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="insertTorn" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="pid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="standBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="standGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standOther" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standRusted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standRustedBasePlate" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
                 <index value="id"/>
@@ -13,6 +44,6 @@
         </compoundIndexes>
     </entity>
     <elements>
-        <element name="PIDObject" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="PIDObject" positionX="-63" positionY="-18" width="128" height="585"/>
     </elements>
 </model>

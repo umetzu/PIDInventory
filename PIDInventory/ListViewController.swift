@@ -18,16 +18,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableViewPID: UITableView!
     
     //MARK: - Actions
-    @IBAction func pidValueChanged(sender: UITextField) {
-        pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve: PIDObjectName.id, aCondition: PIDObjectName.pid, aValue: sender.text)
-        tableViewPID.reloadData()
-    }
-    
-    @IBAction func unwindToListViewController(segue: UIStoryboardSegue) {
-        var source: AnyObject = segue.sourceViewController
-        if (source is CameraViewController) {
-            textFieldPID.text = (source as CameraViewController).capturedCode
+    @IBAction func pidEditingChanged(sender: UITextField) {
+        if (textFieldPID.text.isEmpty) {
+            pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve:PIDObjectName.id)
+        } else {
+            pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve: PIDObjectName.id, aCondition: PIDObjectName.pid, aValue: sender.text)
         }
+        
+        tableViewPID.reloadData()
     }
     
     //MARK: - UITableViewDataSource
@@ -65,7 +63,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = true
-        pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve:PIDObjectName.id)
+        pidEditingChanged(textFieldPID)
     }
     
     override func viewDidLoad() {
@@ -78,6 +76,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         view.endEditing(true)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let dest = segue.destinationViewController as? DetailTableViewController {
+            dest.currentID = (sender as UITableViewCell).tag        }
     }
 }
 

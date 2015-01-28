@@ -41,18 +41,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+
     
     func setInitialData() {
         
-        for var i = 1000; i <= 3300; i++ {
+        for var i:Int32 = 1000; i <= 3300; i++ {
             let object1 = NSEntityDescription.insertNewObjectForEntityForName(PIDObjectName.name,
                 inManagedObjectContext: self.managedObjectContext!) as PIDObject
             
             object1.id = i
             object1.pid = "0\(i)"
+            object1.comments = ""
             object1.barcode = ""
-            object1.attribute1 = ""
-            object1.gps = ""
+            object1.latitude = 40.253271
+            object1.longitude = -74.704288
+            object1.caseBent = false
+            object1.caseComingApart = false
+            object1.caseRusted = false
+            object1.casePitted = false
+            object1.caseBroken = false
+            object1.caseGraffiti = false
+            object1.caseUnauthorized = false
+            object1.caseOther = false
+            object1.caseCondition = 0
+            object1.caseColor = 0
+            object1.coverNoCover = false
+            object1.coverCracked = false
+            object1.coverDiscolored = false
+            object1.coverGraffiti = false
+            object1.coverUnauthorized = false
+            object1.coverOther = false
+            object1.coverCondition = 0
+            object1.insertFaded = false
+            object1.insertTorn = false
+            object1.insertMissing = false
+            object1.insertOther = false
+            object1.insertCondition = 0
+            object1.insertDescription = ""
+            object1.standRusted = false
+            object1.standRustedBasePlate = false
+            object1.standBroken = false
+            object1.standGraffiti = false
+            object1.standUnauthorized = false
+            object1.standOther = false
+            object1.standCondition = 0
         }
         
         self.saveContext()
@@ -148,6 +180,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 NSLog("Unresolved error \(error), \(error!.userInfo)")
                 abort()
+            }
+        }
+    }
+    
+    func rollBack () {
+        if let moc = self.managedObjectContext {
+            var error: NSError? = nil
+            if moc.hasChanges {
+                moc.rollback()
             }
         }
     }

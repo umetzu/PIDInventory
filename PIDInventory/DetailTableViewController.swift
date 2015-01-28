@@ -2,102 +2,100 @@
 //  DetailTableViewController.swift
 //  PIDInventory
 //
-//  Created by Baker on 1/23/15.
+//  Created by Baker on 1/23/15]zf re23w
 //  Copyright (c) 2015 Umetzu. All rights reserved.
 //
 
 import UIKit
+import MapKit
 
 class DetailTableViewController: UITableViewController {
 
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    
+    var currentID = 0
+    var currentPIDObject: PIDObject?
+    var showCameraTag = 0
+    
+    @IBOutlet weak var textFieldPID: UITextField!
+    @IBOutlet weak var textFieldBarcode: UITextField!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var textViewComments: UITextView!
+    
+    // Mark: Actions
+    
+    @IBAction func showCamera(sender: UIButton) {
+        showCameraTag = sender.tag
+    }
+    
+    @IBAction func unwindToDetailTableViewController(segue: UIStoryboardSegue) {
+        var scanned = (segue.sourceViewController as CameraViewController).capturedCode
+        (showCameraTag == 0 ? textFieldPID : textFieldBarcode).text = scanned
+    }
+    
+    func saveChanges(sender: UIBarButtonItem) {
+        currentPIDObject?.pid = textFieldPID.text
+        currentPIDObject?.barcode = textFieldBarcode.text
+        currentPIDObject?.comments = textViewComments.text
+        
+        appDelegate.saveContext()
+        
+        self.performSegueWithIdentifier("unwindFromDetail", sender: self)
+    }
+    
+    func cancelChanges(sender: UIBarButtonItem) {
+        appDelegate.rollBack()
+        self.performSegueWithIdentifier("unwindFromDetail", sender: self)
+    }
+    
+    func fillValues() {
+        currentPIDObject = appDelegate.querySingle(PIDObjectName.name, ByID: currentID)
+        
+        textFieldPID.text = currentPIDObject?.pid
+        textFieldBarcode.text = currentPIDObject?.barcode
+        textViewComments.text = currentPIDObject?.comments
+        
+        var annotation = MKPointAnnotation()
+        annotation.title = currentPIDObject?.barcode
+        annotation.coordinate = CLLocationCoordinate2D(latitude: currentPIDObject!.latitude, longitude: currentPIDObject!.longitude)
+        mapView.addAnnotation(annotation)
+        
+        var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
+        mapView.setRegion(mapView.regionThatFits(region), animated: true)
+    }
+    
+    // MARK : Overrides
+    
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        let saveButton = UIBarButtonItem(title: "Save", style: UIBarButtonItemStyle.Done, target: self, action: "saveChanges:")
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelChanges:")
+        
+        self.navigationItem.setRightBarButtonItem(saveButton, animated: false)
+        self.navigationItem.setLeftBarButtonItem(cancelButton, animated: false)
+        
+        fillValues()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 0
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return 0
+    
+    // MARK: Table View
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     
-    
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if let dest = segue.destinationViewController as? ValuesTableViewController {
+            dest.currentPIDObject = currentPIDObject
+        }
     }
-    */
-
 }

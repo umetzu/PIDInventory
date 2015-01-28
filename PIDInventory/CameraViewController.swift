@@ -14,6 +14,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var preview: AVCaptureVideoPreviewLayer!
     var sessionMain: AVCaptureSession!
     var capturedCode = ""
+    var sourceViewIsList = false
     
     lazy var outline: CAShapeLayer = {
         var x = CAShapeLayer()
@@ -46,8 +47,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         
         preview.videoGravity = AVLayerVideoGravityResizeAspectFill
         
-        bringSubLayerToFront(preview)
         bringSubLayerToFront(outline)
+        bringSubLayerToFront(preview)
         
         preview.frame = self.view.layer.frame
         
@@ -87,13 +88,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             outline.removeFromSuperlayer()
             preview.removeFromSuperlayer()
             
-            self.performSegueWithIdentifier("unwindFromCamera", sender: self)
-            /*if textFieldCode1 != nil && currentText == textFieldCode1 {
-                dismissViewControllerAnimated(true, completion: nil)
-                currentText.sendActionsForControlEvents(UIControlEvents.EditingChanged)
-            } else {
-                self.navigationController?.popViewControllerAnimated(false)
-            }*/
+            unwind()
         }
     }
     
@@ -122,35 +117,30 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     func bringSubLayerToFront(layer: CALayer) {
         layer.removeFromSuperlayer()
-        self.view.layer.insertSublayer(layer, atIndex: UInt32(self.view.layer.sublayers.count))
+        self.view.layer.insertSublayer(layer, atIndex: 0)
+    }
+    
+    @IBAction func closeCamera(sender: AnyObject) {
+        unwind()
+    }
+    
+    func unwind() {
+        self.performSegueWithIdentifier(sourceViewIsList ? "unwindCameraToList" : "unwindCameraToDetail", sender: self)
     }
     
     // Mark: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBarHidden = true
         captureBarCode()
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
