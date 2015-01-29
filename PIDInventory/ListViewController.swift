@@ -47,7 +47,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         var pidObject = appDelegate.querySingle(PIDObjectName.name, ByID: id) as PIDObject?
         
         if (pidObject != nil) {
-            cell?.textLabel?.text =  pidObject!.pid
+            var labelPID = cell?.viewWithTag(1) as UILabel
+            labelPID.text = pidObject?.pid
+            
+            var labelBarcode = cell?.viewWithTag(2) as UILabel
+            labelBarcode.text = pidObject?.barcode
+            
             cell?.tag = Int(pidObject!.id)
         }
         
@@ -80,7 +85,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let dest = segue.destinationViewController as? DetailTableViewController {
-            dest.currentID = (sender as UITableViewCell).tag        }
+            if let cell = sender as? UITableViewCell {
+                dest.currentID = cell.tag
+            } else {
+                dest.currentID = -1
+            }
+        } else if let dest = segue.destinationViewController as? CameraViewController {
+            dest.sourceViewIsList = true
+        }
     }
 }
 

@@ -20,7 +20,7 @@
         <attribute name="coverNoCover" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="insertCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="insertDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertFaded" optional="YES" attributeType="Boolean" syncable="YES"/>

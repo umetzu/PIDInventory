@@ -15,6 +15,20 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var sessionMain: AVCaptureSession!
     var capturedCode = ""
     var sourceViewIsList = false
+    var device: AVCaptureDevice!
+    
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet var buttonsFlash: [UIBarButtonItem]!
+    
+    @IBAction func toggleFlash(sender: UIBarButtonItem) {
+        device.lockForConfiguration(nil)
+        if (device.torchMode == AVCaptureTorchMode.On) {
+            device.torchMode = AVCaptureTorchMode.Off
+        } else {
+            device.setTorchModeOnWithLevel(1.0, error: nil)
+        }
+        device.unlockForConfiguration()
+    }
     
     lazy var outline: CAShapeLayer = {
         var x = CAShapeLayer()
@@ -30,7 +44,13 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         var session = sessionMain
         session.sessionPreset = AVCaptureSessionPresetHigh
         
-        var device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        
+        if (!device.hasTorch) {
+            for b in buttonsFlash {
+                b.enabled = false
+            }
+        }
         
         var error: NSError?
         var input = AVCaptureDeviceInput(device: device, error: &error)

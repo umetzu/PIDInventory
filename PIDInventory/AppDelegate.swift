@@ -14,6 +14,8 @@ struct PIDObjectName {
     static let name = "PIDObject"
     static let id = "id"
     static let pid = "pid"
+    static let latitude = "latitude"
+    static let longitude = "longitude"
 }
 
 @UIApplicationMain
@@ -44,47 +46,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
     func setInitialData() {
+        var lat = 40.0
         
         for var i:Int32 = 1000; i <= 3300; i++ {
-            let object1 = NSEntityDescription.insertNewObjectForEntityForName(PIDObjectName.name,
-                inManagedObjectContext: self.managedObjectContext!) as PIDObject
+            let object1 = createPIDObject()
+            
+            lat += 0.01
             
             object1.id = i
             object1.pid = "0\(i)"
-            object1.comments = ""
-            object1.barcode = ""
-            object1.latitude = 40.253271
-            object1.longitude = -74.704288
-            object1.caseBent = false
-            object1.caseComingApart = false
-            object1.caseRusted = false
-            object1.casePitted = false
-            object1.caseBroken = false
-            object1.caseGraffiti = false
-            object1.caseUnauthorized = false
-            object1.caseOther = false
-            object1.caseCondition = 0
-            object1.caseColor = 0
-            object1.coverNoCover = false
-            object1.coverCracked = false
-            object1.coverDiscolored = false
-            object1.coverGraffiti = false
-            object1.coverUnauthorized = false
-            object1.coverOther = false
-            object1.coverCondition = 0
-            object1.insertFaded = false
-            object1.insertTorn = false
-            object1.insertMissing = false
-            object1.insertOther = false
-            object1.insertCondition = 0
-            object1.insertDescription = ""
-            object1.standRusted = false
-            object1.standRustedBasePlate = false
-            object1.standBroken = false
-            object1.standGraffiti = false
-            object1.standUnauthorized = false
-            object1.standOther = false
-            object1.standCondition = 0
+            object1.latitude = lat
+            object1.longitude = -74.70
         }
         
         self.saveContext()
@@ -195,6 +167,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Core Data Operations
     
+    func lastID(name: String) -> Int32 {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ "id" ]
+        request.fetchLimit = 1
+        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        var result = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if (result?.count > 0) {
+            return (result![0]["id"] as NSNumber).intValue
+        }
+        
+        return 0
+    }
+    
     func count(name: String) -> Int {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ "id" ]
@@ -245,6 +232,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return []
+    }
+    
+    func queryMap(aWestPoint: Double, anEastPoint: Double, aNorthPoint: Double, aSouthPoint: Double) -> NSArray? {
+        var request = NSFetchRequest(entityName: PIDObjectName.name)
+        request.propertiesToFetch = [ PIDObjectName.id, PIDObjectName.pid, PIDObjectName.latitude, PIDObjectName.longitude ]
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        
+        request.predicate = NSPredicate(format: "%K BETWEEN {%f, %f} AND %K BETWEEN {%f, %f}", PIDObjectName.latitude, aSouthPoint, aNorthPoint, PIDObjectName.longitude, aWestPoint, anEastPoint)
+        
+        return self.managedObjectContext?.executeFetchRequest(request, error: nil)
+    }
+    
+    func createPIDObject() -> PIDObject {
+        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDObjectName.name,
+            inManagedObjectContext: self.managedObjectContext!) as PIDObject
+        
+        pidObject.id = 0
+        pidObject.pid = ""
+        pidObject.comments = ""
+        pidObject.barcode = ""
+        pidObject.latitude = 0
+        pidObject.longitude = 0
+        pidObject.caseBent = false
+        pidObject.caseComingApart = false
+        pidObject.caseRusted = false
+        pidObject.casePitted = false
+        pidObject.caseBroken = false
+        pidObject.caseGraffiti = false
+        pidObject.caseUnauthorized = false
+        pidObject.caseOther = false
+        pidObject.caseCondition = 0
+        pidObject.caseColor = 0
+        pidObject.coverNoCover = false
+        pidObject.coverCracked = false
+        pidObject.coverDiscolored = false
+        pidObject.coverGraffiti = false
+        pidObject.coverUnauthorized = false
+        pidObject.coverOther = false
+        pidObject.coverCondition = 0
+        pidObject.insertFaded = false
+        pidObject.insertTorn = false
+        pidObject.insertMissing = false
+        pidObject.insertOther = false
+        pidObject.insertCondition = 0
+        pidObject.insertDescription = ""
+        pidObject.standRusted = false
+        pidObject.standRustedBasePlate = false
+        pidObject.standBroken = false
+        pidObject.standGraffiti = false
+        pidObject.standUnauthorized = false
+        pidObject.standOther = false
+        pidObject.standCondition = 0
+        
+        return pidObject
     }
 }
 

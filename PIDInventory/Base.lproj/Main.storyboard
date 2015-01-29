@@ -48,12 +48,13 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="mapView" destination="6vV-6i-TLk" id="tO4-ft-6OI"/>
+                        <segue destination="Ilr-EO-0Oh" kind="show" identifier="segueToDetail" id="tIw-4I-6FQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
                 <exit id="imz-au-tcp" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1562" y="-320"/>
+            <point key="canvasLocation" x="1242" y="352"/>
         </scene>
         <!--List-->
         <scene sceneID="wg7-f3-ORb">
@@ -88,14 +89,49 @@
                                     <outlet property="delegate" destination="8rJ-Kc-sve" id="kcx-dD-VTo"/>
                                 </connections>
                             </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gRr-pf-nXQ">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gRr-pf-nXQ">
                                 <rect key="frame" x="0.0" y="118" width="600" height="433"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pidCell" id="quu-Ox-6bh">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="pidCell" id="quu-Ox-6bh">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="quu-Ox-6bh" id="IY8-A4-I65">
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="999-pJ-O10">
+                                                    <rect key="frame" x="16" y="12" width="26.5" height="19.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" tag="1" contentMode="left" text="PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aA9-oJ-o9G" userLabel="PIDValue">
+                                                    <rect key="frame" x="522.5" y="12" width="26.5" height="19.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" tag="2" contentMode="left" text="Insert" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RjW-90-Ozc" userLabel="InsertValue">
+                                                    <rect key="frame" x="520" y="32" width="29" height="13.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Insert" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZg-xr-6vS">
+                                                    <rect key="frame" x="16" y="32" width="29" height="13.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="hZg-xr-6vS" firstAttribute="top" secondItem="IY8-A4-I65" secondAttribute="topMargin" constant="24" id="4Fp-af-5Z7"/>
+                                                <constraint firstItem="aA9-oJ-o9G" firstAttribute="top" secondItem="999-pJ-O10" secondAttribute="top" id="5lh-4l-LVu"/>
+                                                <constraint firstItem="RjW-90-Ozc" firstAttribute="bottom" secondItem="hZg-xr-6vS" secondAttribute="bottom" id="92n-YO-V8w"/>
+                                                <constraint firstItem="999-pJ-O10" firstAttribute="leading" secondItem="IY8-A4-I65" secondAttribute="leadingMargin" constant="8" id="O7k-Ym-jQz"/>
+                                                <constraint firstItem="hZg-xr-6vS" firstAttribute="leading" secondItem="999-pJ-O10" secondAttribute="leading" id="TzO-Lv-B9j"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="aA9-oJ-o9G" secondAttribute="trailing" constant="10" id="ViA-Dq-YgV"/>
+                                                <constraint firstItem="aA9-oJ-o9G" firstAttribute="trailing" secondItem="RjW-90-Ozc" secondAttribute="trailing" id="csV-df-zMG"/>
+                                                <constraint firstItem="999-pJ-O10" firstAttribute="top" secondItem="IY8-A4-I65" secondAttribute="topMargin" constant="4" id="q2t-bZ-YvK"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="Ilr-EO-0Oh" kind="show" id="fNZ-QA-2a7"/>
@@ -107,15 +143,26 @@
                                     <outlet property="delegate" destination="8rJ-Kc-sve" id="kN0-4s-IWM"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dV4-Hz-991">
+                                <rect key="frame" x="562" y="84" width="22" height="22"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Ilr-EO-0Oh" kind="show" id="gwN-Oi-nmQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="gRr-pf-nXQ" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" constant="-16" id="6pN-e3-kzu"/>
                             <constraint firstItem="Ppe-35-AcU" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="16" id="GAv-ZV-JSU"/>
+                            <constraint firstItem="dV4-Hz-991" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="20" id="Gp3-ZH-RzP"/>
                             <constraint firstItem="Ppe-35-AcU" firstAttribute="centerY" secondItem="GJ0-VQ-sXd" secondAttribute="centerY" id="SwF-PP-k1T"/>
                             <constraint firstItem="GJ0-VQ-sXd" firstAttribute="leading" secondItem="Ppe-35-AcU" secondAttribute="trailing" constant="8" id="TLI-Ae-tE5"/>
                             <constraint firstItem="gRr-pf-nXQ" firstAttribute="top" secondItem="Ppe-35-AcU" secondAttribute="bottom" constant="8" id="cOg-h0-UNW"/>
+                            <constraint firstItem="dV4-Hz-991" firstAttribute="trailing" secondItem="QS5-Rx-YEW" secondAttribute="trailingMargin" id="duZ-xc-n8e"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gRr-pf-nXQ" secondAttribute="trailing" constant="-16" id="lph-4f-u0K"/>
                             <constraint firstItem="Ppe-35-AcU" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leadingMargin" id="pqi-TF-nIa"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="gRr-pf-nXQ" secondAttribute="bottom" id="t0i-mi-4L0"/>
@@ -129,7 +176,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1562" y="360"/>
+            <point key="canvasLocation" x="1902" y="352"/>
         </scene>
         <!--Detail Table View Controller-->
         <scene sceneID="780-by-unh">
@@ -392,6 +439,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="buttonPID" destination="Rx3-n2-yDY" id="acz-Mc-idQ"/>
                         <outlet property="mapView" destination="R3m-CT-IrP" id="lDK-dK-Qgv"/>
                         <outlet property="textFieldBarcode" destination="0A6-Bj-hgh" id="6CU-Qa-WSe"/>
                         <outlet property="textFieldPID" destination="E8i-JH-S1s" id="ySb-f7-icF"/>
@@ -402,7 +450,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b42-cj-bDw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="bWg-TS-7Yn" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1562" y="1142"/>
+            <point key="canvasLocation" x="1578" y="1124"/>
         </scene>
         <!--Case-->
         <scene sceneID="507-Hm-8xM">
@@ -1323,8 +1371,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="Lhw-9E-oGB">
-                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <rect key="frame" x="-8" y="556" width="616" height="44"/>
                                 <items>
+                                    <barButtonItem width="16" style="plain" systemItem="fixedSpace" id="ggn-h1-lqg"/>
                                     <barButtonItem title="Cancel" id="Spd-lB-kyD">
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
@@ -1332,22 +1381,36 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="6m6-jF-fAh"/>
-                                    <barButtonItem title="Off" id="ADi-3w-sPU">
+                                    <barButtonItem image="flash" width="8" id="GAl-PG-XiO">
+                                        <inset key="imageInsets" minX="2" minY="2" maxX="2" maxY="2"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="toggleFlash:" destination="7KF-Bp-epB" id="AeA-z8-Bbm"/>
+                                        </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Off" id="Xft-T5-qJH">
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="toggleFlash:" destination="7KF-Bp-epB" id="Lro-9z-7uY"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="16" style="plain" systemItem="fixedSpace" id="uWJ-K6-xUm"/>
                                 </items>
                                 <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Lhw-9E-oGB" secondAttribute="trailing" constant="-16" id="3tj-pa-htY"/>
-                            <constraint firstItem="Lhw-9E-oGB" firstAttribute="leading" secondItem="4sU-7x-VsI" secondAttribute="leadingMargin" constant="-16" id="Jlm-yS-ynm"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Lhw-9E-oGB" secondAttribute="trailing" constant="-24" id="EWv-rF-Ygs"/>
                             <constraint firstItem="lYM-jz-wU8" firstAttribute="top" secondItem="Lhw-9E-oGB" secondAttribute="bottom" id="Wk6-aX-HfL"/>
+                            <constraint firstItem="Lhw-9E-oGB" firstAttribute="leading" secondItem="4sU-7x-VsI" secondAttribute="leadingMargin" constant="-24" id="jh4-mw-30j"/>
                         </constraints>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="toolBar" destination="Lhw-9E-oGB" id="EaX-hT-zC7"/>
+                        <outletCollection property="buttonsFlash" destination="GAl-PG-XiO" collectionClass="NSMutableArray" id="dGt-wF-AeB"/>
+                        <outletCollection property="buttonsFlash" destination="Xft-T5-qJH" collectionClass="NSMutableArray" id="PQR-W0-CoL"/>
                         <segue destination="lgE-Qw-iwO" kind="unwind" identifier="unwindCameraToList" unwindAction="unwindToTabBarViewController:" id="a7l-HL-h1I"/>
                         <segue destination="lgE-Qw-iwO" kind="unwind" identifier="unwindCameraToDetail" unwindAction="unwindToDetailTableViewController:" id="jmA-B2-HRJ"/>
                     </connections>
@@ -1355,7 +1418,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="57S-7W-lAq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="lgE-Qw-iwO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2391" y="360"/>
+            <point key="canvasLocation" x="2731" y="792"/>
         </scene>
         <!--Refresh Table View Controller-->
         <scene sceneID="SOW-B1-VST">
@@ -1520,7 +1583,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XdW-bf-Ibg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8" y="0.0"/>
+            <point key="canvasLocation" x="448" y="-390"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -1539,7 +1602,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="812" y="0.0"/>
+            <point key="canvasLocation" x="1574" y="-398"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Dbe-WJ-CrD">
@@ -1557,14 +1620,16 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hNZ-oi-iUN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-820" y="0.0"/>
+            <point key="canvasLocation" x="-472" y="-390"/>
         </scene>
     </scenes>
     <resources>
         <image name="first" width="30" height="30"/>
+        <image name="flash" width="42" height="42"/>
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zZS-Ua-kBq"/>
+        <segue reference="ceP-EF-o2U"/>
+        <segue reference="tIw-4I-6FQ"/>
     </inferredMetricsTieBreakers>
 </document>

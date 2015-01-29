@@ -21,6 +21,7 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var textFieldBarcode: UITextField!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var textViewComments: UITextView!
+    @IBOutlet weak var buttonPID: UIButton!
     
     // Mark: Actions
     
@@ -49,19 +50,28 @@ class DetailTableViewController: UITableViewController {
     }
     
     func fillValues() {
-        currentPIDObject = appDelegate.querySingle(PIDObjectName.name, ByID: currentID)
-        
-        textFieldPID.text = currentPIDObject?.pid
-        textFieldBarcode.text = currentPIDObject?.barcode
-        textViewComments.text = currentPIDObject?.comments
-        
-        var annotation = MKPointAnnotation()
-        annotation.title = currentPIDObject?.barcode
-        annotation.coordinate = CLLocationCoordinate2D(latitude: currentPIDObject!.latitude, longitude: currentPIDObject!.longitude)
-        mapView.addAnnotation(annotation)
-        
-        var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
-        mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        if (currentID == -1) {
+            currentPIDObject = appDelegate.createPIDObject()
+            currentPIDObject!.id = appDelegate.lastID(PIDObjectName.name) + 1
+        } else {
+            
+            textFieldPID.enabled = false
+            buttonPID.enabled = false
+            
+            currentPIDObject = appDelegate.querySingle(PIDObjectName.name, ByID: currentID)
+            
+            textFieldPID.text = currentPIDObject?.pid
+            textFieldBarcode.text = currentPIDObject?.barcode
+            textViewComments.text = currentPIDObject?.comments
+            
+            var annotation = MKPointAnnotation()
+            annotation.title = currentPIDObject?.barcode
+            annotation.coordinate = CLLocationCoordinate2D(latitude: currentPIDObject!.latitude, longitude: currentPIDObject!.longitude)
+            mapView.addAnnotation(annotation)
+            
+            var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
+            mapView.setRegion(mapView.regionThatFits(region), animated: true)
+        }
     }
     
     // MARK : Overrides
