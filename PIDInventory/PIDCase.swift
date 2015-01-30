@@ -1,17 +1,17 @@
 //
-//  PIDObject.swift
+//  PIDInventory.swift
 //  PIDInventory
 //
-//  Created by Baker on 1/22/15.
+//  Created by Baker on 1/30/15.
 //  Copyright (c) 2015 Umetzu. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
-class PIDObject: NSManagedObject {
-    
-    @NSManaged var barcode: String
+class PIDCase: NSManagedObject {
+
+    @NSManaged var insertBarcode: String
     @NSManaged var caseBent: Bool
     @NSManaged var caseBroken: Bool
     @NSManaged var caseColor: Int32
@@ -30,7 +30,6 @@ class PIDObject: NSManagedObject {
     @NSManaged var coverNoCover: Bool
     @NSManaged var coverOther: Bool
     @NSManaged var coverUnauthorized: Bool
-    @NSManaged var latitude: Double
     @NSManaged var id: Int32
     @NSManaged var insertCondition: Int32
     @NSManaged var insertDescription: String
@@ -38,7 +37,9 @@ class PIDObject: NSManagedObject {
     @NSManaged var insertMissing: Bool
     @NSManaged var insertOther: Bool
     @NSManaged var insertTorn: Bool
-    @NSManaged var pid: String
+    @NSManaged var latitude: Double
+    @NSManaged var longitude: Double
+    @NSManaged var caseBarcode: String
     @NSManaged var standBroken: Bool
     @NSManaged var standCondition: Int32
     @NSManaged var standGraffiti: Bool
@@ -46,6 +47,6 @@ class PIDObject: NSManagedObject {
     @NSManaged var standRusted: Bool
     @NSManaged var standRustedBasePlate: Bool
     @NSManaged var standUnauthorized: Bool
-    @NSManaged var longitude: Double
+    @NSManaged var insertName: String
 
 }

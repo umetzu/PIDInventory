@@ -52,8 +52,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         
                         var x2 = x.coordinate.longitude
                         var y2 = x.coordinate.latitude
-                        var x1 = pidObject[PIDObjectName.longitude] as Double
-                        var y1 = pidObject[PIDObjectName.latitude] as Double
+                        var x1 = pidObject[PIDCaseName.longitude] as Double
+                        var y1 = pidObject[PIDCaseName.latitude] as Double
                         var c = 0.001
                         
                         return x1 > x2 - c && x1 < x2 + c && y1 > y2 - c && y1 < y2 + c
@@ -65,12 +65,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         annotation = annotationInPlace[0]
                     } else {
                         annotation = MKPointAnnotation()
-                        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject[PIDObjectName.latitude] as Double , longitude: pidObject[PIDObjectName.longitude] as Double)
+                        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject[PIDCaseName.latitude] as Double , longitude: pidObject[PIDCaseName.longitude] as Double)
                     }
                     
                     annotations[annotation] = annotations[annotation] ?? [String,Int]()
                     
-                    annotations[annotation]!.append("PID: \(pidObject[PIDObjectName.pid] as String)", pidObject[PIDObjectName.id] as Int)
+                    annotations[annotation]!.append("PID: \(pidObject[PIDCaseName.caseBarcode] as String)", pidObject[PIDCaseName.id] as Int)
                 }
             }
             

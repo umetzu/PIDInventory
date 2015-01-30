@@ -10,10 +10,17 @@ import UIKit
 import CoreLocation
 import CoreData
 
-struct PIDObjectName {
-    static let name = "PIDObject"
+struct PIDInsertName {
+    static let name = "PIDInsert"
     static let id = "id"
-    static let pid = "pid"
+    static let insertName = "name"
+    static let insertBarcode = "barcode"
+}
+
+struct PIDCaseName {
+    static let name = "PIDCase"
+    static let id = "id"
+    static let caseBarcode = "caseBarcode"
     static let latitude = "latitude"
     static let longitude = "longitude"
 }
@@ -39,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             locationManager.requestWhenInUseAuthorization()
         }
         
-        if (self.count(PIDObjectName.name) == 0) {
+        if (self.count(PIDCaseName.name) == 0) {
             setInitialData()
         }
         
@@ -51,12 +58,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var lat = 40.2
         
         for var i:Int32 = 1000; i <= 3300; i++ {
-            let object1 = createPIDObject()
+            let object1 = createPIDCase()
             
             lat += 0.001
             
             object1.id = i
-            object1.pid = "0\(i)"
+            object1.caseBarcode = "0\(i)"
             object1.latitude = lat
             object1.longitude = -74.70
         }
@@ -205,6 +212,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return nil
     }
     
+    func querySingle<T>(name: String, ByProperty aProperty: String, aValue: String) -> T? {
+        var request = NSFetchRequest(entityName: name)
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "%K == %d", aProperty, aValue)
+        var objects = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if (objects != nil) {
+            return objects!.count > 0 ? objects![0] as? T : nil
+        }
+        
+        return nil
+    }
+    
+    func querySingle(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String) -> String {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ aProperty ]
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "%K == %d", aCondition, aValue)
+        var objects = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if (objects != nil) {
+            return objects!.count > 0 ? objects![0] as String : ""
+        }
+        
+        return ""
+    }
+    
+    func queryList(name: String, SortedBy aProperty: String ) -> [AnyObject]? {
+        var request = NSFetchRequest(entityName: name)
+        request.sortDescriptors = [NSSortDescriptor(key: aProperty, ascending: true)]
+        
+        var result = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        return result
+    }
+    
+    func queryList(name: String, ToRetrieve aProperty: String) -> [String] {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ aProperty ]
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.sortDescriptors = [NSSortDescriptor(key: aProperty, ascending: true)]
+        
+        var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if objects != nil {
+            return objects!.valueForKey(aProperty) as [String]
+        }
+        
+        return []
+    }
+    
     func queryList(name: String, ToRetrieve aProperty: String) -> [Int] {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ aProperty ]
@@ -237,23 +295,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func queryMap(aWestPoint: Double, anEastPoint: Double, aNorthPoint: Double, aSouthPoint: Double) -> NSArray? {
-        var request = NSFetchRequest(entityName: PIDObjectName.name)
-        request.propertiesToFetch = [ PIDObjectName.id, PIDObjectName.pid, PIDObjectName.latitude, PIDObjectName.longitude ]
+        var request = NSFetchRequest(entityName: PIDCaseName.name)
+        request.propertiesToFetch = [ PIDCaseName.id, PIDCaseName.caseBarcode, PIDCaseName.latitude, PIDCaseName.longitude ]
         request.resultType = NSFetchRequestResultType.DictionaryResultType
         
-        request.predicate = NSPredicate(format: "%K BETWEEN {%f, %f} AND %K BETWEEN {%f, %f}", PIDObjectName.latitude, aSouthPoint, aNorthPoint, PIDObjectName.longitude, aWestPoint, anEastPoint)
+        request.predicate = NSPredicate(format: "%K BETWEEN {%f, %f} AND %K BETWEEN {%f, %f}", PIDCaseName.latitude, aSouthPoint, aNorthPoint, PIDCaseName.longitude, aWestPoint, anEastPoint)
         
         return self.managedObjectContext?.executeFetchRequest(request, error: nil)
     }
     
-    func createPIDObject() -> PIDObject {
-        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDObjectName.name,
-            inManagedObjectContext: self.managedObjectContext!) as PIDObject
+    func createPIDCase() -> PIDCase {
+        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDCaseName.name,
+            inManagedObjectContext: self.managedObjectContext!) as PIDCase
         
         pidObject.id = 0
-        pidObject.pid = ""
+        pidObject.caseBarcode = ""
         pidObject.comments = ""
-        pidObject.barcode = ""
+        pidObject.insertBarcode = ""
+        pidObject.insertName = ""
         pidObject.latitude = 0
         pidObject.longitude = 0
         pidObject.caseBent = false

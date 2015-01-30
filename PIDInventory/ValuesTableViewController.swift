@@ -8,9 +8,14 @@
 
 import UIKit
 
-class ValuesTableViewController: UITableViewController {
+class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    var currentPIDObject: PIDObject!
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    
+    var currentPIDObject: PIDCase!
+    var isPickerVisible = true
+    var insertNameList: [String] = []
+    var newBarCode = ""
     
     @IBOutlet weak var caseBent: UISwitch!
     @IBOutlet weak var caseComingApart: UISwitch!
@@ -30,6 +35,8 @@ class ValuesTableViewController: UITableViewController {
     @IBOutlet weak var coverOther: UISwitch!
     @IBOutlet weak var coverCondition: UISegmentedControl!
     
+    @IBOutlet weak var pickerViewName: UIPickerView!
+    @IBOutlet weak var insertName: UILabel!
     @IBOutlet weak var insertFaded: UISwitch!
     @IBOutlet weak var insertTorn: UISwitch!
     @IBOutlet weak var insertMissing: UISwitch!
@@ -45,6 +52,7 @@ class ValuesTableViewController: UITableViewController {
     @IBOutlet weak var standOther: UISwitch!
     @IBOutlet weak var standCondition: UISegmentedControl!
     
+    // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,6 +76,9 @@ class ValuesTableViewController: UITableViewController {
                 coverOther.on = currentPIDObject.coverOther
                 coverCondition.selectedSegmentIndex = Int(currentPIDObject.coverCondition)
             case "insert":
+                changePickerCellVisibility(false)
+                retrieveInserts()
+                selectInsertName()
                 insertFaded.on = currentPIDObject.insertFaded
                 insertTorn.on = currentPIDObject.insertTorn
                 insertMissing.on = currentPIDObject.insertMissing
@@ -107,6 +118,7 @@ class ValuesTableViewController: UITableViewController {
             currentPIDObject.coverOther = coverOther.on
             currentPIDObject.coverCondition = Int32(coverCondition.selectedSegmentIndex)
         case "insert":
+            currentPIDObject.insertName = insertNameList[pickerViewName.selectedRowInComponent(0)]
             currentPIDObject.insertFaded = insertFaded.on
             currentPIDObject.insertTorn = insertTorn.on
             currentPIDObject.insertMissing = insertMissing.on
@@ -129,6 +141,78 @@ class ValuesTableViewController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    // Mark Retrieve Insert List
+    func retrieveInserts() {
+        var resultList: [String]  = appDelegate.queryList(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName)
+        resultList.insert("None", atIndex: 0)
+        
+        insertNameList = resultList
+    }
+    
+    func selectInsertName() {
+        
+        var result = appDelegate.querySingle(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName, aCondition: PIDInsertName.insertBarcode, aValue: newBarCode)
+        
+        var insertName = find(insertNameList, result)
+        
+        pickerViewName.selectRow(insertName ?? 0, inComponent: 0, animated: false)
+    }
+
+    //MARK: - UITableViewDelegate
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.section == 0 && indexPath.row == 0) {
+            changePickerCellVisibility(!isPickerVisible)
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var height = super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        
+        if (indexPath.section == 0 && indexPath.row == 1) {
+            height = self.isPickerVisible ? 162 : 0
+        }
+        
+        return height
+    }
+    
+    //MARK: - UIPickerView
+    func changePickerCellVisibility(shouldDisplay: Bool) {
+        if shouldDisplay {
+            isPickerVisible = true
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+            UIView.animateWithDuration(0.25, animations: { self.pickerViewName.alpha = 1 })
+            
+        }
+        else {
+            isPickerVisible = false
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            UIView.animateWithDuration(0.25, animations: { self.pickerViewName.alpha = 0 })
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        insertName.text = insertNameList[row]
+    }
+    
+    // MARK: - UIPickerViewDataSource
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return insertNameList.count
+    }
+    
+    // MARK: - UIPickerViewDelegate
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        return insertNameList[row]
     }
 
 }

@@ -44,7 +44,6 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        //var height = self.tableView.rowHeight
         var height = super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         
         if (indexPath.section == 0 && indexPath.row == 1) {

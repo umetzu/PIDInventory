@@ -14,7 +14,7 @@ class DetailTableViewController: UITableViewController {
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     
     var currentID = 0
-    var currentPIDObject: PIDObject?
+    var currentPIDObject: PIDCase?
     var showCameraTag = 0
     
     @IBOutlet weak var textFieldPID: UITextField!
@@ -24,7 +24,6 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var buttonPID: UIButton!
     
     // Mark: Actions
-    
     @IBAction func showCamera(sender: UIButton) {
         showCameraTag = sender.tag
     }
@@ -35,8 +34,8 @@ class DetailTableViewController: UITableViewController {
     }
     
     func saveChanges(sender: UIBarButtonItem) {
-        currentPIDObject?.pid = textFieldPID.text
-        currentPIDObject?.barcode = textFieldBarcode.text
+        currentPIDObject?.caseBarcode = textFieldPID.text
+        currentPIDObject?.insertBarcode = textFieldBarcode.text
         currentPIDObject?.comments = textViewComments.text
         
         appDelegate.saveContext()
@@ -51,8 +50,8 @@ class DetailTableViewController: UITableViewController {
     
     func fillValues() {
         if (currentID == -1) {
-            currentPIDObject = appDelegate.createPIDObject()
-            currentPIDObject!.id = appDelegate.lastID(PIDObjectName.name) + 1
+            currentPIDObject = appDelegate.createPIDCase()
+            currentPIDObject!.id = appDelegate.lastID(PIDCaseName.name) + 1
             if (appDelegate.lastUserLocation != nil) {
                 currentPIDObject?.latitude = appDelegate.lastUserLocation!.latitude
                 currentPIDObject?.longitude = appDelegate.lastUserLocation!.longitude
@@ -62,19 +61,19 @@ class DetailTableViewController: UITableViewController {
             textFieldPID.enabled = false
             buttonPID.enabled = false
             
-            currentPIDObject = appDelegate.querySingle(PIDObjectName.name, ByID: currentID)
+            currentPIDObject = appDelegate.querySingle(PIDCaseName.name, ByID: currentID)
             
-            textFieldPID.text = currentPIDObject?.pid
-            textFieldBarcode.text = currentPIDObject?.barcode
+            textFieldPID.text = currentPIDObject?.caseBarcode
+            textFieldBarcode.text = currentPIDObject?.insertBarcode
             textViewComments.text = currentPIDObject?.comments
         }
         
         setAnnotation(currentPIDObject!)
     }
     
-    func setAnnotation(pidObject: PIDObject) {
+    func setAnnotation(pidObject: PIDCase) {
         var annotation = MKPointAnnotation()
-        annotation.title = currentPIDObject?.barcode
+        annotation.title = currentPIDObject?.insertBarcode
         annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject.latitude, longitude: pidObject.longitude)
         mapView.addAnnotation(annotation)
         
@@ -87,6 +86,8 @@ class DetailTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
+        
+        //handle insertname, insertbarcode
     }
     
     override func viewDidLoad() {
@@ -114,6 +115,7 @@ class DetailTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let dest = segue.destinationViewController as? ValuesTableViewController {
             dest.currentPIDObject = currentPIDObject
+            dest.newBarCode = textFieldBarcode.text
         }
     }
 }

@@ -20,9 +20,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: - Actions
     @IBAction func pidEditingChanged(sender: UITextField) {
         if (textFieldPID.text.isEmpty) {
-            pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve:PIDObjectName.id)
+            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve:PIDCaseName.id)
         } else {
-            pidObjectsID = appDelegate.queryList(PIDObjectName.name, ToRetrieve: PIDObjectName.id, aCondition: PIDObjectName.pid, aValue: sender.text)
+            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, aCondition: PIDCaseName.caseBarcode, aValue: sender.text)
         }
         
         tableViewPID.reloadData()
@@ -44,14 +44,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         var id = pidObjectsID[indexPath.row]
         
-        var pidObject = appDelegate.querySingle(PIDObjectName.name, ByID: id) as PIDObject?
+        var pidObject = appDelegate.querySingle(PIDCaseName.name, ByID: id) as PIDCase?
         
         if (pidObject != nil) {
             var labelPID = cell?.viewWithTag(1) as UILabel
-            labelPID.text = pidObject?.pid
+            labelPID.text = pidObject?.caseBarcode
             
             var labelBarcode = cell?.viewWithTag(2) as UILabel
-            labelBarcode.text = pidObject?.barcode
+            labelBarcode.text = pidObject?.insertBarcode
             
             cell?.tag = Int(pidObject!.id)
         }
