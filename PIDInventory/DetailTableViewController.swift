@@ -53,6 +53,10 @@ class DetailTableViewController: UITableViewController {
         if (currentID == -1) {
             currentPIDObject = appDelegate.createPIDObject()
             currentPIDObject!.id = appDelegate.lastID(PIDObjectName.name) + 1
+            if (appDelegate.lastUserLocation != nil) {
+                currentPIDObject?.latitude = appDelegate.lastUserLocation!.latitude
+                currentPIDObject?.longitude = appDelegate.lastUserLocation!.longitude
+            }
         } else {
             
             textFieldPID.enabled = false
@@ -63,15 +67,19 @@ class DetailTableViewController: UITableViewController {
             textFieldPID.text = currentPIDObject?.pid
             textFieldBarcode.text = currentPIDObject?.barcode
             textViewComments.text = currentPIDObject?.comments
-            
-            var annotation = MKPointAnnotation()
-            annotation.title = currentPIDObject?.barcode
-            annotation.coordinate = CLLocationCoordinate2D(latitude: currentPIDObject!.latitude, longitude: currentPIDObject!.longitude)
-            mapView.addAnnotation(annotation)
-            
-            var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
-            mapView.setRegion(mapView.regionThatFits(region), animated: true)
         }
+        
+        setAnnotation(currentPIDObject!)
+    }
+    
+    func setAnnotation(pidObject: PIDObject) {
+        var annotation = MKPointAnnotation()
+        annotation.title = currentPIDObject?.barcode
+        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject.latitude, longitude: pidObject.longitude)
+        mapView.addAnnotation(annotation)
+        
+        var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
+        mapView.setRegion(mapView.regionThatFits(region), animated: true)
     }
     
     // MARK : Overrides

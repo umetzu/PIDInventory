@@ -22,6 +22,8 @@ struct PIDObjectName {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var lastUserLocation: CLLocationCoordinate2D?
 
     lazy var locationManager: CLLocationManager = {
         var x = CLLocationManager()
@@ -46,12 +48,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
     func setInitialData() {
-        var lat = 40.0
+        var lat = 40.2
         
         for var i:Int32 = 1000; i <= 3300; i++ {
             let object1 = createPIDObject()
             
-            lat += 0.01
+            lat += 0.001
             
             object1.id = i
             object1.pid = "0\(i)"
