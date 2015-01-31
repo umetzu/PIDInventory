@@ -20,9 +20,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: - Actions
     @IBAction func pidEditingChanged(sender: UITextField) {
         if (textFieldPID.text.isEmpty) {
-            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve:PIDCaseName.id)
+            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve:PIDCaseName.id, SortBy: PIDCaseName.caseBarcode)
         } else {
-            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, aCondition: PIDCaseName.caseBarcode, aValue: sender.text)
+            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, aCondition: PIDCaseName.caseBarcode, aValue: sender.text, SortBy: PIDCaseName.caseBarcode)
         }
         
         tableViewPID.reloadData()
@@ -79,10 +79,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.didReceiveMemoryWarning()
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        view.endEditing(true)
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let dest = segue.destinationViewController as? DetailTableViewController {
             if let cell = sender as? UITableViewCell {
@@ -93,6 +89,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         } else if let dest = segue.destinationViewController as? CameraViewController {
             dest.sourceViewIsList = true
         }
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        self.view.endEditing(true);
     }
 }
 

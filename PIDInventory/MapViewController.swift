@@ -56,7 +56,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         var y1 = pidObject[PIDCaseName.latitude] as Double
                         var c = 0.001
                         
-                        return x1 > x2 - c && x1 < x2 + c && y1 > y2 - c && y1 < y2 + c
+                        return x1 >= x2 - c && x1 <= x2 + c && y1 >= y2 - c && y1 <= y2 + c
                     })
                     
                     var annotation: MKPointAnnotation!
@@ -82,7 +82,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
 
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         
-        var actionSheet  = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        if view.annotation is MKUserLocation {
+            return
+        }
+        
+        var actionSheet  = UIActionSheet(title: "Sharing with", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
         
         annotationTitles = annotations[view.annotation as MKPointAnnotation]!
         
@@ -118,6 +122,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = true
+        mapView(mapView, regionDidChangeAnimated: false)
     }
     
     override func didReceiveMemoryWarning() {

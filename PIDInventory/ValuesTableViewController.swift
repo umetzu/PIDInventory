@@ -15,7 +15,6 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     var currentPIDObject: PIDCase!
     var isPickerVisible = true
     var insertNameList: [String] = []
-    var newBarCode = ""
     
     @IBOutlet weak var caseBent: UISwitch!
     @IBOutlet weak var caseComingApart: UISwitch!
@@ -26,6 +25,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     @IBOutlet weak var caseUnauthorized: UISwitch!
     @IBOutlet weak var caseOther: UISwitch!
     @IBOutlet weak var caseCondition: UISegmentedControl!
+    @IBOutlet weak var caseColor: UISegmentedControl!
     
     @IBOutlet weak var coverNoCover: UISwitch!
     @IBOutlet weak var coverCracked: UISwitch!
@@ -67,6 +67,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
                 caseUnauthorized.on = currentPIDObject.caseUnauthorized
                 caseOther.on = currentPIDObject.caseOther
                 caseCondition.selectedSegmentIndex = Int(currentPIDObject.caseCondition)
+                caseColor.selectedSegmentIndex = Int(currentPIDObject.caseColor)
             case "cover":
                 coverNoCover.on = currentPIDObject.coverNoCover
                 coverCracked.on = currentPIDObject.coverCracked
@@ -77,7 +78,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
                 coverCondition.selectedSegmentIndex = Int(currentPIDObject.coverCondition)
             case "insert":
                 changePickerCellVisibility(false)
-                retrieveInserts()
+                retrieveInsertNameList()
                 selectInsertName()
                 insertFaded.on = currentPIDObject.insertFaded
                 insertTorn.on = currentPIDObject.insertTorn
@@ -109,6 +110,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
              currentPIDObject.caseUnauthorized = caseUnauthorized.on
              currentPIDObject.caseOther = caseOther.on
              currentPIDObject.caseCondition = Int32(caseCondition.selectedSegmentIndex)
+             currentPIDObject.caseColor = Int32(caseColor.selectedSegmentIndex)
         case "cover":
             currentPIDObject.coverNoCover = coverNoCover.on
             currentPIDObject.coverCracked = coverCracked.on
@@ -118,7 +120,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.coverOther = coverOther.on
             currentPIDObject.coverCondition = Int32(coverCondition.selectedSegmentIndex)
         case "insert":
-            currentPIDObject.insertName = insertNameList[pickerViewName.selectedRowInComponent(0)]
+            setInsertName()
             currentPIDObject.insertFaded = insertFaded.on
             currentPIDObject.insertTorn = insertTorn.on
             currentPIDObject.insertMissing = insertMissing.on
@@ -144,7 +146,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     // Mark Retrieve Insert List
-    func retrieveInserts() {
+    func retrieveInsertNameList() {
         var resultList: [String]  = appDelegate.queryList(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName)
         resultList.insert("None", atIndex: 0)
         
@@ -152,12 +154,24 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     func selectInsertName() {
+        var name = find(insertNameList, currentPIDObject.insertName)
         
-        var result = appDelegate.querySingle(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName, aCondition: PIDInsertName.insertBarcode, aValue: newBarCode)
+        pickerViewName.selectRow(name ?? 0, inComponent: 0, animated: false)
+        insertName.text = insertNameList[name ?? 0]
+    }
+    
+    func setInsertName() {
+        var row = pickerViewName.selectedRowInComponent(0)
         
-        var insertName = find(insertNameList, result)
-        
-        pickerViewName.selectRow(insertName ?? 0, inComponent: 0, animated: false)
+        if row == 0 {
+            if !currentPIDObject.insertName.isEmpty {
+                currentPIDObject.insertBarcode = ""
+                currentPIDObject.insertName = ""
+            }
+        } else {
+            currentPIDObject.insertName = insertNameList[row]
+            currentPIDObject.insertBarcode = appDelegate.querySingle(PIDInsertName.name, ToRetrieve: PIDInsertName.insertBarcode, aCondition: PIDInsertName.insertName, aValue: currentPIDObject.insertName)
+        }
     }
 
     //MARK: - UITableViewDelegate
@@ -172,7 +186,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         
-        if (indexPath.section == 0 && indexPath.row == 1) {
+        if (restorationIdentifier! == "insert" && indexPath.section == 0 && indexPath.row == 1) {
             height = self.isPickerVisible ? 162 : 0
         }
         

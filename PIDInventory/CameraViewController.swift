@@ -17,16 +17,18 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var sourceViewIsList = false
     var device: AVCaptureDevice!
     
-    @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet var buttonsFlash: [UIBarButtonItem]!
-    
-    @IBAction func toggleFlash(sender: UIBarButtonItem) {
+    func toggleFlash(sender: UIButton) {
         device.lockForConfiguration(nil)
+        var title = "Off"
+        
         if (device.torchMode == AVCaptureTorchMode.On) {
             device.torchMode = AVCaptureTorchMode.Off
         } else {
             device.setTorchModeOnWithLevel(1.0, error: nil)
+            title = "On"
         }
+        
+        sender.setTitle(title, forState: .Normal)
         device.unlockForConfiguration()
     }
     
@@ -46,10 +48,17 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         
         device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
-        if (!device.hasTorch) {
-            for b in buttonsFlash {
-                b.enabled = false
-            }
+        if (device.hasTorch) {
+            var button = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+            
+            var image = UIImage(named:"flash")?.imageWithRenderingMode(.Automatic)
+            button.setImage(image, forState: .Normal)
+            button.setTitle("Off", forState: .Normal)
+            button.addTarget(self, action: "toggleFlash:", forControlEvents: .TouchUpInside)
+            button.sizeToFit()
+            var flashButton = UIBarButtonItem(customView: button)
+            
+            self.navigationItem.setRightBarButtonItem(flashButton, animated: false)
         }
         
         var error: NSError?
@@ -64,13 +73,12 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         
         preview = AVCaptureVideoPreviewLayer(session: session)
         
-        
         preview.videoGravity = AVLayerVideoGravityResizeAspectFill
         
         bringSubLayerToFront(outline)
         bringSubLayerToFront(preview)
         
-        preview.frame = self.view.layer.frame
+        setPreviewOrientation(UIApplication.sharedApplication().statusBarOrientation.rawValue)
         
         var output = AVCaptureMetadataOutput()
         output.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
@@ -140,7 +148,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         self.view.layer.insertSublayer(layer, atIndex: 0)
     }
     
-    @IBAction func closeCamera(sender: AnyObject) {
+    func closeCamera(sender: AnyObject) {
         unwind()
     }
     
@@ -151,6 +159,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     // Mark: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "closeCamera:")
+        self.navigationItem.setLeftBarButtonItem(cancelButton, animated: false)
     }
     
     override func didReceiveMemoryWarning() {
@@ -159,8 +169,34 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.navigationBarHidden = false
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        
         captureBarCode()
     }
-
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.tintColor = UIApplication.sharedApplication().delegate?.window!!.tintColor
+        navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+    }
+    
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(duration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut))
+        
+        setPreviewOrientation(toInterfaceOrientation.rawValue)
+        
+        CATransaction.commit()
+    }
+    
+    func setPreviewOrientation(deviceOrientation: Int) {
+        var previewConnection = self.preview.connection
+        
+        previewConnection.videoOrientation = AVCaptureVideoOrientation(rawValue: deviceOrientation)!
+        
+        preview.frame = self.view.bounds
+    }
 }
