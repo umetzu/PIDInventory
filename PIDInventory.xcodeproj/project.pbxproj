@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A1296271A801D8B00E13DA5 /* PIDCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1296261A801D8B00E13DA5 /* PIDCase.swift */; };
+		3A1296291A801DA400E13DA5 /* PIDInsert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1296281A801DA400E13DA5 /* PIDInsert.swift */; };
 		3A7586721A79822800CBE60B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7586711A79822800CBE60B /* TabBarViewController.swift */; };
 		3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22271A72D5230077B97E /* CameraViewController.swift */; };
 		3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */; };
@@ -21,8 +23,6 @@
 		3A9D418A1A715447004D7113 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9D41891A715447004D7113 /* MapKit.framework */; };
 		3A9D418D1A715FEC004D7113 /* PIDInventory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D418B1A715FEC004D7113 /* PIDInventory.xcdatamodeld */; };
 		3AA147151A79507C0058133C /* ValuesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA147141A79507C0058133C /* ValuesTableViewController.swift */; };
-		3AF5F4431A7C1D5F003DC55F /* PIDInsert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF5F4421A7C1D5F003DC55F /* PIDInsert.swift */; };
-		3AF5F4451A7C1DB5003DC55F /* PIDCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF5F4441A7C1DB5003DC55F /* PIDCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A1296261A801D8B00E13DA5 /* PIDCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDCase.swift; sourceTree = "<group>"; };
+		3A1296281A801DA400E13DA5 /* PIDInsert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDInsert.swift; sourceTree = "<group>"; };
 		3A7586711A79822800CBE60B /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3A7B22271A72D5230077B97E /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
@@ -55,8 +57,6 @@
 		3A9D41891A715447004D7113 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3A9D418C1A715FEC004D7113 /* PIDInventory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PIDInventory.xcdatamodel; sourceTree = "<group>"; };
 		3AA147141A79507C0058133C /* ValuesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuesTableViewController.swift; sourceTree = "<group>"; };
-		3AF5F4421A7C1D5F003DC55F /* PIDInsert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDInsert.swift; sourceTree = "<group>"; };
-		3AF5F4441A7C1DB5003DC55F /* PIDCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +101,8 @@
 		3A9D412F1A702832004D7113 /* PIDInventory */ = {
 			isa = PBXGroup;
 			children = (
-				3AF5F4441A7C1DB5003DC55F /* PIDCase.swift */,
-				3AF5F4421A7C1D5F003DC55F /* PIDInsert.swift */,
+				3A1296261A801D8B00E13DA5 /* PIDCase.swift */,
+				3A1296281A801DA400E13DA5 /* PIDInsert.swift */,
 				3A9D41321A702832004D7113 /* AppDelegate.swift */,
 				3A9D41361A702832004D7113 /* ListViewController.swift */,
 				3A9D41341A702832004D7113 /* MapViewController.swift */,
@@ -247,10 +247,10 @@
 			files = (
 				3A9D41571A703310004D7113 /* RefreshTableViewController.swift in Sources */,
 				3A9D41371A702832004D7113 /* ListViewController.swift in Sources */,
-				3AF5F4431A7C1D5F003DC55F /* PIDInsert.swift in Sources */,
-				3AF5F4451A7C1DB5003DC55F /* PIDCase.swift in Sources */,
+				3A1296271A801D8B00E13DA5 /* PIDCase.swift in Sources */,
 				3A9D41331A702832004D7113 /* AppDelegate.swift in Sources */,
 				3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */,
+				3A1296291A801DA400E13DA5 /* PIDInsert.swift in Sources */,
 				3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */,
 				3AA147151A79507C0058133C /* ValuesTableViewController.swift in Sources */,
 				3A9D41351A702832004D7113 /* MapViewController.swift in Sources */,

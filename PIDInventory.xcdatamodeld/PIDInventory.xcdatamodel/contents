@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="PIDCase" representedClassName="PIDInventory.PIDCase" syncable="YES">
-        <attribute name="caseBarcode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="caseBent" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="caseColor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="caseComingApart" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="caseCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="caseColor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="caseGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseOther" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="casePitted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseRusted" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="caseUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="coverCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="caseSeverity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="caseSide" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="caseWidth" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="coverCracked" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverDiscolored" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverNoCover" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverOther" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="coverUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverSeverity" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <attribute name="insertBarcode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="insertCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="insertDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="insertCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="insertComments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="insertDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="insertFaded" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="insertMissing" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="insertName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="insertName" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="insertOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="insertTorn" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="insertWaterDamage" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="inventoryCaseBarcode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryCaseNameArchive" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryComments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="inventoryInsertBarcode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="inventoryLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="inventoryPhoto1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryPhoto2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryUser" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationAdjacentTVM" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="locationCasesInCluster" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="locationDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationMountType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationOrientation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationPositionInCluster" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="standBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="standCondition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="standGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standRusted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standRustedBasePlate" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="standUnauthorized" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standSeverity" optional="YES" attributeType="String" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
                 <index value="id"/>
@@ -46,6 +55,8 @@
     </entity>
     <entity name="PIDInsert" representedClassName="PIDInventory.PIDInsert" syncable="YES">
         <attribute name="barcode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <compoundIndexes>
@@ -55,7 +66,7 @@
         </compoundIndexes>
     </entity>
     <elements>
-        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="598"/>
-        <element name="PIDInsert" positionX="-63" positionY="135" width="128" height="88"/>
+        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="733"/>
+        <element name="PIDInsert" positionX="-63" positionY="135" width="128" height="118"/>
     </elements>
 </model>
