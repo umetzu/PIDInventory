@@ -15,36 +15,25 @@ class DetailTableViewController: UITableViewController {
     
     var currentID = 0
     var currentPIDObject: PIDCase?
-    var showCameraTag = 0
     
-    @IBOutlet weak var textFieldPID: UITextField!
-    @IBOutlet weak var textFieldBarcode: UITextField!
+    @IBOutlet weak var textFieldCaseBarcode: UITextField!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var textViewComments: UITextView!
     @IBOutlet weak var buttonPID: UIButton!
+    @IBOutlet weak var labelCaseName: UILabel!
     
     // Mark: Actions
-    @IBAction func showCamera(sender: UIButton) {
-        showCameraTag = sender.tag
-    }
-    
     @IBAction func unwindToDetailTableViewController(segue: UIStoryboardSegue) {
         var scanned = (segue.sourceViewController as CameraViewController).capturedCode
         
-        if showCameraTag == 0  {
-            textFieldPID.text = scanned
-        } else {
-            textFieldBarcode.text = scanned
-            insertBarcodeChanged(textFieldBarcode)
-        }
+        textFieldCaseBarcode.text = scanned
         
         self.view.endEditing(true)
     }
     
     func saveChanges(sender: UIBarButtonItem) {
-        currentPIDObject?.caseBarcode = textFieldPID.text
-        currentPIDObject?.insertBarcode = textFieldBarcode.text
-        currentPIDObject?.comments = textViewComments.text
+        currentPIDObject?.inventoryCaseBarcode = textFieldCaseBarcode.text
+        currentPIDObject?.inventoryComments = textViewComments.text
         
         appDelegate.saveContext()
         
@@ -61,42 +50,26 @@ class DetailTableViewController: UITableViewController {
             currentPIDObject = appDelegate.createPIDCase()
             currentPIDObject!.id = appDelegate.lastID(PIDCaseName.name) + 1
             if (appDelegate.lastUserLocation != nil) {
-                currentPIDObject?.latitude = appDelegate.lastUserLocation!.latitude
-                currentPIDObject?.longitude = appDelegate.lastUserLocation!.longitude
+                currentPIDObject?.inventoryLatitude = appDelegate.lastUserLocation!.latitude
+                currentPIDObject?.inventoryLongitude = appDelegate.lastUserLocation!.longitude
             }
         } else {
             
-            textFieldPID.enabled = false
+            textFieldCaseBarcode.enabled = false
             buttonPID.enabled = false
             
             currentPIDObject = appDelegate.querySingle(PIDCaseName.name, ByID: currentID)
             
-            textFieldPID.text = currentPIDObject?.caseBarcode
-            textViewComments.text = currentPIDObject?.comments
+            textFieldCaseBarcode.text = currentPIDObject?.inventoryCaseBarcode
+            textViewComments.text = currentPIDObject?.inventoryComments
         }
         
         setAnnotation(currentPIDObject!)
     }
     
-    // MARK: - Barcode linking
-    @IBAction func insertBarcodeChanged(sender: UITextField) {
-        var result = ""
-        
-        if countElements(textFieldBarcode.text) > 4 {
-            result = appDelegate.querySingle(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName, aCondition: PIDInsertName.insertBarcode, aValue: textFieldBarcode.text)
-        }
-        
-        currentPIDObject?.insertName = result
-        currentPIDObject?.insertBarcode = textFieldBarcode.text
-    }
-    
-    func refreshInsertBarcode() {
-        textFieldBarcode.text = currentPIDObject?.insertBarcode
-    }
-    
     func setAnnotation(pidObject: PIDCase) {
         var annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject.latitude, longitude: pidObject.longitude)
+        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject.inventoryLatitude, longitude: pidObject.inventoryLongitude)
         mapView.addAnnotation(annotation)
         
         var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
@@ -105,10 +78,10 @@ class DetailTableViewController: UITableViewController {
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         var c = 0.001
-        var north = currentPIDObject!.latitude + c
-        var south = currentPIDObject!.latitude - c
-        var west = currentPIDObject!.longitude - c
-        var east = currentPIDObject!.longitude + c
+        var north = currentPIDObject!.inventoryLatitude + c
+        var south = currentPIDObject!.inventoryLatitude - c
+        var west = currentPIDObject!.inventoryLongitude - c
+        var east = currentPIDObject!.inventoryLongitude + c
         
         var pidObjectsInFrame = appDelegate.queryMap(west, anEastPoint: east, aNorthPoint: north, aSouthPoint: south)
         
@@ -131,8 +104,6 @@ class DetailTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
-        
-        refreshInsertBarcode()
     }
     
     override func viewDidLoad() {
@@ -160,6 +131,8 @@ class DetailTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let dest = segue.destinationViewController as? ValuesTableViewController {
             dest.currentPIDObject = currentPIDObject
+        } else if let dest = segue.destinationViewController as? CameraViewController {
+            dest.sourceView = 1
         }
     }
 }

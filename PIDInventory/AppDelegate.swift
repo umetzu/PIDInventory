@@ -10,21 +10,6 @@ import UIKit
 import CoreLocation
 import CoreData
 
-struct PIDInsertName {
-    static let name = "PIDInsert"
-    static let id = "id"
-    static let insertName = "name"
-    static let insertBarcode = "barcode"
-}
-
-struct PIDCaseName {
-    static let name = "PIDCase"
-    static let id = "id"
-    static let caseBarcode = "caseBarcode"
-    static let latitude = "latitude"
-    static let longitude = "longitude"
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -34,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var locationManager: CLLocationManager = {
         var x = CLLocationManager()
-        //x.delegate = self
         x.desiredAccuracy = kCLLocationAccuracyBest
         x.distanceFilter = 10
         return x
@@ -63,9 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             lat += 0.001
             
             object1.id = i
-            object1.caseBarcode = "0\(i)"
-            object1.latitude = lat
-            object1.longitude = -74.70
+            object1.inventoryCaseBarcode = "0\(i)"
+            object1.inventoryLatitude = lat
+            object1.inventoryLongitude = -74.70
         }
         
         var i1 = createPIDInsert()
@@ -79,15 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.saveContext()
     }
-    
-    //    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-    //        var location = locations.last as CLLocation
-    //        var eventDate = location.timestamp
-    //        var howRecent = eventDate.timeIntervalSinceNow
-    //        if (abs(howRecent) < 15.0) {
-    //
-    //        }
-    //    }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -288,6 +263,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return []
     }
     
+    func queryList(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String, SortBy aSorting: String) -> [String] {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ aProperty ]
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        request.predicate = NSPredicate(format: "%K == %@", aCondition, aValue)
+        request.sortDescriptors = [NSSortDescriptor(key: aSorting, ascending: true)]
+        
+        var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if objects != nil {
+            return objects!.valueForKey(aProperty) as [String]
+        }
+        
+        return []
+    }
+    
     func queryList(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String, SortBy aSorting: String) -> [Int] {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ aProperty ]
@@ -332,43 +323,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             inManagedObjectContext: self.managedObjectContext!) as PIDCase
         
         pidObject.id = 0
-        pidObject.caseBarcode = ""
-        pidObject.comments = ""
-        pidObject.insertBarcode = ""
-        pidObject.insertName = ""
-        pidObject.latitude = 0
-        pidObject.longitude = 0
-        pidObject.caseBent = false
-        pidObject.caseComingApart = false
-        pidObject.caseRusted = false
-        pidObject.casePitted = false
+        
+        pidObject.inventoryCaseBarcode = ""
         pidObject.caseBroken = false
+        pidObject.caseColor = ""
+        pidObject.caseSeverity = ""
         pidObject.caseGraffiti = false
-        pidObject.caseUnauthorized = false
         pidObject.caseOther = false
-        pidObject.caseCondition = 0
-        pidObject.caseColor = 0
-        pidObject.coverNoCover = false
+        pidObject.caseRusted = false
+        pidObject.inventoryComments = ""
+        pidObject.coverSeverity = ""
         pidObject.coverCracked = false
         pidObject.coverDiscolored = false
         pidObject.coverGraffiti = false
-        pidObject.coverUnauthorized = false
+        pidObject.coverNoCover = false
         pidObject.coverOther = false
-        pidObject.coverCondition = 0
+        pidObject.insertBarcode = ""
+        pidObject.insertComments = ""
         pidObject.insertFaded = false
-        pidObject.insertTorn = false
         pidObject.insertMissing = false
+        pidObject.insertName = ""
         pidObject.insertOther = false
-        pidObject.insertCondition = 0
-        pidObject.insertDescription = ""
+        pidObject.insertTorn = false
+        pidObject.inventoryLatitude  = 0
+        pidObject.inventoryLongitude  = 0
+        pidObject.standBroken = false
+        pidObject.standSeverity = ""
+        pidObject.standGraffiti = false
+        pidObject.standOther = false
         pidObject.standRusted = false
         pidObject.standRustedBasePlate = false
-        pidObject.standBroken = false
-        pidObject.standGraffiti = false
-        pidObject.standUnauthorized = false
-        pidObject.standOther = false
-        pidObject.standCondition = 0
-        
+        pidObject.inventoryDate  = NSDate()
+        pidObject.inventoryCaseNameArchive = ""
+        pidObject.locationDescription = ""
+        pidObject.locationOrientation = ""
+        pidObject.locationAdjacentTVM = false
+        pidObject.locationMountType = ""
+        pidObject.caseWidth = ""
+        pidObject.caseSide = ""
+        pidObject.insertCategory = ""
+        pidObject.locationCasesInCluster = ""
+        pidObject.locationPositionInCluster = ""
+        pidObject.inventoryUser = ""
+        pidObject.inventoryPhoto1 = ""
+        pidObject.inventoryPhoto2 = ""
+        pidObject.insertDate = NSDate()
+        pidObject.insertWaterDamage = false
+     
         return pidObject
     }
 }

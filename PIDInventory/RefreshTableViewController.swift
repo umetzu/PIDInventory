@@ -16,8 +16,15 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     @IBOutlet weak var labelSelectedUsername: UILabel!
     var isPickerVisible = true
 
+    var listUsernames:[(key: String, value: String)] = [
+        ("BKR\\dwaldron", "Daniel Waldron"),
+        ("BKR\\Jason.Kreyling", "Jason Kreyling"),
+        ("BKR\\KMcElwain", "Kevin McElwain"),
+        ("BKR\\Nick.Fink", "Nick Fink"),
+        ("BKR\\thomas.bruestle", "Thomas Bruestle"),
+        ("BKR\\Zach.Robert", "Zachary Robert"),
+        ("Other", "Other "),]
     
-    let usersList = [ "John", "Thomas", "Richard", "Peter", "John" , "Chuck", "Richie", "Dane", "Emery", "Keith" ]
     let server = "0.0.0.0"
     
     // MARK: - UIPickerViewDataSource
@@ -26,12 +33,12 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return usersList.count
+        return listUsernames.count
     }
     
     // MARK: - UIPickerViewDelegate
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        return usersList[row]
+        return listUsernames[row].value
     }
     
     //MARK: - UITableViewDelegate
@@ -72,7 +79,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        labelSelectedUsername.text = usersList[row]
+        labelSelectedUsername.text = listUsernames[row].value
     }
     
     //MARK: - Overrides
@@ -86,7 +93,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         super.viewDidLoad()
         changePickerCellVisibility(false)
         toolBarLabel.title = "Sever: \(server) - Status: Unreachable"
-        labelSelectedUsername.text = usersList[0]
+        labelSelectedUsername.text = listUsernames[0].value
     }
     
     override func didReceiveMemoryWarning() {

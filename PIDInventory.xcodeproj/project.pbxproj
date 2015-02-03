@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A1296271A801D8B00E13DA5 /* PIDCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1296261A801D8B00E13DA5 /* PIDCase.swift */; };
 		3A1296291A801DA400E13DA5 /* PIDInsert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1296281A801DA400E13DA5 /* PIDInsert.swift */; };
+		3A12962B1A8112D600E13DA5 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A12962A1A8112D600E13DA5 /* Defaults.swift */; };
 		3A7586721A79822800CBE60B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7586711A79822800CBE60B /* TabBarViewController.swift */; };
 		3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22271A72D5230077B97E /* CameraViewController.swift */; };
 		3A7B222A1A72F76C0077B97E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		3A1296261A801D8B00E13DA5 /* PIDCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDCase.swift; sourceTree = "<group>"; };
 		3A1296281A801DA400E13DA5 /* PIDInsert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIDInsert.swift; sourceTree = "<group>"; };
+		3A12962A1A8112D600E13DA5 /* Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		3A7586711A79822800CBE60B /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		3A7B22271A72D5230077B97E /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		3A9D412F1A702832004D7113 /* PIDInventory */ = {
 			isa = PBXGroup;
 			children = (
+				3A12962A1A8112D600E13DA5 /* Defaults.swift */,
 				3A1296261A801D8B00E13DA5 /* PIDCase.swift */,
 				3A1296281A801DA400E13DA5 /* PIDInsert.swift */,
 				3A9D41321A702832004D7113 /* AppDelegate.swift */,
@@ -254,6 +257,7 @@
 				3A7B22281A72D5230077B97E /* CameraViewController.swift in Sources */,
 				3AA147151A79507C0058133C /* ValuesTableViewController.swift in Sources */,
 				3A9D41351A702832004D7113 /* MapViewController.swift in Sources */,
+				3A12962B1A8112D600E13DA5 /* Defaults.swift in Sources */,
 				3A7586721A79822800CBE60B /* TabBarViewController.swift in Sources */,
 				3A9D418D1A715FEC004D7113 /* PIDInventory.xcdatamodeld in Sources */,
 			);

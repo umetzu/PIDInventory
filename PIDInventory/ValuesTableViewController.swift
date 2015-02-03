@@ -13,171 +13,289 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     
     var currentPIDObject: PIDCase!
-    var isPickerVisible = true
+    var pickersVisibility: [Bool] = [true, true, true, true]
     var insertNameList: [String] = []
     
-    @IBOutlet weak var caseBent: UISwitch!
-    @IBOutlet weak var caseComingApart: UISwitch!
     @IBOutlet weak var caseRusted: UISwitch!
-    @IBOutlet weak var casePitted: UISwitch!
     @IBOutlet weak var caseBroken: UISwitch!
     @IBOutlet weak var caseGraffiti: UISwitch!
-    @IBOutlet weak var caseUnauthorized: UISwitch!
     @IBOutlet weak var caseOther: UISwitch!
-    @IBOutlet weak var caseCondition: UISegmentedControl!
+    @IBOutlet weak var caseSeverity: UISegmentedControl!
     @IBOutlet weak var caseColor: UISegmentedControl!
+    @IBOutlet weak var caseSide: UISegmentedControl!
+    @IBOutlet weak var casePickerViewWidth: UIPickerView!
+    @IBOutlet weak var caseWidth: UILabel!
     
     @IBOutlet weak var coverNoCover: UISwitch!
     @IBOutlet weak var coverCracked: UISwitch!
     @IBOutlet weak var coverDiscolored: UISwitch!
     @IBOutlet weak var coverGraffiti: UISwitch!
-    @IBOutlet weak var coverUnauthorized: UISwitch!
     @IBOutlet weak var coverOther: UISwitch!
-    @IBOutlet weak var coverCondition: UISegmentedControl!
+    @IBOutlet weak var coverSeverity: UISegmentedControl!
     
-    @IBOutlet weak var pickerViewName: UIPickerView!
-    @IBOutlet weak var insertName: UILabel!
+    @IBOutlet weak var insertDatePicker: UIDatePicker!
+    @IBOutlet weak var insertBarcode: UITextField!
+    @IBOutlet weak var insertDate: UILabel!
+    @IBOutlet weak var insertPickerViewCategory: UIPickerView!
+    @IBOutlet weak var insertCategory: UILabel!
     @IBOutlet weak var insertFaded: UISwitch!
     @IBOutlet weak var insertTorn: UISwitch!
     @IBOutlet weak var insertMissing: UISwitch!
+    @IBOutlet weak var insertWaterDamage: UISwitch!
     @IBOutlet weak var insertOther: UISwitch!
-    @IBOutlet weak var insertCondition: UISegmentedControl!
-    @IBOutlet weak var insertDescription: UITextView!
+    @IBOutlet weak var insertComments: UITextView!
     
     @IBOutlet weak var standRusted: UISwitch!
     @IBOutlet weak var standRustedBasePlate: UISwitch!
     @IBOutlet weak var standBroken: UISwitch!
     @IBOutlet weak var standGraffiti: UISwitch!
-    @IBOutlet weak var standUnauthorized: UISwitch!
     @IBOutlet weak var standOther: UISwitch!
-    @IBOutlet weak var standCondition: UISegmentedControl!
+    @IBOutlet weak var standSeverity: UISegmentedControl!
     
-    // MARK: Overrides
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        switch restorationIdentifier! {
-            case "case":
-                caseBent.on = currentPIDObject.caseBent
-                caseComingApart.on = currentPIDObject.caseComingApart
-                caseRusted.on = currentPIDObject.caseRusted
-                casePitted.on = currentPIDObject.casePitted
-                caseBroken.on = currentPIDObject.caseBroken
-                caseGraffiti.on = currentPIDObject.caseGraffiti
-                caseUnauthorized.on = currentPIDObject.caseUnauthorized
-                caseOther.on = currentPIDObject.caseOther
-                caseCondition.selectedSegmentIndex = Int(currentPIDObject.caseCondition)
-                caseColor.selectedSegmentIndex = Int(currentPIDObject.caseColor)
-            case "cover":
-                coverNoCover.on = currentPIDObject.coverNoCover
-                coverCracked.on = currentPIDObject.coverCracked
-                coverDiscolored.on = currentPIDObject.coverDiscolored
-                coverGraffiti.on = currentPIDObject.coverGraffiti
-                coverUnauthorized.on = currentPIDObject.coverUnauthorized
-                coverOther.on = currentPIDObject.coverOther
-                coverCondition.selectedSegmentIndex = Int(currentPIDObject.coverCondition)
-            case "insert":
-                changePickerCellVisibility(false)
-                retrieveInsertNameList()
-                selectInsertName()
-                insertFaded.on = currentPIDObject.insertFaded
-                insertTorn.on = currentPIDObject.insertTorn
-                insertMissing.on = currentPIDObject.insertMissing
-                insertOther.on = currentPIDObject.insertOther
-                insertCondition.selectedSegmentIndex = Int(currentPIDObject.insertCondition)
-                insertDescription.text = currentPIDObject.insertDescription
-            case "stand":
-                standRusted.on = currentPIDObject.standRusted
-                standRustedBasePlate.on = currentPIDObject.standRustedBasePlate
-                standBroken.on = currentPIDObject.standBroken
-                standGraffiti.on = currentPIDObject.standGraffiti
-                standUnauthorized.on = currentPIDObject.standUnauthorized
-                standOther.on = currentPIDObject.standOther
-                standCondition.selectedSegmentIndex = Int(currentPIDObject.standCondition)
-            default: break
+    @IBOutlet weak var locationPickerView: UIPickerView!
+    @IBOutlet weak var locationDescription: UILabel!
+    @IBOutlet weak var locationAdjacent: UISwitch!
+    @IBOutlet weak var locationCases: UITextField!
+    @IBOutlet weak var locationPosition: UITextField!
+    @IBOutlet weak var locationOrientation: UISegmentedControl!
+    @IBOutlet weak var locationMountType: UISegmentedControl!
+    
+    // MARK: - Sync
+    func syncCaseValues(read: Bool) {
+        if read {
+            changePickerCellVisibility(false, tag: casePickerViewWidth.tag)
+            
+            var width = indexFromList(listCaseNumbers, Key: currentPIDObject.caseWidth) ?? 0
+            casePickerViewWidth.selectRow(width, inComponent: 0, animated: false)
+            caseWidth.text = listCaseNumbers[width].value
+            
+            caseRusted.on = currentPIDObject.caseRusted
+            caseBroken.on = currentPIDObject.caseBroken
+            caseGraffiti.on = currentPIDObject.caseGraffiti
+            caseOther.on = currentPIDObject.caseOther
+            
+            caseSide.selectedSegmentIndex = indexFromList(listCaseNumbers, Key: currentPIDObject.caseSide) ?? 0
+            caseColor.selectedSegmentIndex = indexFromList(listCaseColors, Key: currentPIDObject.caseColor) ?? 0
+            caseSeverity.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.caseSeverity) ?? 0
+        } else {
+            currentPIDObject.caseRusted = caseRusted.on
+            currentPIDObject.caseBroken = caseBroken.on
+            currentPIDObject.caseGraffiti = caseGraffiti.on
+            currentPIDObject.caseOther = caseOther.on
+            currentPIDObject.caseWidth = caseWidth.text!
+            currentPIDObject.caseSide = listCaseNumbers[caseSide.selectedSegmentIndex].key
+            currentPIDObject.caseColor = listCaseColors[caseColor.selectedSegmentIndex].key
+            currentPIDObject.caseSeverity = listSeverities[caseSeverity.selectedSegmentIndex].key
         }
     }
-
-    override func viewWillDisappear(animated: Bool) {
-        switch restorationIdentifier! {
-        case "case":
-             currentPIDObject.caseBent = caseBent.on
-             currentPIDObject.caseComingApart = caseComingApart.on
-             currentPIDObject.caseRusted = caseRusted.on
-             currentPIDObject.casePitted = casePitted.on
-             currentPIDObject.caseBroken = caseBroken.on
-             currentPIDObject.caseGraffiti = caseGraffiti.on
-             currentPIDObject.caseUnauthorized = caseUnauthorized.on
-             currentPIDObject.caseOther = caseOther.on
-             currentPIDObject.caseCondition = Int32(caseCondition.selectedSegmentIndex)
-             currentPIDObject.caseColor = Int32(caseColor.selectedSegmentIndex)
-        case "cover":
+    
+    func syncCoverValues(read: Bool) {
+        if read {
+            coverNoCover.on = currentPIDObject.coverNoCover
+            coverCracked.on = currentPIDObject.coverCracked
+            coverDiscolored.on = currentPIDObject.coverDiscolored
+            coverGraffiti.on = currentPIDObject.coverGraffiti
+            coverOther.on = currentPIDObject.coverOther
+            coverSeverity.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.coverSeverity) ?? 0
+        } else {
             currentPIDObject.coverNoCover = coverNoCover.on
             currentPIDObject.coverCracked = coverCracked.on
             currentPIDObject.coverDiscolored = coverDiscolored.on
             currentPIDObject.coverGraffiti = coverGraffiti.on
-            currentPIDObject.coverUnauthorized = coverUnauthorized.on
             currentPIDObject.coverOther = coverOther.on
-            currentPIDObject.coverCondition = Int32(coverCondition.selectedSegmentIndex)
-        case "insert":
-            setInsertName()
+            currentPIDObject.coverSeverity = listSeverities[coverSeverity.selectedSegmentIndex].key
+        }
+    }
+    
+    func syncInsertValues(read: Bool) {
+        if read {
+            changePickerCellVisibility(false, tag: insertPickerViewCategory.tag)
+            changePickerCellVisibility(false, tag: insertDatePicker.tag)
+            
+            var category = indexFromList(listInsertCategories, Key: currentPIDObject.insertCategory) ?? 0
+            insertPickerViewCategory.selectRow(category, inComponent: 0, animated: false)
+            
+            retrieveInsertNameList(listInsertCategories[category].key)
+            
+            var name = find(insertNameList, currentPIDObject.insertName) ?? 0
+            insertPickerViewCategory.selectRow(name, inComponent: 1, animated: false)
+            
+            refreshNameLabel()
+            
+            insertDatePicker.setDate(currentPIDObject.insertDate, animated: false)
+            refreshDate()
+            
+            insertBarcode.text = currentPIDObject.insertBarcode
+            
+            insertFaded.on = currentPIDObject.insertFaded
+            insertTorn.on = currentPIDObject.insertTorn
+            insertMissing.on = currentPIDObject.insertMissing
+            insertWaterDamage.on = currentPIDObject.insertWaterDamage
+            insertOther.on = currentPIDObject.insertOther
+            insertComments.text = currentPIDObject.insertComments
+        } else {
+            currentPIDObject.insertCategory = listInsertCategories[insertPickerViewCategory.selectedRowInComponent(0)].key
+            currentPIDObject.insertName = insertNameList[insertPickerViewCategory.selectedRowInComponent(1)]
+            currentPIDObject.insertDate = insertDatePicker.date
+            currentPIDObject.insertBarcode = insertBarcode.text
+            
             currentPIDObject.insertFaded = insertFaded.on
             currentPIDObject.insertTorn = insertTorn.on
             currentPIDObject.insertMissing = insertMissing.on
+            currentPIDObject.insertWaterDamage = insertWaterDamage.on
             currentPIDObject.insertOther = insertOther.on
-            currentPIDObject.insertCondition = Int32(insertCondition.selectedSegmentIndex)
-            currentPIDObject.insertDescription = insertDescription.text
-        case "stand":
+            currentPIDObject.insertComments = insertComments.text
+        }
+    }
+    
+    func syncStandValues(read: Bool) {
+        if read {
+            standRusted.on = currentPIDObject.standRusted
+            standRustedBasePlate.on = currentPIDObject.standRustedBasePlate
+            standBroken.on = currentPIDObject.standBroken
+            standGraffiti.on = currentPIDObject.standGraffiti
+            standOther.on = currentPIDObject.standOther
+            standSeverity.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.standSeverity) ?? 0
+        } else {
             currentPIDObject.standRusted = standRusted.on
             currentPIDObject.standRustedBasePlate = standRustedBasePlate.on
             currentPIDObject.standBroken = standBroken.on
             currentPIDObject.standGraffiti = standGraffiti.on
-            currentPIDObject.standUnauthorized = standUnauthorized.on
             currentPIDObject.standOther = standOther.on
-            currentPIDObject.standCondition = Int32(standCondition.selectedSegmentIndex)
-        default: break
+            currentPIDObject.standSeverity = listSeverities[standSeverity.selectedSegmentIndex].key
         }
-        
-        super.viewWillDisappear(animated)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    // Mark Retrieve Insert List
-    func retrieveInsertNameList() {
-        var resultList: [String]  = appDelegate.queryList(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName)
-        resultList.insert("None", atIndex: 0)
-        
-        insertNameList = resultList
-    }
-    
-    func selectInsertName() {
-        var name = find(insertNameList, currentPIDObject.insertName)
-        
-        pickerViewName.selectRow(name ?? 0, inComponent: 0, animated: false)
-        insertName.text = insertNameList[name ?? 0]
-    }
-    
-    func setInsertName() {
-        var row = pickerViewName.selectedRowInComponent(0)
-        
-        if row == 0 {
-            if !currentPIDObject.insertName.isEmpty {
-                currentPIDObject.insertBarcode = ""
-                currentPIDObject.insertName = ""
-            }
+    func syncLocationValues(read: Bool) {
+        if read {
+            changePickerCellVisibility(false, tag: locationPickerView.tag)
+            
+            var location = indexFromList(listLocationNames, Key: currentPIDObject.locationDescription) ?? 0
+            locationPickerView.selectRow(location, inComponent: 0, animated: false)
+            locationDescription.text = listLocationNames[location ?? 0].value
+            
+            locationAdjacent.on = currentPIDObject.standRustedBasePlate
+            locationCases.text = currentPIDObject.locationCasesInCluster
+            locationPosition.text = currentPIDObject.locationPositionInCluster
+            locationOrientation.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.standSeverity) ?? 0
+            locationMountType.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.standSeverity) ?? 0
         } else {
-            currentPIDObject.insertName = insertNameList[row]
-            currentPIDObject.insertBarcode = appDelegate.querySingle(PIDInsertName.name, ToRetrieve: PIDInsertName.insertBarcode, aCondition: PIDInsertName.insertName, aValue: currentPIDObject.insertName)
+            currentPIDObject.locationDescription = locationDescription.text!
+            currentPIDObject.locationAdjacentTVM = locationAdjacent.on
+            currentPIDObject.locationCasesInCluster = locationCases.text
+            currentPIDObject.locationPositionInCluster = locationPosition.text
+            currentPIDObject.locationOrientation = listLocationOrientations[locationOrientation.selectedSegmentIndex].key
+            currentPIDObject.locationMountType = listLocationMounts[locationMountType.selectedSegmentIndex].key
+        }
+    }
+    
+    // Mark: - TODO
+    func retrieveInsertNameList(category: String) {
+        insertNameList = appDelegate.queryList(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName, aCondition:PIDInsertName.category, aValue: category, SortBy:PIDInsertName.insertName)
+    }
+    
+    @IBAction func unwindToValuesTableViewController(segue: UIStoryboardSegue) {
+        var scanned = (segue.sourceViewController as CameraViewController).capturedCode
+        insertBarcode.text = scanned
+        insertBarcodeChanged(insertBarcode)
+        
+        self.view.endEditing(true)
+    }
+    
+    @IBAction func insertBarcodeChanged(sender: UITextField) {
+        linkInserts()
+    }
+    
+    // MARK: - Date
+    @IBAction func datePickerChanged(sender: UIDatePicker) {
+        refreshDate()
+        linkInserts()
+    }
+    
+    func linkInserts() {
+        println("change")
+    }
+    
+    func refreshDate() {
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        insertDate.text = dateFormatter.stringFromDate(insertDatePicker.date)
+    }
+    
+    // MARK: - Find Picker
+    func pickerIndex(tag: Int) -> Int? {
+        return find([100, 200, 400, 500], tag)
+    }
+    
+    func picker(tag: Int) -> (picker:UIView?, visible: Bool) {
+        switch tag {
+        case 100:
+            return (casePickerViewWidth, pickersVisibility[0])
+        case 200:
+            return (insertPickerViewCategory, pickersVisibility[1])
+        case 400:
+            return (insertDatePicker, pickersVisibility[2])
+        case 500:
+            return (locationPickerView, pickersVisibility[3])
+        default:
+            return (nil, false)
+        }
+    }
+    
+    func pickerLabel(tag: Int) -> UILabel? {
+        switch tag {
+        case 100:
+            return caseWidth
+        case 200:
+            return insertCategory
+        case 300:
+            return insertCategory
+        case 400:
+            return insertDate
+        case 500:
+            return locationDescription
+        default:
+            return nil
+        }
+    }
+    
+    func pickerCount(tag: Int) -> Int {
+        switch tag {
+        case 100:
+            return listCaseNumbers.count
+        case 200:
+            return listInsertCategories.count
+        case 300:
+            return insertNameList.count
+        case 500:
+            return listLocationNames.count
+        default:
+            return 0
+        }
+
+    }
+    
+    func pickerValue(tag: Int, row: Int) -> String {
+        switch tag {
+        case 100:
+            return listCaseNumbers[row].value
+        case 200:
+            return listInsertCategories[row].value
+        case 300:
+            return insertNameList.count > row ? insertNameList[row] : ""
+        case 500:
+            return listLocationNames[row].value
+        default:
+            return ""
         }
     }
 
     //MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.section == 0 && indexPath.row == 0) {
-            changePickerCellVisibility(!isPickerVisible)
+        var tag = tableView.cellForRowAtIndexPath(indexPath)?.tag ?? 0
+        
+        if pickerIndex(tag) != nil {
+            changePickerCellVisibility(!picker(tag).visible, tag: tag)
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -186,47 +304,127 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         
-        if (restorationIdentifier! == "insert" && indexPath.section == 0 && indexPath.row == 1) {
-            height = self.isPickerVisible ? 162 : 0
+        if indexPath.row > 0 {
+            var path = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
+            var cell = super.tableView(tableView, cellForRowAtIndexPath: path)
+            var tag = cell.tag
+            if pickerIndex(tag) != nil {
+                height = picker(tag).visible ? 162 : 0
+            }
         }
         
         return height
     }
     
     //MARK: - UIPickerView
-    func changePickerCellVisibility(shouldDisplay: Bool) {
+    func changePickerCellVisibility(shouldDisplay: Bool, tag: Int) {
         if shouldDisplay {
-            isPickerVisible = true
+            pickersVisibility[pickerIndex(tag)!] = true
             tableView.beginUpdates()
             tableView.endUpdates()
             
-            UIView.animateWithDuration(0.25, animations: { self.pickerViewName.alpha = 1 })
+            UIView.animateWithDuration(0.25, animations: { self.picker(tag).picker!.alpha = 1 })
             
         }
         else {
-            isPickerVisible = false
+            pickersVisibility[pickerIndex(tag)!]  = false
             tableView.beginUpdates()
             tableView.endUpdates()
-            UIView.animateWithDuration(0.25, animations: { self.pickerViewName.alpha = 0 })
+            UIView.animateWithDuration(0.25, animations: { self.picker(tag).picker!.alpha = 0 })
         }
-    }
-    
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        insertName.text = insertNameList[row]
     }
     
     // MARK: - UIPickerViewDataSource
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 1
+        return pickerView.tag == 200 ? 2 : 1
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return insertNameList.count
+        var tag = pickerView.tag
+        
+        if pickerView.tag == 200 && component == 1 {
+            var category = (picker(pickerView.tag).picker as UIPickerView).selectedRowInComponent(0)
+            retrieveInsertNameList(listInsertCategories[category].key)
+            tag = 300
+        }
+        
+        return pickerCount(tag)
     }
     
     // MARK: - UIPickerViewDelegate
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        return insertNameList[row]
+        var tag = pickerView.tag == 200 && component == 1 ? 300 : pickerView.tag
+        return pickerValue(tag, row: row)
     }
-
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == 200 && component == 0 {
+            (picker(pickerView.tag).picker as UIPickerView).reloadComponent(1)
+        }
+        
+        if let label = pickerLabel(pickerView.tag) {
+            if pickerView.tag == 200 {
+                
+                linkInserts()
+                
+                refreshNameLabel()
+            } else {
+                label.text = pickerValue(pickerView.tag, row: row)
+            }
+        }
+    }
+    
+    func refreshNameLabel() {
+        var row0 = insertPickerViewCategory.selectedRowInComponent(0)
+        var row1 = insertPickerViewCategory.selectedRowInComponent(1)
+        
+        insertCategory.text = "\(pickerValue(200, row:row0)) - \(pickerValue(300, row: row1))"
+    }
+    
+    // MARK: - Overrides
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        switch restorationIdentifier! {
+        case "case":
+            syncCaseValues(true)
+        case "cover":
+            syncCoverValues(true)
+        case "insert":
+            syncInsertValues(true)
+        case "stand":
+            syncStandValues(true)
+        case "location":
+            syncLocationValues(true)
+        default: break
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        switch restorationIdentifier! {
+        case "case":
+            syncCaseValues(false)
+        case "cover":
+            syncCoverValues(false)
+        case "insert":
+            syncInsertValues(false)
+        case "stand":
+            syncStandValues(false)
+        case "location":
+            syncLocationValues(false)
+        default: break
+        }
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let dest = segue.destinationViewController as? CameraViewController {
+            dest.sourceView = 2
+        }
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
 }

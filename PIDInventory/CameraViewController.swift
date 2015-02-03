@@ -14,7 +14,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var preview: AVCaptureVideoPreviewLayer!
     var sessionMain: AVCaptureSession!
     var capturedCode = ""
-    var sourceViewIsList = false
+    var sourceView = -1
     var device: AVCaptureDevice!
     
     func toggleFlash(sender: UIButton) {
@@ -153,7 +153,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
     
     func unwind() {
-        self.performSegueWithIdentifier(sourceViewIsList ? "unwindCameraToList" : "unwindCameraToDetail", sender: self)
+        self.performSegueWithIdentifier(["unwindCameraToList", "unwindCameraToDetail", "unwindCameraToValues"][sourceView], sender: self)
     }
     
     // Mark: - Overrides

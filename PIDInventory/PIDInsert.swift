@@ -9,6 +9,14 @@
 import Foundation
 import CoreData
 
+struct PIDInsertName {
+    static let name = "PIDInsert"
+    static let id = "id"
+    static let insertName = "name"
+    static let insertBarcode = "barcode"
+    static let category = "category"
+}
+
 class PIDInsert: NSManagedObject {
 
     @NSManaged var barcode: String

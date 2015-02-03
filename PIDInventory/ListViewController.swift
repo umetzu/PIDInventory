@@ -48,7 +48,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if (pidObject != nil) {
             var labelPID = cell?.viewWithTag(1) as UILabel
-            labelPID.text = pidObject?.caseBarcode
+            labelPID.text = pidObject?.inventoryCaseBarcode
             
             var labelBarcode = cell?.viewWithTag(2) as UILabel
             labelBarcode.text = pidObject?.insertBarcode
@@ -87,7 +87,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 dest.currentID = -1
             }
         } else if let dest = segue.destinationViewController as? CameraViewController {
-            dest.sourceViewIsList = true
+            dest.sourceView = 0
         }
     }
     

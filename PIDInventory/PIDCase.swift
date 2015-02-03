@@ -9,6 +9,14 @@
 import Foundation
 import CoreData
 
+struct PIDCaseName {
+    static let name = "PIDCase"
+    static let id = "id"
+    static let caseBarcode = "inventoryCaseBarcode"
+    static let latitude = "inventoryLatitude"
+    static let longitude = "inventoryLongitude"
+}
+
 class PIDCase: NSManagedObject {
 
     @NSManaged var inventoryCaseBarcode: String
@@ -26,11 +34,11 @@ class PIDCase: NSManagedObject {
     @NSManaged var coverNoCover: Bool
     @NSManaged var coverOther: Bool
     @NSManaged var id: Int32
-    @NSManaged var inventoryInsertBarcode: String
+    @NSManaged var insertBarcode: String
     @NSManaged var insertComments: String
     @NSManaged var insertFaded: Bool
     @NSManaged var insertMissing: Bool
-    @NSManaged var insertName: Int32
+    @NSManaged var insertName: String
     @NSManaged var insertOther: Bool
     @NSManaged var insertTorn: Bool
     @NSManaged var inventoryLatitude: Double
@@ -41,21 +49,21 @@ class PIDCase: NSManagedObject {
     @NSManaged var standOther: Bool
     @NSManaged var standRusted: Bool
     @NSManaged var standRustedBasePlate: Bool
-    @NSManaged var inventoryDate: NSTimeInterval
+    @NSManaged var inventoryDate: NSDate
     @NSManaged var inventoryCaseNameArchive: String
     @NSManaged var locationDescription: String
     @NSManaged var locationOrientation: String
     @NSManaged var locationAdjacentTVM: Bool
     @NSManaged var locationMountType: String
-    @NSManaged var caseWidth: Double
-    @NSManaged var caseSide: Int32
+    @NSManaged var caseWidth: String
+    @NSManaged var caseSide: String
     @NSManaged var insertCategory: String
-    @NSManaged var locationCasesInCluster: Int32
-    @NSManaged var locationPositionInCluster: Int32
+    @NSManaged var locationCasesInCluster: String
+    @NSManaged var locationPositionInCluster: String
     @NSManaged var inventoryUser: String
     @NSManaged var inventoryPhoto1: String
     @NSManaged var inventoryPhoto2: String
-    @NSManaged var insertDate: NSTimeInterval
+    @NSManaged var insertDate: NSDate
     @NSManaged var insertWaterDamage: Bool
 
 }
