@@ -49,7 +49,7 @@ class PIDCase: NSManagedObject {
     @NSManaged var standOther: Bool
     @NSManaged var standRusted: Bool
     @NSManaged var standRustedBasePlate: Bool
-    @NSManaged var inventoryDate: NSDate
+    @NSManaged var inventoryDate: String
     @NSManaged var inventoryCaseNameArchive: String
     @NSManaged var locationDescription: String
     @NSManaged var locationOrientation: String
@@ -63,7 +63,13 @@ class PIDCase: NSManagedObject {
     @NSManaged var inventoryUser: String
     @NSManaged var inventoryPhoto1: String
     @NSManaged var inventoryPhoto2: String
-    @NSManaged var insertDate: NSDate
+    @NSManaged var insertDate: String
     @NSManaged var insertWaterDamage: Bool
+    @NSManaged var caseModified: Bool
+    @NSManaged var coverModified: Bool
+    @NSManaged var insertModified: Bool
+    @NSManaged var locationModified: Bool
+    @NSManaged var standModified: Bool
+    @NSManaged var inventoryModified: Bool
 
 }

@@ -18,6 +18,12 @@ func indexFromList(list:[(key: String, value: String)], Key key:String) -> Int? 
     return nil
 }
 
+ let formatter: NSDateFormatter = {
+    var c = NSDateFormatter()
+    c.dateFormat = "yyyyMMdd"
+    return c
+    }()
+
 //Lists are index based!!
 
 let listInsertCategories:[(key: String, value: String)] = [

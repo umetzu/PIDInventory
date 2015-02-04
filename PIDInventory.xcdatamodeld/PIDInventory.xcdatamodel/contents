@@ -4,6 +4,7 @@
         <attribute name="caseBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseColor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="caseGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="caseModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseRusted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseSeverity" optional="YES" attributeType="String" syncable="YES"/>
@@ -12,6 +13,7 @@
         <attribute name="coverCracked" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverDiscolored" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="coverModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverNoCover" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="coverSeverity" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,9 +21,10 @@
         <attribute name="insertBarcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertComments" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="insertDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="insertDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertFaded" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="insertMissing" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="insertModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="insertName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="insertTorn" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -29,20 +32,23 @@
         <attribute name="inventoryCaseBarcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryCaseNameArchive" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryComments" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="inventoryDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="inventoryDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="inventoryLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="inventoryModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="inventoryPhoto1" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryPhoto2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryUser" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationAdjacentTVM" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="locationCasesInCluster" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="locationMountType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationOrientation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationPositionInCluster" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="standBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="standModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standOther" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standRusted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standRustedBasePlate" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -56,7 +62,7 @@
     <entity name="PIDInsert" representedClassName="PIDInventory.PIDInsert" syncable="YES">
         <attribute name="barcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <compoundIndexes>
@@ -66,7 +72,7 @@
         </compoundIndexes>
     </entity>
     <elements>
-        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="735"/>
+        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="825"/>
         <element name="PIDInsert" positionX="-63" positionY="135" width="128" height="118"/>
     </elements>
 </model>

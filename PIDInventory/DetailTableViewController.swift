@@ -22,6 +22,12 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var buttonPID: UIButton!
     @IBOutlet weak var labelCaseName: UILabel!
     
+    @IBOutlet weak var labelCaseModified: UILabel!
+    @IBOutlet weak var labelCoverModified: UILabel!
+    @IBOutlet weak var labelInsertModified: UILabel!
+    @IBOutlet weak var labelLocationModified: UILabel!
+    @IBOutlet weak var labelStandModified: UILabel!
+    
     // Mark: Actions
     @IBAction func unwindToDetailTableViewController(segue: UIStoryboardSegue) {
         var scanned = (segue.sourceViewController as CameraViewController).capturedCode
@@ -34,6 +40,7 @@ class DetailTableViewController: UITableViewController {
     func saveChanges(sender: UIBarButtonItem) {
         currentPIDObject?.inventoryCaseBarcode = textFieldCaseBarcode.text
         currentPIDObject?.inventoryComments = textViewComments.text
+        currentPIDObject?.inventoryModified = true
         
         appDelegate.saveContext()
         
@@ -61,6 +68,7 @@ class DetailTableViewController: UITableViewController {
             currentPIDObject = appDelegate.querySingle(PIDCaseName.name, ByID: currentID)
             
             textFieldCaseBarcode.text = currentPIDObject?.inventoryCaseBarcode
+            labelCaseName.text = currentPIDObject?.inventoryCaseNameArchive
             textViewComments.text = currentPIDObject?.inventoryComments
         }
         
@@ -104,6 +112,12 @@ class DetailTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
+        
+        labelCaseModified.text = currentPIDObject!.caseModified ? "Complete" : "Incomplete"
+        labelCoverModified.text = currentPIDObject!.coverModified ? "Complete" : "Incomplete"
+        labelInsertModified.text = currentPIDObject!.insertModified ? "Complete" : "Incomplete"
+        labelLocationModified.text = currentPIDObject!.locationModified ? "Complete" : "Incomplete"
+        labelStandModified.text = currentPIDObject!.standModified ? "Complete" : "Incomplete"
     }
     
     override func viewDidLoad() {

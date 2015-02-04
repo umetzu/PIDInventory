@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
 
     
     func setInitialData() {
@@ -52,15 +53,212 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object1.inventoryLongitude = -74.70
         }
         
-        var i1 = createPIDInsert()
-        i1.barcode = "12345"
-        i1.name = "Test1"
+        var i: PIDInsert!
         
-        var i2 = createPIDInsert()
-        i2.barcode = "00000"
-        i2.name = "FirstTest"
-        
-        
+        i = createPIDInsert();        i.name = "Connecting Service Information";      i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "Gap Safety Poster";   i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "Homeland Security  Madrid Rail Poster  2010";        i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "Homeland Security  Madrid Rail Poster 2010";         i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "Homeland Security  Text Against Terror Rail Poster";         i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "Keeping you in the Know  Rail Poster";       i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "NJTPD  Act Up Locked Up";    i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "NJTPD – Act Up Locked Up";    i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "NJTPD  Video and Audio Surveillance";        i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "NJTPD – Video and Audio Surveillance";        i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "Please Use The Handrails";    i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "You’re Not Alone Poster";     i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "You're Not Alone Poster";     i.barcode = "";         i.category = "AD";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "LRP 0101";    i.barcode = "";         i.category = "LRS";     i.date = "20130323";
+        i = createPIDInsert();  i.name = "LRP 0101 HudsonBergen Light Rail Northbound";        i.barcode = "";         i.category = "LRS";     i.date = "20130323";
+        i = createPIDInsert();  i.name = "LRP 0102";    i.barcode = "";         i.category = "LRS";     i.date = "20130323";
+        i = createPIDInsert();  i.name = "LRP 0102 HudsonBergen Light Rail Southbound";        i.barcode = "";         i.category = "LRS";     i.date = "20130323";
+        i = createPIDInsert();  i.name = "LRP 0301";    i.barcode = "LRP0301 101413";   i.category = "LRS";     i.date = "20131014";
+        i = createPIDInsert();  i.name = "LRP 0301 RiverLine North TO Trenton";         i.barcode = "";         i.category = "LRS";     i.date = "20130323";
+        i = createPIDInsert();  i.name = "LRP 0301 RiverLine North TO Trenton";         i.barcode = "LRP0301 101413";   i.category = "LRS";     i.date = "20131014";
+        i = createPIDInsert();  i.name = "LRP 0302";    i.barcode = "LRP0302 101413";   i.category = "LRS";     i.date = "20131014";
+        i = createPIDInsert();  i.name = "LRP 0302 RiverLine South TO Camden";  i.barcode = "";         i.category = "LRS";     i.date = "20130323";
+        i = createPIDInsert();  i.name = "LRP 0302 RiverLine South TO Camden";  i.barcode = "LRP0302 101413";   i.category = "LRS";     i.date = "20131014";
+        i = createPIDInsert();  i.name = "LRP 0701";    i.barcode = "LRP0701 062114";   i.category = "LRS";     i.date = "20140621";
+        i = createPIDInsert();  i.name = "LRP 0701 Newark Light Rail TO GroveStNewark PennBroadSt";   i.barcode = "";         i.category = "LRS";     i.date = "20130622";
+        i = createPIDInsert();  i.name = "LRP 0701 Newark Light Rail TO GroveStNewark PennBroadSt";   i.barcode = "";         i.category = "LRS";     i.date = "20130831";
+        i = createPIDInsert();  i.name = "LRP 0701 Newark Light Rail TO GroveStNewark PennBroadSt";   i.barcode = "LRP0701 011114";   i.category = "LRS";     i.date = "20140111";
+        i = createPIDInsert();  i.name = "LRP 0701 Newark Light Rail TO GroveStNewark PennBroadSt";   i.barcode = "LRP0701 062114";   i.category = "LRS";     i.date = "20140621";
+        i = createPIDInsert();  i.name = "LRP 0702";    i.barcode = "LRP0702 062114";   i.category = "LRS";     i.date = "20140621";
+        i = createPIDInsert();  i.name = "LRP 0702 Newark Light Rail FROM BroadStNewarkPennGroveSt";  i.barcode = "";         i.category = "LRS";     i.date = "20130622";
+        i = createPIDInsert();  i.name = "LRP 0702 Newark Light Rail FROM BroadStNewarkPennGroveSt";  i.barcode = "";         i.category = "LRS";     i.date = "20130831";
+        i = createPIDInsert();  i.name = "LRP 0702 Newark Light Rail FROM BroadStNewarkPennGroveSt";  i.barcode = "LRP0702 011114";   i.category = "LRS";     i.date = "20140111";
+        i = createPIDInsert();  i.name = "LRP 0702 Newark Light Rail FROM BroadStNewarkPennGroveSt";  i.barcode = "LRP0702 062114";   i.category = "LRS";     i.date = "20140621";
+        i = createPIDInsert();  i.name = "NLR Important Return Trip Information";       i.barcode = "";         i.category = "LRS";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "HBLR";        i.barcode = "";         i.category = "LRSM";    i.date = "20090701";
+        i = createPIDInsert();  i.name = "HBLR";        i.barcode = "";         i.category = "LRSM";    i.date = "20120701";
+        i = createPIDInsert();  i.name = "HBLR";        i.barcode = "";         i.category = "LRSM";    i.date = "20120701";
+        i = createPIDInsert();  i.name = "HBLR";        i.barcode = "LRSMHBLR 0814";    i.category = "LRSM";    i.date = "20140801";
+        i = createPIDInsert();  i.name = "NLR_amexlogo";        i.barcode = "";         i.category = "LRSM";    i.date = "00000000";
+        i = createPIDInsert();  i.name = "NLR_amexlogo";        i.barcode = "LRSMRIV 101313";   i.category = "LRSM";    i.date = "20131001";
+        i = createPIDInsert();  i.name = "NLR_amexlogo";        i.barcode = "LRSMNLR 0114";     i.category = "LRSM";    i.date = "20140101";
+        i = createPIDInsert();  i.name = "NLR_amexlogo";        i.barcode = "LRSMNLR 0114";     i.category = "LRSM";    i.date = "20140101";
+        i = createPIDInsert();  i.name = "River Line_ amex_logo";       i.barcode = "LRSMRIV 101313";   i.category = "LRSM";    i.date = "20131001";
+        i = createPIDInsert();  i.name = "Riverline_amex_logo";         i.barcode = "";         i.category = "LRSM";    i.date = "20040301";
+        i = createPIDInsert();  i.name = "Riverline_amex_logo";         i.barcode = "";         i.category = "LRSM";    i.date = "20080701";
+        i = createPIDInsert();  i.name = "Riverline_amex_logo";         i.barcode = "LRSMRIV 101313";   i.category = "LRSM";    i.date = "20080701";
+        i = createPIDInsert();  i.name = "Riverline_amex_logo";         i.barcode = "LRSMRIV 101313";   i.category = "LRSM";    i.date = "20131001";
+        i = createPIDInsert();  i.name = "Blank";       i.barcode = "";         i.category = "O";       i.date = "00000000";
+        i = createPIDInsert();  i.name = "Other";       i.barcode = "";         i.category = "O";       i.date = "00000000";
+        i = createPIDInsert();  i.name = "Other";       i.barcode = "";         i.category = "O";       i.date = "20011021";
+        i = createPIDInsert();  i.name = "Other";       i.barcode = "LRSMNLR 0114";     i.category = "O";       i.date = "20140101";
+        i = createPIDInsert();  i.name = "Parking";     i.barcode = "";         i.category = "O";       i.date = "00000000";
+        i = createPIDInsert();  i.name = "Parking";     i.barcode = "";         i.category = "O";       i.date = "20050701";
+        i = createPIDInsert();  i.name = "R 0110";      i.barcode = "R0110 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0110";      i.barcode = "R0110 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0110 Pascack Valley Line";  i.barcode = "R0110 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0110 Pascack Valley Line";  i.barcode = "R0110 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0110 Pascack Valley Line";  i.barcode = "R0110 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0120";      i.barcode = "R0120 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0120";      i.barcode = "R0120 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0120";      i.barcode = "R0140 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0120 Main Bergen Line FROM NYHoboken";     i.barcode = "R0120 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0120 Main Bergen Line FROM NYHoboken";     i.barcode = "R0120 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0120 Main Bergen Line FROM NYHoboken";     i.barcode = "R0120 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0130";      i.barcode = "R0130 062214";     i.category = "RS";      i.date = "20140301";
+        i = createPIDInsert();  i.name = "R 0130";      i.barcode = "RSM 030214";       i.category = "RS";      i.date = "20140301";
+        i = createPIDInsert();  i.name = "R 0130";      i.barcode = "R0130 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0130";      i.barcode = "R0140 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0130";      i.barcode = "R0170 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0130";      i.barcode = "R0130 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0130 MontclairBoonton Line";       i.barcode = "R0130 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0130 MontclairBoonton Line";       i.barcode = "R0130 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0130 MontclairBoonton Line";       i.barcode = "R0130 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0140";      i.barcode = "R0120 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0140";      i.barcode = "R0130 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0140";      i.barcode = "R0140 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0140";      i.barcode = "R0140 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0140 MorrisEssex Line FROM NYHoboken";    i.barcode = "R0140 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0140 MorrisEssex Line FROM NYHoboken";    i.barcode = "R0140 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0140 MorrisEssex Line FROM NYHoboken";    i.barcode = "R0140 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0160";      i.barcode = "R0160 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0160";      i.barcode = "R0160 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0160 Raritan Valley Line";  i.barcode = "R0160 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0160 Raritan Valley Line";  i.barcode = "R0160 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0170";      i.barcode = "R0170 101313";     i.category = "RS";      i.date = "20131001";
+        i = createPIDInsert();  i.name = "R 0170";      i.barcode = "R0170 030214";     i.category = "RS";      i.date = "20140301";
+        i = createPIDInsert();  i.name = "R 0170";      i.barcode = "R0170 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0170";      i.barcode = "R0140 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0170";      i.barcode = "R0170 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0170 Northeast Corridor FROM NYNewark";    i.barcode = "R0170 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0170 Northeast Corridor FROM NYNewark";    i.barcode = "R0170 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0176";      i.barcode = "";         i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0176";      i.barcode = "R0170 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0176";      i.barcode = "R0176 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0176 Newark Liberty Int'l Airport Station";         i.barcode = "R0176 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0176 Newark Liberty Int'l Airport Station";         i.barcode = "R0176 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0178";      i.barcode = "R0178 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0178";      i.barcode = "R0178 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0178 Secaucus Junction  WEEKDAYS";         i.barcode = "R0178 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0178 Secaucus Junction  WEEKDAYS";         i.barcode = "R0178 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0178 Secaucus Junction  WEEKDAYS";         i.barcode = "R0178 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0180";      i.barcode = "";         i.category = "RS";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "R 0180";      i.barcode = "R0180 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0180";      i.barcode = "R0180 062214";     i.category = "RS";      i.date = "20140622";
+        i = createPIDInsert();  i.name = "R 0180";      i.barcode = "R0180 090714";     i.category = "RS";      i.date = "20140907";
+        i = createPIDInsert();  i.name = "R 0180 North Jersey Coast Line FROM NYHobNewark";   i.barcode = "R0180 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0180 North Jersey Coast Line FROM NYHobNewark";   i.barcode = "R0180 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0180 North Jersey Coast Line FROM NYHobNewark";   i.barcode = "R0180 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0180 North Jersey Coast Line FROM NYHobNewark";   i.barcode = "R0180 062214";     i.category = "RS";      i.date = "20140622";
+        i = createPIDInsert();  i.name = "R 0190";      i.barcode = "R0190 030214";     i.category = "RS";      i.date = "20130302";
+        i = createPIDInsert();  i.name = "R 0190";      i.barcode = "R0190 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0190 Atlantic City Line";   i.barcode = "R0190 101413";     i.category = "RS";      i.date = "20131014";
+        i = createPIDInsert();  i.name = "R 0190 Atlantic City Line";   i.barcode = "R0190 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0220";      i.barcode = "";         i.category = "RS";      i.date = "20121014";
+        i = createPIDInsert();  i.name = "R 0220";      i.barcode = "RSM 030214";       i.category = "RS";      i.date = "20140301";
+        i = createPIDInsert();  i.name = "R 0220";      i.barcode = "R0120 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0220";      i.barcode = "R0220 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0220";      i.barcode = "R0220 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0220 Main Bergen Line TO HobokenNewYork";  i.barcode = "R0220 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0220 Main Bergen Line TO HobokenNewYork";  i.barcode = "R0220 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0220 Main Bergen Line TO HobokenNewYork";  i.barcode = "R0220 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0240";      i.barcode = "RSM 030214";       i.category = "RS";      i.date = "20140301";
+        i = createPIDInsert();  i.name = "R 0240";      i.barcode = "R0140 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0240";      i.barcode = "R0240 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0240";      i.barcode = "R0240 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0240 MorrisEssex Line TO HobokenNewYork";         i.barcode = "R0240 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0240 MorrisEssex Line TO HobokenNewYork";         i.barcode = "R0240 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0240 MorrisEssex Line TO HobokenNewYork";         i.barcode = "R0240 062214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0270";      i.barcode = "R0270 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0270";      i.barcode = "R0270 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0270";      i.barcode = "R0270 030214";     i.category = "RS";      i.date = "20140502";
+        i = createPIDInsert();  i.name = "R 0270 Northeast Corridor Line TO NewarkNewYork";    i.barcode = "R0270 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0270 Northeast Corridor Line TO NewarkNewYork";    i.barcode = "R0270 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0270 Northeast Corridor Line TO NewarkNewYork";    i.barcode = "R0270 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0277";      i.barcode = "R0277 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0277";      i.barcode = "R0277 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0277 Newark Penn Station to New York";      i.barcode = "R0277 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0277 Newark Penn Station to New York";      i.barcode = "R0277 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0278";      i.barcode = "R0278 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0278";      i.barcode = "R0278 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0278 Secaucus Junction WEEKENDS";   i.barcode = "R0278 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0278 Secaucus Junction WEEKENDS";   i.barcode = "R0278 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0278 Secaucus Junction WEEKENDS";   i.barcode = "R0278 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0280";      i.barcode = "";         i.category = "RS";      i.date = "00000000";
+        i = createPIDInsert();  i.name = "R 0280";      i.barcode = "RSM 030214";       i.category = "RS";      i.date = "20140301";
+        i = createPIDInsert();  i.name = "R 0280";      i.barcode = "R0280 062214";     i.category = "RS";      i.date = "20140622";
+        i = createPIDInsert();  i.name = "R 0280";      i.barcode = "R0280 090714";     i.category = "RS";      i.date = "20140907";
+        i = createPIDInsert();  i.name = "R 0280 North Jersey Coast Line TO NewarkHobNY";     i.barcode = "R0280 101313";     i.category = "RS";      i.date = "20131013";
+        i = createPIDInsert();  i.name = "R 0280 North Jersey Coast Line TO NewarkHobNY";     i.barcode = "R0280 030214";     i.category = "RS";      i.date = "20140302";
+        i = createPIDInsert();  i.name = "R 0280 North Jersey Coast Line TO NewarkHobNY";     i.barcode = "R0280 050114";     i.category = "RS";      i.date = "20140501";
+        i = createPIDInsert();  i.name = "R 0280 North Jersey Coast Line TO NewarkHobNY";     i.barcode = "R0280 062214";     i.category = "RS";      i.date = "20140622";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "";         i.category = "RSM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "";         i.category = "RSM";     i.date = "20090101";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "";         i.category = "RSM";     i.date = "20090701";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "";         i.category = "RSM";     i.date = "20111101";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "RSM 101313";       i.category = "RSM";     i.date = "20131001";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "RSM 102713";       i.category = "RSM";     i.date = "20131027";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "RSM 030214";       i.category = "RSM";     i.date = "20140301";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "RSM 030214";       i.category = "RSM";     i.date = "20140301";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "R0160 030214";     i.category = "RSM";     i.date = "20140302";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "R0240 062214";     i.category = "RSM";     i.date = "20140302";
+        i = createPIDInsert();  i.name = "Rail System Map";     i.barcode = "";         i.category = "RSM";     i.date = "20141101";
+        i = createPIDInsert();  i.name = "Camden SAM";  i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Cranford SAM";        i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Hoboken DIR";         i.barcode = "";         i.category = "SAM";     i.date = "20131201";
+        i = createPIDInsert();  i.name = "Hoboken SAM";         i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Hoboken SAM";         i.barcode = "SAMHOB 101313";    i.category = "SAM";     i.date = "20131001";
+        i = createPIDInsert();  i.name = "Maplewood SAM";       i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Middletown SAM";      i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Morristown SAM";      i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Morristown SAM";      i.barcode = "SAMMOR 101313";    i.category = "SAM";     i.date = "20131001";
+        i = createPIDInsert();  i.name = "New Brunswick SAM";   i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "New Brunswick SAM";   i.barcode = "SAMBK 091014";     i.category = "SAM";     i.date = "20140901";
+        i = createPIDInsert();  i.name = "Newark Penn SAM";     i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Newark Penn SAM";     i.barcode = "";         i.category = "SAM";     i.date = "20140401";
+        i = createPIDInsert();  i.name = "Newport SAM";         i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Pennsauken Transit Center";   i.barcode = "SAMPAC 101313";    i.category = "SAM";     i.date = "20131001";
+        i = createPIDInsert();  i.name = "Pennsauken Transit Center";   i.barcode = "SAMPTC 101313";    i.category = "SAM";     i.date = "20131001";
+        i = createPIDInsert();  i.name = "Pennsauken Transit Center";   i.barcode = "SAMRPTC 010213";   i.category = "SAM";     i.date = "20140701";
+        i = createPIDInsert();  i.name = "Plainfield SAM";      i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Plauderville SAM";    i.barcode = "";         i.category = "SAM";     i.date = "20111001";
+        i = createPIDInsert();  i.name = "Plauderville SAM";    i.barcode = "";         i.category = "SAM";     i.date = "20140701";
+        i = createPIDInsert();  i.name = "Rahway SAM";  i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Ridgewood SAM";       i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Ridgewood SAM";       i.barcode = "";         i.category = "SAM";     i.date = "20140701";
+        i = createPIDInsert();  i.name = "Rutgers SAM";         i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Secaucus SAM";        i.barcode = "";         i.category = "SAM";     i.date = "20120101";
+        i = createPIDInsert();  i.name = "Secaucus SAM";        i.barcode = "SAMSEC 112713";    i.category = "SAM";     i.date = "20131101";
+        i = createPIDInsert();  i.name = "Secaucus SAM";        i.barcode = "";         i.category = "SAM";     i.date = "20140701";
+        i = createPIDInsert();  i.name = "Somerville SAM";      i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Somerville SAM";      i.barcode = "";         i.category = "SAM";     i.date = "20140701";
+        i = createPIDInsert();  i.name = "South Amboy SAM";     i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "South Amboy SAM";     i.barcode = "";         i.category = "SAM";     i.date = "20140701";
+        i = createPIDInsert();  i.name = "Tonnelle Ave SAM";    i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Trenton SAM";         i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Whitehouse Station SAM";      i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Woodbridge SAM";      i.barcode = "";         i.category = "SAM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "HBLR Ticket info Time Stamp";         i.barcode = "";         i.category = "TVM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "HBLR Ticket info_time stamp";         i.barcode = "";         i.category = "TVM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "NLR tic info PID";    i.barcode = "";         i.category = "TVM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Rail Ticket info  Final";    i.barcode = "";         i.category = "TVM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Rail Ticket info  Final";    i.barcode = "R0176 030214";     i.category = "TVM";     i.date = "00000000";
+        i = createPIDInsert();  i.name = "Rail ticket infoFINAL";      i.barcode = "";         i.category = "TVM";     i.date = "00000000";
+       
         self.saveContext()
     }
 
@@ -196,10 +394,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return nil
     }
     
+    func querySingle<T>(name: String, Properties: [(property:String, value:String)]) -> T? {
+        var request = NSFetchRequest(entityName: name)
+        request.fetchLimit = 1
+        
+        var predicates:[NSPredicate] = []
+        
+        for x in Properties {
+            var p = NSPredicate(format: "%K ==[c] %@", x.property, x.value)!
+            
+            predicates.append(p)
+        }
+        
+        request.predicate = NSCompoundPredicate(type: .AndPredicateType, subpredicates: predicates)
+        
+        var objects = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if (objects != nil) {
+            return objects!.count > 0 ? objects![0] as? T : nil
+        }
+        
+        return nil
+    }
+
     func querySingle<T>(name: String, ByProperty aProperty: String, aValue: String) -> T? {
         var request = NSFetchRequest(entityName: name)
         request.fetchLimit = 1
-        request.predicate = NSPredicate(format: "%K == %@", aProperty, aValue)
+        request.predicate = NSPredicate(format: "%K ==[c] %@", aProperty, aValue)
         var objects = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if (objects != nil) {
@@ -266,6 +487,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func queryList(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String, SortBy aSorting: String) -> [String] {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ aProperty ]
+        request.returnsDistinctResults = true
         request.resultType = NSFetchRequestResultType.DictionaryResultType
         request.predicate = NSPredicate(format: "%K == %@", aCondition, aValue)
         request.sortDescriptors = [NSSortDescriptor(key: aSorting, ascending: true)]
@@ -353,7 +575,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pidObject.standOther = false
         pidObject.standRusted = false
         pidObject.standRustedBasePlate = false
-        pidObject.inventoryDate  = NSDate()
+        pidObject.inventoryDate = "00000000"
         pidObject.inventoryCaseNameArchive = ""
         pidObject.locationDescription = ""
         pidObject.locationOrientation = ""
@@ -367,8 +589,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pidObject.inventoryUser = ""
         pidObject.inventoryPhoto1 = ""
         pidObject.inventoryPhoto2 = ""
-        pidObject.insertDate = NSDate()
+        pidObject.insertDate = "00000000"
         pidObject.insertWaterDamage = false
+        pidObject.caseModified = false
+        pidObject.coverModified = false
+        pidObject.insertModified = false
+        pidObject.locationModified = false
+        pidObject.standModified = false
+        pidObject.inventoryModified = false
      
         return pidObject
     }

@@ -38,6 +38,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     @IBOutlet weak var insertDate: UILabel!
     @IBOutlet weak var insertPickerViewCategory: UIPickerView!
     @IBOutlet weak var insertCategory: UILabel!
+    @IBOutlet weak var insertName: UILabel!
     @IBOutlet weak var insertFaded: UISwitch!
     @IBOutlet weak var insertTorn: UISwitch!
     @IBOutlet weak var insertMissing: UISwitch!
@@ -86,6 +87,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.caseSide = listCaseNumbers[caseSide.selectedSegmentIndex].key
             currentPIDObject.caseColor = listCaseColors[caseColor.selectedSegmentIndex].key
             currentPIDObject.caseSeverity = listSeverities[caseSeverity.selectedSegmentIndex].key
+            currentPIDObject.caseModified = true
         }
     }
     
@@ -104,6 +106,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.coverGraffiti = coverGraffiti.on
             currentPIDObject.coverOther = coverOther.on
             currentPIDObject.coverSeverity = listSeverities[coverSeverity.selectedSegmentIndex].key
+            currentPIDObject.coverModified = true
         }
     }
     
@@ -112,18 +115,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             changePickerCellVisibility(false, tag: insertPickerViewCategory.tag)
             changePickerCellVisibility(false, tag: insertDatePicker.tag)
             
-            var category = indexFromList(listInsertCategories, Key: currentPIDObject.insertCategory) ?? 0
-            insertPickerViewCategory.selectRow(category, inComponent: 0, animated: false)
-            
-            retrieveInsertNameList(listInsertCategories[category].key)
-            
-            var name = find(insertNameList, currentPIDObject.insertName) ?? 0
-            insertPickerViewCategory.selectRow(name, inComponent: 1, animated: false)
-            
-            refreshNameLabel()
-            
-            insertDatePicker.setDate(currentPIDObject.insertDate, animated: false)
-            refreshDate()
+            setInsertCategoryNameDate(currentPIDObject.insertCategory, name: currentPIDObject.insertName, date: currentPIDObject.insertDate)
             
             insertBarcode.text = currentPIDObject.insertBarcode
             
@@ -135,8 +127,9 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             insertComments.text = currentPIDObject.insertComments
         } else {
             currentPIDObject.insertCategory = listInsertCategories[insertPickerViewCategory.selectedRowInComponent(0)].key
-            currentPIDObject.insertName = insertNameList[insertPickerViewCategory.selectedRowInComponent(1)]
-            currentPIDObject.insertDate = insertDatePicker.date
+            var row = insertPickerViewCategory.selectedRowInComponent(1)
+            currentPIDObject.insertName = insertNameList.count > row ? insertNameList[row] : ""
+            currentPIDObject.insertDate = formatter.stringFromDate(insertDatePicker.date)
             currentPIDObject.insertBarcode = insertBarcode.text
             
             currentPIDObject.insertFaded = insertFaded.on
@@ -145,7 +138,27 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.insertWaterDamage = insertWaterDamage.on
             currentPIDObject.insertOther = insertOther.on
             currentPIDObject.insertComments = insertComments.text
+            currentPIDObject.insertModified = true
         }
+    }
+    
+    func setInsertCategoryNameDate(category: String, name: String, date: String) {
+        var categoryIndex = indexFromList(listInsertCategories, Key: category) ?? 0
+        insertPickerViewCategory.selectRow(categoryIndex, inComponent: 0, animated: false)
+        
+        insertCategory.text = listInsertCategories[categoryIndex].value
+        
+        retrieveInsertNameList(listInsertCategories[categoryIndex].key)
+        
+        var nameIndex = find(insertNameList, name) ?? 0
+        insertPickerViewCategory.selectRow(nameIndex, inComponent: 1, animated: false)
+        
+        insertName.text = insertNameList[nameIndex]
+        
+        var newDate = date.toInt() == 0 ? NSDate() : formatter.dateFromString(date)!
+        
+        insertDatePicker.setDate(newDate, animated: false)
+        refreshDate()
     }
     
     func syncStandValues(read: Bool) {
@@ -163,6 +176,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.standGraffiti = standGraffiti.on
             currentPIDObject.standOther = standOther.on
             currentPIDObject.standSeverity = listSeverities[standSeverity.selectedSegmentIndex].key
+            currentPIDObject.standModified = true
         }
     }
     
@@ -186,12 +200,13 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.locationPositionInCluster = locationPosition.text
             currentPIDObject.locationOrientation = listLocationOrientations[locationOrientation.selectedSegmentIndex].key
             currentPIDObject.locationMountType = listLocationMounts[locationMountType.selectedSegmentIndex].key
+            currentPIDObject.locationModified = true
         }
     }
     
     // Mark: - TODO
     func retrieveInsertNameList(category: String) {
-        insertNameList = appDelegate.queryList(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName, aCondition:PIDInsertName.category, aValue: category, SortBy:PIDInsertName.insertName)
+        insertNameList = appDelegate.queryList(PIDInsertName.name, ToRetrieve: PIDInsertName.insertName, aCondition:PIDInsertName.insertCategory, aValue: category, SortBy:PIDInsertName.insertName)
     }
     
     @IBAction func unwindToValuesTableViewController(segue: UIStoryboardSegue) {
@@ -203,17 +218,38 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     @IBAction func insertBarcodeChanged(sender: UITextField) {
-        linkInserts()
+        linkInserts(true)
     }
     
     // MARK: - Date
     @IBAction func datePickerChanged(sender: UIDatePicker) {
         refreshDate()
-        linkInserts()
+        linkInserts(false)
     }
     
-    func linkInserts() {
-        println("change")
+    func linkInserts(fromBarcode: Bool) {
+        
+        var row = insertPickerViewCategory.selectedRowInComponent(1)
+        
+        var barcode = insertBarcode.text
+        var category = listInsertCategories[insertPickerViewCategory.selectedRowInComponent(0)].key
+        var name = insertNameList.count > row ? insertNameList[row] : ""
+        var date = formatter.stringFromDate(insertDatePicker.date)
+        
+        var properties: [(property: String, value: String)] = [(PIDInsertName.insertCategory, category), (PIDInsertName.insertName, name), (PIDInsertName.insertDate, date)]
+        
+        var insertFromBarcode: PIDInsert? = appDelegate.querySingle(PIDInsertName.name, ByProperty: PIDInsertName.insertBarcode, aValue: barcode)
+        var insertFromName: PIDInsert? = appDelegate.querySingle(PIDInsertName.name, Properties: properties)
+        
+        if fromBarcode {
+            if insertFromBarcode != nil {
+                setInsertCategoryNameDate(insertFromBarcode!.category, name: insertFromBarcode!.name, date: insertFromBarcode!.date)
+            }
+        } else {
+            if insertFromName != nil {
+                insertBarcode.text = insertFromName!.barcode
+            }
+        }
     }
     
     func refreshDate() {
@@ -249,7 +285,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
         case 200:
             return insertCategory
         case 300:
-            return insertCategory
+            return insertName
         case 400:
             return insertDate
         case 500:
@@ -358,27 +394,19 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView.tag == 200 && component == 0 {
-            (picker(pickerView.tag).picker as UIPickerView).reloadComponent(1)
-        }
-        
-        if let label = pickerLabel(pickerView.tag) {
-            if pickerView.tag == 200 {
-                
-                linkInserts()
-                
-                refreshNameLabel()
-            } else {
-                label.text = pickerValue(pickerView.tag, row: row)
+        if pickerView.tag == 200 {
+            if component == 0 {
+                (picker(pickerView.tag).picker as UIPickerView).reloadComponent(1)
             }
+            
+            pickerLabel(300)!.text = pickerValue(300, row: pickerView.selectedRowInComponent(1))
+            
+            linkInserts(false)
         }
-    }
-    
-    func refreshNameLabel() {
-        var row0 = insertPickerViewCategory.selectedRowInComponent(0)
-        var row1 = insertPickerViewCategory.selectedRowInComponent(1)
         
-        insertCategory.text = "\(pickerValue(200, row:row0)) - \(pickerValue(300, row: row1))"
+        if component == 0 {
+            pickerLabel(pickerView.tag)!.text = pickerValue(pickerView.tag, row: row)
+        }
     }
     
     // MARK: - Overrides

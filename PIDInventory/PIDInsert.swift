@@ -14,7 +14,9 @@ struct PIDInsertName {
     static let id = "id"
     static let insertName = "name"
     static let insertBarcode = "barcode"
-    static let category = "category"
+    static let insertCategory = "category"
+    static let insertDate = "date"
+    
 }
 
 class PIDInsert: NSManagedObject {
@@ -22,7 +24,7 @@ class PIDInsert: NSManagedObject {
     @NSManaged var barcode: String
     @NSManaged var id: Int32
     @NSManaged var name: String
-    @NSManaged var date: NSTimeInterval
+    @NSManaged var date: String
     @NSManaged var category: String
 
 }
