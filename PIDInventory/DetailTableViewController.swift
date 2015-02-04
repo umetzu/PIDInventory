@@ -93,7 +93,7 @@ class DetailTableViewController: UITableViewController {
         
         var pidObjectsInFrame = appDelegate.queryMap(west, anEastPoint: east, aNorthPoint: north, aSouthPoint: south)
         
-        if pidObjectsInFrame != nil {
+        if pidObjectsInFrame != nil && pidObjectsInFrame?.count > 0 {
             var actionSheet  = UIActionSheet(title: "Sharing with", delegate: nil, cancelButtonTitle: "OK", destructiveButtonTitle: nil)
             actionSheet.tag = 2
             

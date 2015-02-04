@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
 
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     
@@ -83,7 +83,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.caseBroken = caseBroken.on
             currentPIDObject.caseGraffiti = caseGraffiti.on
             currentPIDObject.caseOther = caseOther.on
-            currentPIDObject.caseWidth = caseWidth.text!
+            currentPIDObject.caseWidth = listCaseNumbers[casePickerViewWidth.selectedRowInComponent(0)].key
             currentPIDObject.caseSide = listCaseNumbers[caseSide.selectedSegmentIndex].key
             currentPIDObject.caseColor = listCaseColors[caseColor.selectedSegmentIndex].key
             currentPIDObject.caseSeverity = listSeverities[caseSeverity.selectedSegmentIndex].key
@@ -191,10 +191,10 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             locationAdjacent.on = currentPIDObject.standRustedBasePlate
             locationCases.text = currentPIDObject.locationCasesInCluster
             locationPosition.text = currentPIDObject.locationPositionInCluster
-            locationOrientation.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.standSeverity) ?? 0
-            locationMountType.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.standSeverity) ?? 0
+            locationOrientation.selectedSegmentIndex = indexFromList(listLocationOrientations, Key: currentPIDObject.locationOrientation) ?? 0
+            locationMountType.selectedSegmentIndex = indexFromList(listLocationMounts, Key: currentPIDObject.locationMountType) ?? 0
         } else {
-            currentPIDObject.locationDescription = locationDescription.text!
+            currentPIDObject.locationDescription = listLocationNames[locationPickerView.selectedRowInComponent(0)].key
             currentPIDObject.locationAdjacentTVM = locationAdjacent.on
             currentPIDObject.locationCasesInCluster = locationCases.text
             currentPIDObject.locationPositionInCluster = locationPosition.text
@@ -407,6 +407,27 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
         if component == 0 {
             pickerLabel(pickerView.tag)!.text = pickerValue(pickerView.tag, row: row)
         }
+    }
+    
+    // MARK: - Validation
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        if string.isEmpty {
+            return true
+        }
+        
+        var  nf = NSNumberFormatter()
+        nf.numberStyle = NSNumberFormatterStyle.NoStyle
+        
+        var newString = NSString(format: "%@%@", textField.text, string)
+        
+        var number = nf.numberFromString(newString)
+        
+        if let n = number {
+            return Int(n) >= textField.tag && Int(n) < 7
+        }
+        
+        return false
     }
     
     // MARK: - Overrides

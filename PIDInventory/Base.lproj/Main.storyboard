@@ -210,7 +210,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Scan or type Barcode" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E8i-JH-S1s">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Scan Barcode" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E8i-JH-S1s">
                                                     <rect key="frame" x="300" y="7" width="254" height="30"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -771,7 +771,7 @@
                         <outlet property="caseOther" destination="6Mr-6P-zcm" id="saE-QX-MZA"/>
                         <outlet property="casePickerViewWidth" destination="rjH-iD-8J9" id="8a3-Pd-hec"/>
                         <outlet property="caseRusted" destination="tvf-2G-o2c" id="x8f-tj-42c"/>
-                        <outlet property="caseSeverity" destination="p1b-H3-JRc" id="CKa-86-8wR"/>
+                        <outlet property="caseSeverity" destination="hRe-qt-0Qp" id="0Aw-xQ-qTP"/>
                         <outlet property="caseSide" destination="p1b-H3-JRc" id="90p-ov-ZXw"/>
                         <outlet property="caseWidth" destination="oBv-Yp-DFe" id="SLN-1K-qyH"/>
                     </connections>
@@ -999,7 +999,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Scan or type Barcode" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QGK-BB-qGF">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Scan Barcode" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QGK-BB-qGF">
                                                     <rect key="frame" x="300" y="7" width="254" height="30"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -1859,11 +1859,14 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vP6-XM-kGe">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vP6-XM-kGe">
                                                     <rect key="frame" x="300" y="7" width="254" height="30"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" keyboardAppearance="alert"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="Tgs-O9-99g" id="nMD-UE-Oku"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1905,6 +1908,9 @@
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" keyboardAppearance="alert"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="Tgs-O9-99g" id="upe-7x-mHe"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1984,8 +1990,8 @@
                         <outlet property="locationAdjacent" destination="DfK-Wf-koq" id="kZ7-qC-YYs"/>
                         <outlet property="locationCases" destination="vP6-XM-kGe" id="mHz-tm-0gI"/>
                         <outlet property="locationDescription" destination="8N9-h5-L1d" id="Q3R-nW-BUe"/>
-                        <outlet property="locationMountType" destination="FMA-sF-fO9" id="5r4-y7-AhJ"/>
-                        <outlet property="locationOrientation" destination="KOW-Xu-Lds" id="0Q9-b5-uHf"/>
+                        <outlet property="locationMountType" destination="FMA-sF-fO9" id="V46-a6-CMO"/>
+                        <outlet property="locationOrientation" destination="KOW-Xu-Lds" id="T4j-9f-Xbp"/>
                         <outlet property="locationPickerView" destination="aXs-8B-ZJK" id="yFv-3t-WTX"/>
                         <outlet property="locationPosition" destination="HkS-lt-sza" id="oB8-FZ-8C4"/>
                     </connections>
@@ -2001,6 +2007,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gwN-Oi-nmQ"/>
-        <segue reference="lm2-J2-QdX"/>
+        <segue reference="ceP-EF-o2U"/>
     </inferredMetricsTieBreakers>
 </document>
