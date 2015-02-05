@@ -31,6 +31,8 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     @IBOutlet weak var labelLocationModified: UILabel!
     @IBOutlet weak var labelStandModified: UILabel!
     
+    var currentTag = 101
+    
     // Mark: Actions
     @IBAction func unwindToDetailTableViewController(segue: UIStoryboardSegue) {
         var scanned = (segue.sourceViewController as CameraViewController).capturedCode
@@ -70,23 +72,12 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     }
     
     func callImagePicker(type: UIImagePickerControllerSourceType, tag: Int) {
-        if(UIImagePickerController .isSourceTypeAvailable(type))
+        if(UIImagePickerController.isSourceTypeAvailable(type))
         {
+            currentTag = tag
             picker.sourceType = type
-            picker.title = "\(tag)"
-            
-            if UIDevice.currentDevice().userInterfaceIdiom == .Phone
-            {
-                self.presentViewController(picker, animated: true, completion: nil)
-            }
-            else
-            {
-                var view = tag == 101 ? viewImageView1 : viewImageView2
-            
-                var popover = UIPopoverController(contentViewController: picker)
-                
-                popover.presentPopoverFromRect(view.viewWithTag(tag)!.frame, inView: view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
-            }
+            picker.modalPresentationStyle = .FullScreen
+           presentViewController(picker, animated: true, completion: nil)
         }
     }
     
@@ -94,14 +85,13 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
         
-        var tag = picker.title!.toInt()!
-        var view = tag == 101 ? viewImageView1 : viewImageView2
-        var imageView = view.viewWithTag(tag) as UIImageView
+        var view = currentTag == 101 ? viewImageView1 : viewImageView2
+        var imageView = view.viewWithTag(currentTag) as UIImageView
         
         imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         if imageView.image != nil {
-            if tag == 101 {
+            if currentTag == 101 {
                 currentPIDObject?.inventoryPhoto1 = savePicture(imageView.image!)
             } else {
                 currentPIDObject?.inventoryPhoto2 = savePicture(imageView.image!)
