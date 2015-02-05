@@ -96,7 +96,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
             actionSheet.addButtonWithTitle(x.0)
         }
         
-        actionSheet.showInView(UIApplication.sharedApplication().keyWindow)
+        actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
         
         mapView.deselectAnnotation(view.annotation, animated: false)
         

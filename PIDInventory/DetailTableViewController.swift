@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class DetailTableViewController: UITableViewController {
+class DetailTableViewController: UITableViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     
@@ -21,6 +21,9 @@ class DetailTableViewController: UITableViewController {
     @IBOutlet weak var textViewComments: UITextView!
     @IBOutlet weak var buttonPID: UIButton!
     @IBOutlet weak var labelCaseName: UILabel!
+    
+    @IBOutlet weak var viewImageView1: UIView!
+    @IBOutlet weak var viewImageView2: UIView!
     
     @IBOutlet weak var labelCaseModified: UILabel!
     @IBOutlet weak var labelCoverModified: UILabel!
@@ -35,6 +38,101 @@ class DetailTableViewController: UITableViewController {
         textFieldCaseBarcode.text = scanned
         
         self.view.endEditing(true)
+    }
+
+    
+    var picker:UIImagePickerController = UIImagePickerController()
+    
+    @IBAction func imageViewTapped(sender: UITapGestureRecognizer) {
+        picker.delegate = self
+        var imageView = sender.view as UIImageView
+        
+        var actionSheet  = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        actionSheet.tag = imageView.tag
+       
+        actionSheet.addButtonWithTitle("Take Photo")
+        actionSheet.addButtonWithTitle("Photo Library")
+        
+        var view = imageView.tag == 101 ? viewImageView1 : viewImageView2
+        actionSheet.showFromRect(imageView.frame, inView: view, animated: true)
+
+    }
+
+    // MARK: - UIActionSheetDelegate
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        switch buttonIndex {
+        case 1:
+            callImagePicker(.Camera, tag: actionSheet.tag)
+        case 2:
+            callImagePicker(.PhotoLibrary, tag: actionSheet.tag)
+        default: break
+        }
+    }
+    
+    func callImagePicker(type: UIImagePickerControllerSourceType, tag: Int) {
+        if(UIImagePickerController .isSourceTypeAvailable(type))
+        {
+            picker.sourceType = type
+            picker.title = "\(tag)"
+            
+            if UIDevice.currentDevice().userInterfaceIdiom == .Phone
+            {
+                self.presentViewController(picker, animated: true, completion: nil)
+            }
+            else
+            {
+                var view = tag == 101 ? viewImageView1 : viewImageView2
+            
+                var popover = UIPopoverController(contentViewController: picker)
+                
+                popover.presentPopoverFromRect(view.viewWithTag(tag)!.frame, inView: view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+            }
+        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!)
+    {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+        
+        var tag = picker.title!.toInt()!
+        var view = tag == 101 ? viewImageView1 : viewImageView2
+        var imageView = view.viewWithTag(tag) as UIImageView
+        
+        imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        if imageView.image != nil {
+            if tag == 101 {
+                currentPIDObject?.inventoryPhoto1 = savePicture(imageView.image!)
+            } else {
+                currentPIDObject?.inventoryPhoto2 = savePicture(imageView.image!)
+            }
+            
+        }
+    }
+    
+    // MARK: - Image Functions
+    func documentsPathForFileName(name: String) -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
+        let path = paths[0] as String;
+        let fullPath = path.stringByAppendingPathComponent(name)
+        
+        return fullPath
+    }
+    
+    func savePicture(image: UIImage) -> String {
+        let imageData = UIImagePNGRepresentation(image)
+        let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).png"
+        let path = documentsPathForFileName(relativePath)
+        imageData.writeToFile(path, atomically: true)
+        
+        return relativePath
+    }
+    
+    func readPicture(path: String) -> UIImage? {
+        let oldFullPath = documentsPathForFileName(path)
+        let oldImageData = NSData(contentsOfFile: oldFullPath)
+        
+        return oldImageData != nil ? UIImage(data: oldImageData!) : nil
     }
     
     func saveChanges(sender: UIBarButtonItem) {
@@ -70,6 +168,17 @@ class DetailTableViewController: UITableViewController {
             textFieldCaseBarcode.text = currentPIDObject?.inventoryCaseBarcode
             labelCaseName.text = currentPIDObject?.inventoryCaseNameArchive
             textViewComments.text = currentPIDObject?.inventoryComments
+            
+            var image1 = readPicture(currentPIDObject!.inventoryPhoto1)
+            var image2 = readPicture(currentPIDObject!.inventoryPhoto2)
+            
+            if image1 != nil {
+                (viewImageView1.viewWithTag(101) as UIImageView).image = image1
+            }
+            
+            if image2 != nil {
+                (viewImageView2.viewWithTag(102) as UIImageView).image = image2
+            }
         }
         
         setAnnotation(currentPIDObject!)
@@ -100,8 +209,7 @@ class DetailTableViewController: UITableViewController {
             for pidObject in pidObjectsInFrame! {
                 actionSheet.addButtonWithTitle("PID: \(pidObject[PIDCaseName.caseBarcode] as String)")
             }
-            
-            actionSheet.showInView(UIApplication.sharedApplication().keyWindow)
+            actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
             
             mapView.deselectAnnotation(view.annotation, animated: false)
         }
