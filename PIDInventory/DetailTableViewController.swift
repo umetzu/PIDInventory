@@ -85,7 +85,7 @@ class DetailTableViewController: UITableViewController {
     }
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
-        var c = 0.001
+        var c = 0.00001
         var north = currentPIDObject!.inventoryLatitude + c
         var south = currentPIDObject!.inventoryLatitude - c
         var west = currentPIDObject!.inventoryLongitude - c

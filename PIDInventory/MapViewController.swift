@@ -33,7 +33,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         
         var span = mapView.region.span
         
-        if (span.latitudeDelta < 0.08) {
+        if (span.latitudeDelta < 0.09) {
             var mRect = self.mapView.visibleMapRect
             var neMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), mRect.origin.y)
             var swMapPoint = MKMapPointMake(mRect.origin.x, MKMapRectGetMaxY(mRect))
@@ -54,7 +54,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         var y2 = x.coordinate.latitude
                         var x1 = pidObject[PIDCaseName.longitude] as Double
                         var y1 = pidObject[PIDCaseName.latitude] as Double
-                        var c = 0.001
+                        var c = 0.0
                         
                         return x1 >= x2 - c && x1 <= x2 + c && y1 >= y2 - c && y1 <= y2 + c
                     })

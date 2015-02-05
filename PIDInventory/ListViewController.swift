@@ -47,11 +47,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         var pidObject = appDelegate.querySingle(PIDCaseName.name, ByID: id) as PIDCase?
         
         if (pidObject != nil) {
-            var labelPID = cell?.viewWithTag(1) as UILabel
-            labelPID.text = pidObject?.inventoryCaseBarcode
+            var labelPID = cell?.viewWithTag(1) as? UILabel
+            if labelPID != nil {
+                labelPID!.text = pidObject?.inventoryCaseBarcode
+            }
             
-            var labelBarcode = cell?.viewWithTag(2) as UILabel
-            labelBarcode.text = pidObject?.insertBarcode
+            var labelBarcode = cell?.viewWithTag(2) as? UILabel
+            if labelBarcode != nil {
+                labelBarcode!.text = pidObject?.insertBarcode
+            }
             
             cell?.tag = Int(pidObject!.id)
         }
