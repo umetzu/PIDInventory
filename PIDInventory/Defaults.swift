@@ -8,6 +8,10 @@
 
 import Foundation
 
+func completedText(status: Bool) -> String {
+    return status ? "😌" : "😨"
+}
+
 func indexFromList(list:[(key: String, value: String)], Key key:String) -> Int? {
     for var i = 0; i < list.count; i++ {
         if list[i].key == key {

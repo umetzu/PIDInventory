@@ -22,7 +22,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         if (textFieldPID.text.isEmpty) {
             pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve:PIDCaseName.id, SortBy: PIDCaseName.caseBarcode)
         } else {
-            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, aCondition: PIDCaseName.caseBarcode, aValue: sender.text, SortBy: PIDCaseName.caseBarcode)
+            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, conditions: [PIDCaseName.caseBarcode, PIDCaseName.station], aValue: sender.text, SortBy: PIDCaseName.caseBarcode)
         }
         
         tableViewPID.reloadData()
@@ -55,6 +55,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             var labelBarcode = cell?.viewWithTag(2) as? UILabel
             if labelBarcode != nil {
                 labelBarcode!.text = pidObject?.insertBarcode
+            }
+            
+            var labelStatus = cell?.viewWithTag(3) as? UILabel
+            if labelStatus != nil {
+                labelStatus!.text = completedText(pidObject!.inventoryModified)
+                //labelStatus?.textColor = pidObject!.inventoryModified ? UIColor.lightGrayColor() : self.view.tintColor
             }
             
             cell?.tag = Int(pidObject!.id)

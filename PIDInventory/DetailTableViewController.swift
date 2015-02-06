@@ -53,7 +53,6 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         actionSheet.tag = imageView.tag
        
         actionSheet.addButtonWithTitle("Take Photo")
-        actionSheet.addButtonWithTitle("Photo Library")
         
         var view = imageView.tag == 101 ? viewImageView1 : viewImageView2
         actionSheet.showFromRect(imageView.frame, inView: view, animated: true)
@@ -64,18 +63,16 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         switch buttonIndex {
         case 1:
-            callImagePicker(.Camera, tag: actionSheet.tag)
-        case 2:
-            callImagePicker(.PhotoLibrary, tag: actionSheet.tag)
+            callImagePicker(actionSheet.tag)
         default: break
         }
     }
     
-    func callImagePicker(type: UIImagePickerControllerSourceType, tag: Int) {
-        if(UIImagePickerController.isSourceTypeAvailable(type))
+    func callImagePicker(tag: Int) {
+        if(UIImagePickerController.isSourceTypeAvailable(.Camera))
         {
             currentTag = tag
-            picker.sourceType = type
+            picker.sourceType = .Camera
             picker.modalPresentationStyle = .FullScreen
            presentViewController(picker, animated: true, completion: nil)
         }
@@ -211,11 +208,11 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
         
-        labelCaseModified.text = currentPIDObject!.caseModified ? "Complete" : "Incomplete"
-        labelCoverModified.text = currentPIDObject!.coverModified ? "Complete" : "Incomplete"
-        labelInsertModified.text = currentPIDObject!.insertModified ? "Complete" : "Incomplete"
-        labelLocationModified.text = currentPIDObject!.locationModified ? "Complete" : "Incomplete"
-        labelStandModified.text = currentPIDObject!.standModified ? "Complete" : "Incomplete"
+        labelCaseModified.text = completedText(currentPIDObject!.caseModified)
+        labelCoverModified.text = completedText(currentPIDObject!.coverModified)
+        labelInsertModified.text = completedText(currentPIDObject!.insertModified)
+        labelLocationModified.text = completedText(currentPIDObject!.locationModified)
+        labelStandModified.text = completedText(currentPIDObject!.standModified)
     }
     
     override func viewDidLoad() {

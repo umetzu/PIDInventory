@@ -188,7 +188,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             locationPickerView.selectRow(location, inComponent: 0, animated: false)
             locationDescription.text = listLocationNames[location ?? 0].value
             
-            locationAdjacent.on = currentPIDObject.standRustedBasePlate
+            locationAdjacent.on = currentPIDObject.locationAdjacentTVM
             locationCases.text = currentPIDObject.locationCasesInCluster
             locationPosition.text = currentPIDObject.locationPositionInCluster
             locationOrientation.selectedSegmentIndex = indexFromList(listLocationOrientations, Key: currentPIDObject.locationOrientation) ?? 0

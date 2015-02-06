@@ -38,6 +38,7 @@
         <attribute name="inventoryModified" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="inventoryPhoto1" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryPhoto2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryStation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryUser" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationAdjacentTVM" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="locationCasesInCluster" optional="YES" attributeType="String" syncable="YES"/>
@@ -72,7 +73,7 @@
         </compoundIndexes>
     </entity>
     <elements>
-        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="825"/>
+        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="840"/>
         <element name="PIDInsert" positionX="-63" positionY="135" width="128" height="118"/>
     </elements>
 </model>

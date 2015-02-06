@@ -15,10 +15,12 @@ struct PIDCaseName {
     static let caseBarcode = "inventoryCaseBarcode"
     static let latitude = "inventoryLatitude"
     static let longitude = "inventoryLongitude"
+    static let station = "inventoryStation"
 }
 
 class PIDCase: NSManagedObject {
 
+    @NSManaged var inventoryStation: String
     @NSManaged var inventoryCaseBarcode: String
     @NSManaged var caseBroken: Bool
     @NSManaged var caseColor: String
