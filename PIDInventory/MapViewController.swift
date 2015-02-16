@@ -13,8 +13,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
 
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     var userLocationZoomed = false
-    var annotations = [MKPointAnnotation:[String, Int]]()
-    var annotationTitles = [String, Int]()
+    var annotations = [MKPointAnnotation:[String, Int, Bool]]()
+    var annotationTitles = [String, Int, Bool]()
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -33,7 +33,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         
         var span = mapView.region.span
         
-        if (span.latitudeDelta < 0.09) {
+        if (span.latitudeDelta < 0.15) {
             var mRect = self.mapView.visibleMapRect
             var neMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), mRect.origin.y)
             var swMapPoint = MKMapPointMake(mRect.origin.x, MKMapRectGetMaxY(mRect))
@@ -68,9 +68,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject[PIDCaseName.latitude] as Double , longitude: pidObject[PIDCaseName.longitude] as Double)
                     }
                     
-                    annotations[annotation] = annotations[annotation] ?? [String,Int]()
+                    annotations[annotation] = annotations[annotation] ?? [String,Int, Bool]()
                     
-                    annotations[annotation]!.append("PID: \(pidObject[PIDCaseName.caseBarcode] as String)", pidObject[PIDCaseName.id] as Int)
+                    var modified = pidObject[PIDCaseName.modified] as Bool
+                    
+                    annotations[annotation]!.append("PID: \(pidObject[PIDCaseName.caseBarcode] as String) - \(completedText(pidObject[PIDCaseName.modified] as Bool))", pidObject[PIDCaseName.id] as Int, pidObject[PIDCaseName.modified] as Bool)
                 }
             }
             
@@ -78,6 +80,34 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                 mapView.addAnnotation(annotation)
             }
         }
+    }
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if annotation is MKUserLocation {
+            return nil
+        }
+        
+        var pinIdentifier = "customPin"
+        
+        var pin = mapView.dequeueReusableAnnotationViewWithIdentifier(pinIdentifier) as MKPinAnnotationView?
+        
+        if (pin == nil) {
+            pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: pinIdentifier)
+        } else {
+            pin?.annotation = annotation
+        }
+        
+        var completed = true
+        
+        for x in annotations[annotation as MKPointAnnotation]! {
+            if !x.2 {
+                completed = false
+            }
+        }
+        
+        pin!.pinColor = completed ? MKPinAnnotationColor.Green : MKPinAnnotationColor.Red
+        
+        return pin
     }
 
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {

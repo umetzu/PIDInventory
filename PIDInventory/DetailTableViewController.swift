@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class DetailTableViewController: UITableViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class DetailTableViewController: UITableViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate {
 
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     
@@ -49,7 +49,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         picker.delegate = self
         var imageView = sender.view as UIImageView
         
-        var actionSheet  = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        var actionSheet  = UIActionSheet(title: imageView.tag == 101 ? "Photo 1" : "Photo 2", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
         actionSheet.tag = imageView.tag
        
         actionSheet.addButtonWithTitle("Take Photo")
@@ -61,10 +61,16 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
 
     // MARK: - UIActionSheetDelegate
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        switch buttonIndex {
-        case 1:
-            callImagePicker(actionSheet.tag)
-        default: break
+        if actionSheet.tag == 10 {
+            if buttonIndex != 0 {
+                openInMaps()
+            }
+        } else {
+            switch buttonIndex {
+            case 1:
+                callImagePicker(actionSheet.tag)
+            default: break
+            }
         }
     }
     
@@ -123,6 +129,33 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     }
     
     func saveChanges(sender: UIBarButtonItem) {
+        if textFieldCaseBarcode.text.isEmpty {
+            UIAlertView(title: "Missing Barcode", message: "Please provide a Case Barcode",
+                delegate: nil, cancelButtonTitle: "Ok").show()
+        } else {
+            
+            var m1 = currentPIDObject!.caseModified
+            var m2 = currentPIDObject!.coverModified
+            var m3 = currentPIDObject!.insertModified
+            var m4 = currentPIDObject!.locationModified
+            var m5 = currentPIDObject!.standModified
+            
+            if !(m1 && m2 && m3 && m4 && m5) {
+                UIAlertView(title: "Missing Information", message: "You haven't fill up all the rating information. Do you want to mark it as completed?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK").show()
+                return
+            }
+            
+            saveAndReturn()
+        }
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex != 0 {
+            saveAndReturn()
+        }
+    }
+    
+    func saveAndReturn() {
         currentPIDObject?.inventoryCaseBarcode = textFieldCaseBarcode.text
         currentPIDObject?.inventoryComments = textViewComments.text
         currentPIDObject?.inventoryModified = true
@@ -146,9 +179,6 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
                 currentPIDObject?.inventoryLongitude = appDelegate.lastUserLocation!.longitude
             }
         } else {
-            
-            textFieldCaseBarcode.enabled = false
-            buttonPID.enabled = false
             
             currentPIDObject = appDelegate.querySingle(PIDCaseName.name, ByID: currentID)
             
@@ -176,30 +206,46 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject.inventoryLatitude, longitude: pidObject.inventoryLongitude)
         mapView.addAnnotation(annotation)
         
-        var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.01, 0.01))
+        var region = MKCoordinateRegion(center: annotation.coordinate, span: MKCoordinateSpanMake(0.001, 0.001))
         mapView.setRegion(mapView.regionThatFits(region), animated: true)
     }
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
-        var c = 0.00001
-        var north = currentPIDObject!.inventoryLatitude + c
-        var south = currentPIDObject!.inventoryLatitude - c
-        var west = currentPIDObject!.inventoryLongitude - c
-        var east = currentPIDObject!.inventoryLongitude + c
+//        var c = 0.00001
+//        var north = currentPIDObject!.inventoryLatitude + c
+//        var south = currentPIDObject!.inventoryLatitude - c
+//        var west = currentPIDObject!.inventoryLongitude - c
+//        var east = currentPIDObject!.inventoryLongitude + c
+//        
+//        var pidObjectsInFrame = appDelegate.queryMap(west, anEastPoint: east, aNorthPoint: north, aSouthPoint: south)
+//        
+//        if pidObjectsInFrame != nil && pidObjectsInFrame?.count > 0 {
+//            var actionSheet  = UIActionSheet(title: "Sharing with", delegate: nil, cancelButtonTitle: "OK", destructiveButtonTitle: nil)
+//            actionSheet.tag = 2
+//            
+//            for pidObject in pidObjectsInFrame! {
+//                actionSheet.addButtonWithTitle("PID: \(pidObject[PIDCaseName.caseBarcode] as String)")
+//            }
+//            actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
+//            
+//            mapView.deselectAnnotation(view.annotation, animated: false)
+//        }
         
-        var pidObjectsInFrame = appDelegate.queryMap(west, anEastPoint: east, aNorthPoint: north, aSouthPoint: south)
+        var actionSheet  = UIActionSheet(title: "Get Directions", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "Open in Maps App")
+        actionSheet.tag = 10
+        actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
         
-        if pidObjectsInFrame != nil && pidObjectsInFrame?.count > 0 {
-            var actionSheet  = UIActionSheet(title: "Sharing with", delegate: nil, cancelButtonTitle: "OK", destructiveButtonTitle: nil)
-            actionSheet.tag = 2
-            
-            for pidObject in pidObjectsInFrame! {
-                actionSheet.addButtonWithTitle("PID: \(pidObject[PIDCaseName.caseBarcode] as String)")
-            }
-            actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
-            
-            mapView.deselectAnnotation(view.annotation, animated: false)
-        }
+        mapView.deselectAnnotation(view.annotation, animated: false)
+    }
+    
+    func openInMaps() {
+        let currentLocation = MKMapItem.mapItemForCurrentLocation()
+        
+        var place = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: currentPIDObject!.inventoryLatitude, longitude: currentPIDObject!.inventoryLongitude), addressDictionary: nil)
+        var destination = MKMapItem(placemark: place)
+        destination.name = "PID: \(currentPIDObject!.inventoryCaseBarcode)"
+        
+        MKMapItem.openMapsWithItems([currentLocation, destination], launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
     
     // MARK : Overrides

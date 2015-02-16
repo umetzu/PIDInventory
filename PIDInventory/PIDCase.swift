@@ -16,6 +16,7 @@ struct PIDCaseName {
     static let latitude = "inventoryLatitude"
     static let longitude = "inventoryLongitude"
     static let station = "inventoryStation"
+    static let modified = "inventoryModified"
 }
 
 class PIDCase: NSManagedObject {
