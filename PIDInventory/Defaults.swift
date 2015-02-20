@@ -7,6 +7,42 @@
 //
 
 import Foundation
+import UIKit
+
+// MARK: - Image Functions
+func documentsPathForFileName(name: String) -> String {
+    let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
+    let path = paths[0] as String;
+    let fullPath = path.stringByAppendingPathComponent(name)
+    
+    return fullPath
+}
+
+func savePicture(image: UIImage) -> String {
+    let imageData = UIImagePNGRepresentation(image)
+    let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).png"
+    let path = documentsPathForFileName(relativePath)
+    imageData.writeToFile(path, atomically: true)
+    
+    return relativePath
+}
+
+func readPicture(path: String) -> UIImage? {
+    let oldFullPath = documentsPathForFileName(path)
+    let oldImageData = NSData(contentsOfFile: oldFullPath)
+    
+    return oldImageData != nil ? UIImage(data: oldImageData!) : nil
+}
+
+func base64FromPicturePath(path: String) -> String {
+    var image = readPicture(path)
+    if image != nil {
+        let imageData = UIImagePNGRepresentation(image)
+        return imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+    }
+    
+    return ""
+}
 
 func completedText(status: Bool) -> String {
     return status ? "😌" : "😨"
@@ -27,8 +63,6 @@ func indexFromList(list:[(key: String, value: String)], Key key:String) -> Int? 
     c.dateFormat = "yyyyMMdd"
     return c
     }()
-
-
 
 //Lists are index based!!
 

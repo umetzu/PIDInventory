@@ -76,3 +76,78 @@ class PIDCase: NSManagedObject {
     @NSManaged var inventoryModified: Bool
 
 }
+
+func toJSON(caseList: [PIDCase]) -> NSDictionary {
+    var jsonList: [String:NSArray] = [:]
+    
+    var jsonListItem: [AnyObject] = []
+    
+    for item in caseList {
+        
+        var image1 = base64FromPicturePath(item.inventoryPhoto1)
+        var image2 = base64FromPicturePath(item.inventoryPhoto2)
+        
+        
+        var propertylist : [String: AnyObject] = [
+            "id" : Int(item.id),
+            "inventoryCaseBarcode" : item.inventoryCaseBarcode,
+            "caseBroken" : item.caseBroken,
+            "caseColor" : item.caseColor,
+            "caseSeverity" : item.caseSeverity,
+            "caseGraffiti" : item.caseGraffiti,
+            "caseOther" : item.caseOther,
+            "caseRusted" : item.caseRusted,
+            "inventoryComments" : item.inventoryComments,
+            "coverSeverity" : item.coverSeverity,
+            "coverCracked" : item.coverCracked,
+            "coverDiscolored" : item.coverDiscolored,
+            "coverGraffiti" : item.coverGraffiti,
+            "coverNoCover" : item.coverNoCover,
+            "coverOther" : item.coverOther,
+            "insertBarcode" : item.insertBarcode,
+            "insertComments" : item.insertComments,
+            "insertFaded" : item.insertFaded,
+            "insertMissing" : item.insertMissing,
+            "insertName" : item.insertName,
+            "insertOther" : item.insertOther,
+            "insertTorn" : item.insertTorn,
+            "inventoryLatitude" : item.inventoryLatitude,
+            "inventoryLongitude" : item.inventoryLongitude,
+            "standBroken" : item.standBroken,
+            "standSeverity" : item.standSeverity,
+            "standGraffiti" : item.standGraffiti,
+            "standOther" : item.standOther,
+            "standRusted" : item.standRusted,
+            "standRustedBasePlate" : item.standRustedBasePlate,
+            "inventoryDate" : item.inventoryDate,
+            "inventoryCaseNameArchive" : item.inventoryCaseNameArchive,
+            "locationDescription" : item.locationDescription,
+            "locationOrientation" : item.locationOrientation,
+            "locationAdjacentTVM" : item.locationAdjacentTVM,
+            "locationMountType" : item.locationMountType,
+            "caseWidth" : item.caseWidth,
+            "caseSide" : item.caseSide,
+            "insertCategory" : item.insertCategory,
+            "locationCasesInCluster" : item.locationCasesInCluster,
+            "locationPositionInCluster" : item.locationPositionInCluster,
+            "inventoryUser" : item.inventoryUser,
+            "inventoryPhoto1" : image1,
+            "inventoryPhoto2" : image2,
+            "insertDate" : item.insertDate,
+            "insertWaterDamage" : item.insertWaterDamage,
+            "caseModified" : item.caseModified,
+            "coverModified" : item.coverModified,
+            "insertModified" : item.insertModified,
+            "locationModified" : item.locationModified,
+            "standModified" : item.standModified,
+            "inventoryModified" : item.inventoryModified,
+            "inventoryStation" : item.inventoryStation,
+        ]
+        
+        jsonListItem.append(propertylist)
+    }
+    
+    jsonList["CaseList"] = jsonListItem
+    
+    return jsonList
+}

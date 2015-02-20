@@ -235,7 +235,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" keyboardAppearance="alert"/>
                                                 </textField>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rx3-n2-yDY">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rx3-n2-yDY">
                                                     <rect key="frame" x="562" y="11" width="22" height="22"/>
                                                     <state key="normal" image="barcode"/>
                                                     <connections>
@@ -1085,7 +1085,7 @@
                                                         <action selector="insertBarcodeChanged:" destination="lOj-j1-jhk" eventType="editingChanged" id="fHL-7j-vq6"/>
                                                     </connections>
                                                 </textField>
-                                                <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7a8-gV-AgT">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7a8-gV-AgT">
                                                     <rect key="frame" x="562" y="11" width="22" height="22"/>
                                                     <state key="normal" image="barcode"/>
                                                     <connections>
@@ -1702,7 +1702,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="49e-Tb-3d3" kind="show" id="4fs-UB-66F"/>
+                                            <segue destination="49e-Tb-3d3" kind="show" identifier="startInventorySegue" id="4fs-UB-66F"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1714,7 +1714,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OPb-T3-CPF" id="mH8-6O-rsY">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQR-TM-lvH">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQR-TM-lvH">
                                                     <rect key="frame" x="258" y="17" width="84" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1741,7 +1741,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eaD-6v-xd2" id="bQa-uj-h2H">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5st-oZ-kvY">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download PID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5st-oZ-kvY">
                                                     <rect key="frame" x="248" y="17" width="104" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1772,12 +1772,16 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem enabled="NO" id="H4S-r9-INF"/>
+                        <barButtonItem style="plain" id="H4S-r9-INF">
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="cDc-Nk-mkE"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cellDownload" destination="eaD-6v-xd2" id="fO8-os-Jdo"/>
                         <outlet property="cellPicker" destination="0hB-Gx-a8j" id="S11-bE-IGS"/>
+                        <outlet property="cellUpload" destination="OPb-T3-CPF" id="fFp-ZJ-xQc"/>
                         <outlet property="labelSelectedUsername" destination="Omy-1c-ICA" id="MQc-oY-ZlD"/>
                         <outlet property="pickerViewUsers" destination="K77-r6-sRt" id="aTS-if-Ji9"/>
                         <outlet property="toolBarLabel" destination="H4S-r9-INF" id="35A-Os-sdh"/>
@@ -2084,6 +2088,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gwN-Oi-nmQ"/>
-        <segue reference="TG0-ze-Dny"/>
+        <segue reference="lm2-J2-QdX"/>
     </inferredMetricsTieBreakers>
 </document>

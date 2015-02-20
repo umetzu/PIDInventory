@@ -101,32 +101,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
             }
             
         }
-    }
-    
-    // MARK: - Image Functions
-    func documentsPathForFileName(name: String) -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
-        let path = paths[0] as String;
-        let fullPath = path.stringByAppendingPathComponent(name)
-        
-        return fullPath
-    }
-    
-    func savePicture(image: UIImage) -> String {
-        let imageData = UIImagePNGRepresentation(image)
-        let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).png"
-        let path = documentsPathForFileName(relativePath)
-        imageData.writeToFile(path, atomically: true)
-        
-        return relativePath
-    }
-    
-    func readPicture(path: String) -> UIImage? {
-        let oldFullPath = documentsPathForFileName(path)
-        let oldImageData = NSData(contentsOfFile: oldFullPath)
-        
-        return oldImageData != nil ? UIImage(data: oldImageData!) : nil
-    }
+    }   
     
     func saveChanges(sender: UIBarButtonItem) {
         if textFieldCaseBarcode.text.isEmpty {
@@ -211,25 +186,6 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     }
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
-//        var c = 0.00001
-//        var north = currentPIDObject!.inventoryLatitude + c
-//        var south = currentPIDObject!.inventoryLatitude - c
-//        var west = currentPIDObject!.inventoryLongitude - c
-//        var east = currentPIDObject!.inventoryLongitude + c
-//        
-//        var pidObjectsInFrame = appDelegate.queryMap(west, anEastPoint: east, aNorthPoint: north, aSouthPoint: south)
-//        
-//        if pidObjectsInFrame != nil && pidObjectsInFrame?.count > 0 {
-//            var actionSheet  = UIActionSheet(title: "Sharing with", delegate: nil, cancelButtonTitle: "OK", destructiveButtonTitle: nil)
-//            actionSheet.tag = 2
-//            
-//            for pidObject in pidObjectsInFrame! {
-//                actionSheet.addButtonWithTitle("PID: \(pidObject[PIDCaseName.caseBarcode] as String)")
-//            }
-//            actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
-//            
-//            mapView.deselectAnnotation(view.annotation, animated: false)
-//        }
         
         var actionSheet  = UIActionSheet(title: "Get Directions", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "Open in Maps App")
         actionSheet.tag = 10
