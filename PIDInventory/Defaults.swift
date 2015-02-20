@@ -19,8 +19,8 @@ func documentsPathForFileName(name: String) -> String {
 }
 
 func savePicture(image: UIImage) -> String {
-    let imageData = UIImagePNGRepresentation(image)
-    let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).png"
+    let imageData = UIImageJPEGRepresentation(image, 0.5)
+    let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).jpg"
     let path = documentsPathForFileName(relativePath)
     imageData.writeToFile(path, atomically: true)
     
@@ -37,7 +37,7 @@ func readPicture(path: String) -> UIImage? {
 func base64FromPicturePath(path: String) -> String {
     var image = readPicture(path)
     if image != nil {
-        let imageData = UIImagePNGRepresentation(image)
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
         return imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
     }
     

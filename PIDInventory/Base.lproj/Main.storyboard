@@ -87,13 +87,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" tag="1" contentMode="left" text="PID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aA9-oJ-o9G" userLabel="PIDValue">
-                                                    <rect key="frame" x="82.5" y="12" width="443.5" height="19.5"/>
+                                                    <rect key="frame" x="82" y="12" width="309" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" tag="2" contentMode="left" text="Insert" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RjW-90-Ozc" userLabel="InsertValue">
-                                                    <rect key="frame" x="82" y="32" width="444" height="14.5"/>
+                                                    <rect key="frame" x="82" y="32" width="309" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -103,7 +103,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" tag="3" contentMode="left" text="😌" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXt-7W-dTe">
+                                                <label opaque="NO" multipleTouchEnabled="YES" tag="4" contentMode="left" text="😌" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXt-7W-dTe">
                                                     <rect key="frame" x="534" y="17" width="25" height="19.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="drq-wO-A8B"/>
@@ -112,19 +112,31 @@
                                                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" tag="3" contentMode="left" text="Achive Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0f-69-w3J" userLabel="PIDValue">
+                                                    <rect key="frame" x="394.5" y="17" width="139.5" height="19.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="139.5" id="y7X-W6-OiN"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="hZg-xr-6vS" firstAttribute="top" secondItem="IY8-A4-I65" secondAttribute="topMargin" constant="24" id="4Fp-af-5Z7"/>
                                                 <constraint firstItem="aA9-oJ-o9G" firstAttribute="top" secondItem="999-pJ-O10" secondAttribute="top" id="5lh-4l-LVu"/>
+                                                <constraint firstItem="c0f-69-w3J" firstAttribute="leading" secondItem="RjW-90-Ozc" secondAttribute="trailing" constant="3.5" id="7bv-dJ-8Xr"/>
                                                 <constraint firstItem="aA9-oJ-o9G" firstAttribute="trailing" secondItem="RjW-90-Ozc" secondAttribute="trailing" id="7ud-fd-PhF"/>
                                                 <constraint firstItem="RjW-90-Ozc" firstAttribute="bottom" secondItem="hZg-xr-6vS" secondAttribute="bottom" id="92n-YO-V8w"/>
+                                                <constraint firstItem="c0f-69-w3J" firstAttribute="leading" secondItem="aA9-oJ-o9G" secondAttribute="trailing" constant="3.5" id="AzR-zA-oKq"/>
                                                 <constraint firstAttribute="centerY" secondItem="YXt-7W-dTe" secondAttribute="centerY" id="Ig8-ZF-hYD"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="YXt-7W-dTe" secondAttribute="trailing" id="MKC-4v-b9b"/>
                                                 <constraint firstItem="999-pJ-O10" firstAttribute="leading" secondItem="IY8-A4-I65" secondAttribute="leadingMargin" constant="8" id="O7k-Ym-jQz"/>
                                                 <constraint firstItem="hZg-xr-6vS" firstAttribute="leading" secondItem="999-pJ-O10" secondAttribute="leading" id="TzO-Lv-B9j"/>
-                                                <constraint firstItem="YXt-7W-dTe" firstAttribute="leading" secondItem="aA9-oJ-o9G" secondAttribute="trailing" constant="8" id="ady-r2-BFU"/>
+                                                <constraint firstAttribute="centerY" secondItem="c0f-69-w3J" secondAttribute="centerY" id="XsO-cm-WJj"/>
                                                 <constraint firstItem="aA9-oJ-o9G" firstAttribute="leading" secondItem="999-pJ-O10" secondAttribute="trailing" constant="40" id="bUe-CD-nAe"/>
                                                 <constraint firstItem="aA9-oJ-o9G" firstAttribute="leading" secondItem="RjW-90-Ozc" secondAttribute="leading" id="cPG-Ie-Zu0"/>
+                                                <constraint firstItem="YXt-7W-dTe" firstAttribute="leading" secondItem="c0f-69-w3J" secondAttribute="trailing" id="jl3-D1-lFx"/>
                                                 <constraint firstItem="999-pJ-O10" firstAttribute="top" secondItem="IY8-A4-I65" secondAttribute="topMargin" constant="4" id="q2t-bZ-YvK"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -195,7 +207,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="352"/>
+            <point key="canvasLocation" x="1902" y="351"/>
         </scene>
         <!--Detail Table View Controller-->
         <scene sceneID="780-by-unh">
@@ -1774,6 +1786,9 @@
                     <toolbarItems>
                         <barButtonItem style="plain" id="H4S-r9-INF">
                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="changeServer:" destination="vbt-lJ-YEu" id="hob-ia-ku2"/>
+                            </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="cDc-Nk-mkE"/>
@@ -2088,6 +2103,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gwN-Oi-nmQ"/>
-        <segue reference="lm2-J2-QdX"/>
+        <segue reference="TG0-ze-Dny"/>
     </inferredMetricsTieBreakers>
 </document>

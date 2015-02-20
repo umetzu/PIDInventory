@@ -34,7 +34,11 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         ("BKR\\Zach.Robert", "Zachary Robert"),
         ("Other", "Other ")]
     
-    let server = "hamivgis2:8080"
+    var server: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey("server")!
+        }
+    }
     
     var serviceAddress: String {
         get {
@@ -42,6 +46,12 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         }
     }
     
+    @IBAction func changeServer(sender: UIBarButtonItem) {
+        var alert = UIAlertView(title: "Server Address", message:"Server:Port", delegate:self, cancelButtonTitle:"Cancel", otherButtonTitles: "OK")
+        alert.tag = 10
+        alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
+        alert.show()
+    }
     
     // MARK: - UIPickerViewDataSource
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -78,11 +88,19 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != 0 {
-            if alertView.tag == 0 {
-                uploadData()
-            }
-            else {
-                downloadData()
+            switch alertView.tag {
+                case 0:
+                    uploadData()
+                case 1:
+                    downloadData()
+                default:
+                    if let textField = alertView.textFieldAtIndex(0) {
+                        isAlive = false
+                        var userDefaults = NSUserDefaults.standardUserDefaults()
+                        userDefaults.setObject(textField.text, forKey: "server")
+                        userDefaults.synchronize()
+                        checkConnection()
+                    }
             }
         }
     }
@@ -90,18 +108,23 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     func uploadData() {
         if let caseList = appDelegate.queryList(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) {
             if caseList.count > 0 {
-                var jsonList = toJSON(caseList)
-                
-                var statusUpload = appDelegate.sendToService(serviceAddress, method: "PostCaseList", objectToSend: jsonList)
-                
-                if !statusUpload {
-                    jsonProcessError()
-                    return
+                for c in caseList {
+                    var selectedRow = pickerViewUsers.selectedRowInComponent(0)
+                    c.inventoryUser = listUsernames[selectedRow].key
+                    
+                    var jsonList = toJSON(c)
+                    
+                    var statusUpload = appDelegate.sendToService(serviceAddress, method: "PostCaseList", objectToSend: jsonList)
+                    
+                    if !statusUpload {
+                        jsonProcessError()
+                        return
+                    }
+                    
+                    appDelegate.deleteObject(c)
+                    
+                    appDelegate.saveContext()
                 }
-                
-                appDelegate.deleteObjects(caseList)
-                
-                appDelegate.saveContext()
             }
         }
     }
@@ -183,11 +206,11 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func checkConnection() {
-        
         isAlive = appDelegate.downloadFromService(serviceAddress, method: "Alive", objectCreator:nil)
-        var statusText = isAlive ? "Connected": "Unreachable"
         
+        var statusText = isAlive ? "Connected": "Unreachable"
         toolBarLabel.title = "Server: \(server) - Status: \(statusText)"
+        
         toolBarLabel.tintColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
         
         cellUpload.selectionStyle = isAlive ? .Blue : .None

@@ -80,7 +80,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
             currentTag = tag
             picker.sourceType = .Camera
             picker.modalPresentationStyle = .FullScreen
-           presentViewController(picker, animated: true, completion: nil)
+            presentViewController(picker, animated: true, completion: nil)
         }
     }
     
@@ -94,10 +94,15 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         if imageView.image != nil {
+            var c = NSDateFormatter()
+            c.dateFormat = "yyyyMMddHHmmss"
+            
             if currentTag == 101 {
                 currentPIDObject?.inventoryPhoto1 = savePicture(imageView.image!)
+                currentPIDObject?.inventoryPhoto1Date = c.stringFromDate(NSDate())
             } else {
                 currentPIDObject?.inventoryPhoto2 = savePicture(imageView.image!)
+                currentPIDObject?.inventoryPhoto2Date = c.stringFromDate(NSDate())
             }
             
         }
@@ -134,6 +139,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         currentPIDObject?.inventoryCaseBarcode = textFieldCaseBarcode.text
         currentPIDObject?.inventoryComments = textViewComments.text
         currentPIDObject?.inventoryModified = true
+        currentPIDObject?.inventoryDate = formatter.stringFromDate(NSDate())
         
         appDelegate.saveContext()
         

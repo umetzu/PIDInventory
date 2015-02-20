@@ -30,6 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             locationManager.requestWhenInUseAuthorization()
         }
         
+        if NSUserDefaults.standardUserDefaults().stringForKey("server") == nil {
+            NSUserDefaults.standardUserDefaults().setValue("hamivgis2:8080", forKey: "server")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+        
         return true
     }
 
@@ -136,6 +141,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 managedObjectContext?.deleteObject(item)
             }
         }
+    }
+    
+    func deleteObject(item: NSManagedObject) {
+        managedObjectContext?.deleteObject(item)
     }
     
     func deleteObjects(objects: [NSManagedObject]) {
@@ -546,6 +555,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pidObject.standModified = false
         pidObject.inventoryModified = false
         pidObject.inventoryStation = ""
+        pidObject.inventoryPhoto1Date = ""
+        pidObject.inventoryPhoto2Date = ""
      
         return pidObject
     }

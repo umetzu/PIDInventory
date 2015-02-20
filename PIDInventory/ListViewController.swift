@@ -57,10 +57,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 labelBarcode!.text = pidObject?.insertBarcode
             }
             
-            var labelStatus = cell?.viewWithTag(3) as? UILabel
+            var labelArchive = cell?.viewWithTag(3) as? UILabel
+            if labelArchive != nil {
+                labelArchive!.text = pidObject?.inventoryStation
+            }
+            
+            var labelStatus = cell?.viewWithTag(4) as? UILabel
             if labelStatus != nil {
                 labelStatus!.text = completedText(pidObject!.inventoryModified)
-                //labelStatus?.textColor = pidObject!.inventoryModified ? UIColor.lightGrayColor() : self.view.tintColor
             }
             
             cell?.tag = Int(pidObject!.id)

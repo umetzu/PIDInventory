@@ -66,6 +66,8 @@ class PIDCase: NSManagedObject {
     @NSManaged var inventoryUser: String
     @NSManaged var inventoryPhoto1: String
     @NSManaged var inventoryPhoto2: String
+    @NSManaged var inventoryPhoto1Date: String
+    @NSManaged var inventoryPhoto2Date: String
     @NSManaged var insertDate: String
     @NSManaged var insertWaterDamage: Bool
     @NSManaged var caseModified: Bool
@@ -75,6 +77,10 @@ class PIDCase: NSManagedObject {
     @NSManaged var standModified: Bool
     @NSManaged var inventoryModified: Bool
 
+}
+
+func toJSON(caseItem: PIDCase) -> NSDictionary {
+    return toJSON([caseItem])
 }
 
 func toJSON(caseList: [PIDCase]) -> NSDictionary {
@@ -142,6 +148,8 @@ func toJSON(caseList: [PIDCase]) -> NSDictionary {
             "standModified" : item.standModified,
             "inventoryModified" : item.inventoryModified,
             "inventoryStation" : item.inventoryStation,
+            "inventoryPhoto1Date" : item.inventoryPhoto1Date,
+            "inventoryPhoto2Date" : item.inventoryPhoto2Date
         ]
         
         jsonListItem.append(propertylist)
