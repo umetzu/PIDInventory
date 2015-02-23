@@ -25,14 +25,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     @IBOutlet weak var labelSelectedUsername: UILabel!
     var isPickerVisible = true
 
-    var listUsernames:[(key: String, value: String)] = [
-        ("BKR\\dwaldron", "Daniel Waldron"),
-        ("BKR\\Jason.Kreyling", "Jason Kreyling"),
-        ("BKR\\KMcElwain", "Kevin McElwain"),
-        ("BKR\\Nick.Fink", "Nick Fink"),
-        ("BKR\\thomas.bruestle", "Thomas Bruestle"),
-        ("BKR\\Zach.Robert", "Zachary Robert"),
-        ("Other", "Other ")]
+    var listUsernames:[[String]] = [["Other", "Other "]]
     
     var server: String {
         get {
@@ -64,7 +57,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     // MARK: - UIPickerViewDelegate
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        return listUsernames[row].value
+        return listUsernames[row][1]
     }
     
     //MARK: - UITableViewDelegate
@@ -90,7 +83,11 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         if buttonIndex != 0 {
             switch alertView.tag {
                 case 0:
-                    uploadData()
+                    if appDelegate.count(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) > 0 {
+                        uploadData()
+                    } else {
+                        UIAlertView(title: "No data to upload", message: "There are not any PID with a modified status", delegate: nil, cancelButtonTitle: "OK").show()
+                    }
                 case 1:
                     downloadData()
                 default:
@@ -110,7 +107,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             if caseList.count > 0 {
                 for c in caseList {
                     var selectedRow = pickerViewUsers.selectedRowInComponent(0)
-                    c.inventoryUser = listUsernames[selectedRow].key
+                    c.inventoryUser = listUsernames[selectedRow][0]
                     
                     var jsonList = toJSON(c)
                     
@@ -132,6 +129,18 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     func downloadData() {
         appDelegate.deleteAllManagedObjects()
         
+        if let userList = appDelegate.queryService(serviceAddress, "GetUserList") as? [NSArray] {
+            listUsernames.removeAll(keepCapacity: false)
+            
+            for user in userList {
+                listUsernames.append([user[0] as String, user[1] as String])
+            }
+            
+            NSUserDefaults.standardUserDefaults().setObject(listUsernames, forKey: "usernameList")
+            
+            refreshPickerViewUsers()
+        }
+        
         var statusInsert = appDelegate.downloadFromService(serviceAddress, method: "GetInsertList", objectCreator:appDelegate.createPIDInsert)
         
         if !statusInsert {
@@ -148,6 +157,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         
         if statusInsert && statusCase {
             appDelegate.saveContext()
+            clearDirectory()
         }
     }
     
@@ -185,7 +195,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        labelSelectedUsername.text = listUsernames[row].value
+        labelSelectedUsername.text = listUsernames[row][1]
     }
     
     //MARK: - Overrides
@@ -208,7 +218,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     func checkConnection() {
         isAlive = appDelegate.downloadFromService(serviceAddress, method: "Alive", objectCreator:nil)
         
-        var statusText = isAlive ? "Connected": "Unreachable"
+        var statusText = isAlive ? "Up": "Down"
         toolBarLabel.title = "Server: \(server) - Status: \(statusText)"
         
         toolBarLabel.tintColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
@@ -230,9 +240,20 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        refreshPickerViewUsers()
+    }
+    
+    func refreshPickerViewUsers() {
+        if let list = NSUserDefaults.standardUserDefaults().valueForKey("usernameList") as? [[String]] {
+            listUsernames = list
+        }
+        
+        pickerViewUsers.reloadAllComponents()
+        
         changePickerCellVisibility(false)
         
-        labelSelectedUsername.text = listUsernames[0].value
+        labelSelectedUsername.text = listUsernames[0][1]
     }
     
     override func didReceiveMemoryWarning() {

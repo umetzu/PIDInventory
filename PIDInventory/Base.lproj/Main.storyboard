@@ -311,6 +311,68 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="jS8-nu-QQ1">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jS8-nu-QQ1" id="fI9-FC-rnO">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Station" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vdv-0T-aBb">
+                                                    <rect key="frame" x="16" y="15" width="51.5" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Yc-Qy-Q9k">
+                                                    <rect key="frame" x="299" y="8" width="1" height="1"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="meU-Eb-2hd"/>
+                                                        <constraint firstAttribute="width" constant="1" id="yCQ-4L-B8f"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CgQ-Tj-twk">
+                                                    <rect key="frame" x="300" y="7" width="254" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Vdv-0T-aBb" firstAttribute="top" secondItem="fI9-FC-rnO" secondAttribute="topMargin" constant="7" id="LW6-pj-pa0"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="CgQ-Tj-twk" secondAttribute="trailing" constant="38" id="LzP-AS-CXd"/>
+                                                <constraint firstAttribute="centerY" secondItem="CgQ-Tj-twk" secondAttribute="centerY" id="bIi-BB-Uta"/>
+                                                <constraint firstItem="Vdv-0T-aBb" firstAttribute="leading" secondItem="fI9-FC-rnO" secondAttribute="leadingMargin" constant="8" id="c6X-gL-KNb"/>
+                                                <constraint firstItem="CgQ-Tj-twk" firstAttribute="top" secondItem="fI9-FC-rnO" secondAttribute="topMargin" constant="-1" id="kfx-wy-StZ"/>
+                                                <constraint firstItem="CgQ-Tj-twk" firstAttribute="leading" secondItem="0Yc-Qy-Q9k" secondAttribute="trailing" id="lXf-Rn-rj0"/>
+                                                <constraint firstAttribute="centerX" secondItem="0Yc-Qy-Q9k" secondAttribute="centerX" id="vr3-cl-qzw"/>
+                                                <constraint firstAttribute="centerY" secondItem="Vdv-0T-aBb" secondAttribute="centerY" id="xHk-8x-rJ9"/>
+                                                <constraint firstItem="0Yc-Qy-Q9k" firstAttribute="top" secondItem="fI9-FC-rnO" secondAttribute="topMargin" id="xJc-wG-d3I"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="162" id="NAo-M2-4A6">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NAo-M2-4A6" id="A7k-Jc-92i">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView tag="500" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mad-ID-efJ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="162"/>
+                                                    <connections>
+                                                        <outlet property="dataSource" destination="Ilr-EO-0Oh" id="TMi-HG-9cI"/>
+                                                        <outlet property="delegate" destination="Ilr-EO-0Oh" id="Him-bm-7pI"/>
+                                                    </connections>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="mad-ID-efJ" firstAttribute="leading" secondItem="A7k-Jc-92i" secondAttribute="leadingMargin" constant="-8" id="I9n-Fo-oRd"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="mad-ID-efJ" secondAttribute="bottom" constant="-8" id="Myj-Y2-MRE"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="mad-ID-efJ" secondAttribute="trailing" constant="-8" id="dfa-bX-pta"/>
+                                                <constraint firstItem="mad-ID-efJ" firstAttribute="top" secondItem="A7k-Jc-92i" secondAttribute="topMargin" constant="-8" id="mtX-6C-yod"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Map" id="hPP-BO-sxU">
@@ -585,7 +647,9 @@
                         <outlet property="labelInsertModified" destination="Jyb-uc-CJb" id="6rH-2t-XWc"/>
                         <outlet property="labelLocationModified" destination="yVg-xy-hHe" id="Qeb-hA-iG6"/>
                         <outlet property="labelStandModified" destination="fV7-PM-vtE" id="yey-lR-IFU"/>
+                        <outlet property="labelStation" destination="CgQ-Tj-twk" id="Psw-uc-rVT"/>
                         <outlet property="mapView" destination="R3m-CT-IrP" id="lDK-dK-Qgv"/>
+                        <outlet property="pickerStation" destination="mad-ID-efJ" id="TJN-Ov-d2d"/>
                         <outlet property="textFieldCaseBarcode" destination="E8i-JH-S1s" id="lCU-sh-7Dl"/>
                         <outlet property="textViewComments" destination="rmc-yx-ADm" id="rHv-0D-SGa"/>
                         <outlet property="viewImageView1" destination="kks-63-Kyv" id="Uo5-Wu-xqa"/>
@@ -1372,30 +1436,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Comments" id="JhD-De-aor">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="200" id="KZ0-ym-FJt">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KZ0-ym-FJt" id="YC3-Fv-Fmc">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="dhM-yl-KxA">
-                                                    <rect key="frame" x="0.0" y="8" width="600" height="184"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert"/>
-                                                </textView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="dhM-yl-KxA" secondAttribute="bottom" id="5vM-cg-UPL"/>
-                                                <constraint firstItem="dhM-yl-KxA" firstAttribute="leading" secondItem="YC3-Fv-Fmc" secondAttribute="leadingMargin" constant="-8" id="EdC-SA-rmb"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="dhM-yl-KxA" secondAttribute="trailing" constant="-8" id="Hts-UA-9rT"/>
-                                                <constraint firstItem="dhM-yl-KxA" firstAttribute="top" secondItem="YC3-Fv-Fmc" secondAttribute="topMargin" id="hax-c5-wnV"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="lOj-j1-jhk" id="H10-gC-nNg"/>
@@ -1405,7 +1445,6 @@
                     <connections>
                         <outlet property="insertBarcode" destination="QGK-BB-qGF" id="TNx-hj-J8V"/>
                         <outlet property="insertCategory" destination="e1d-78-aT8" id="Icc-pM-jAW"/>
-                        <outlet property="insertComments" destination="dhM-yl-KxA" id="Lre-AE-0UH"/>
                         <outlet property="insertDate" destination="uHz-Nl-Fbk" id="tOe-tz-HYs"/>
                         <outlet property="insertDatePicker" destination="Upl-t0-APH" id="YjJ-ck-coo"/>
                         <outlet property="insertFaded" destination="Hz1-9O-qhp" id="Zaj-oX-WIl"/>
@@ -2103,6 +2142,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gwN-Oi-nmQ"/>
-        <segue reference="TG0-ze-Dny"/>
+        <segue reference="ceP-EF-o2U"/>
     </inferredMetricsTieBreakers>
 </document>

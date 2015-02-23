@@ -18,7 +18,6 @@
 		3A9D41371A702832004D7113 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41361A702832004D7113 /* ListViewController.swift */; };
 		3A9D413A1A702832004D7113 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A9D41381A702832004D7113 /* Main.storyboard */; };
 		3A9D413C1A702832004D7113 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A9D413B1A702832004D7113 /* Images.xcassets */; };
-		3A9D413F1A702832004D7113 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A9D413D1A702832004D7113 /* LaunchScreen.xib */; };
 		3A9D414B1A702832004D7113 /* PIDInventoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D414A1A702832004D7113 /* PIDInventoryTests.swift */; };
 		3A9D41571A703310004D7113 /* RefreshTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D41561A703310004D7113 /* RefreshTableViewController.swift */; };
 		3A9D418A1A715447004D7113 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A9D41891A715447004D7113 /* MapKit.framework */; };
@@ -50,7 +49,6 @@
 		3A9D41361A702832004D7113 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		3A9D41391A702832004D7113 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3A9D413B1A702832004D7113 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3A9D413E1A702832004D7113 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		3A9D41441A702832004D7113 /* PIDInventoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PIDInventoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A9D41491A702832004D7113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A9D414A1A702832004D7113 /* PIDInventoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIDInventoryTests.swift; sourceTree = "<group>"; };
@@ -113,7 +111,6 @@
 				3A9D418B1A715FEC004D7113 /* PIDInventory.xcdatamodeld */,
 				3A9D41381A702832004D7113 /* Main.storyboard */,
 				3A9D413B1A702832004D7113 /* Images.xcassets */,
-				3A9D413D1A702832004D7113 /* LaunchScreen.xib */,
 				3A9D41301A702832004D7113 /* Supporting Files */,
 				3A7B22271A72D5230077B97E /* CameraViewController.swift */,
 				3A7B22291A72F76C0077B97E /* DetailTableViewController.swift */,
@@ -197,6 +194,7 @@
 				TargetAttributes = {
 					3A9D412C1A702832004D7113 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 8MFH5K8H7Z;
 					};
 					3A9D41431A702832004D7113 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -229,7 +227,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A9D413A1A702832004D7113 /* Main.storyboard in Resources */,
-				3A9D413F1A702832004D7113 /* LaunchScreen.xib in Resources */,
 				3A9D413C1A702832004D7113 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,14 +285,6 @@
 				3A9D41391A702832004D7113 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		3A9D413D1A702832004D7113 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3A9D413E1A702832004D7113 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -385,6 +374,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = PIDInventory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -397,6 +387,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Michael Baker Corporation";
 				INFOPLIST_FILE = PIDInventory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

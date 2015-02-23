@@ -22,7 +22,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         if (textFieldPID.text.isEmpty) {
             pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve:PIDCaseName.id, SortBy: PIDCaseName.caseBarcode)
         } else {
-            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, conditions: [PIDCaseName.caseBarcode, PIDCaseName.station], aValue: sender.text, SortBy: PIDCaseName.caseBarcode)
+            var stationCodes = keysFromValue(listStations, Value: sender.text)
+            
+            pidObjectsID = appDelegate.queryList(PIDCaseName.name, ToRetrieve: PIDCaseName.id, condition1: PIDCaseName.caseBarcode, value1: sender.text, condition2: PIDCaseName.stationCode, value2: stationCodes, SortBy: PIDCaseName.caseBarcode)
         }
         
         tableViewPID.reloadData()
@@ -59,7 +61,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             var labelArchive = cell?.viewWithTag(3) as? UILabel
             if labelArchive != nil {
-                labelArchive!.text = pidObject?.inventoryStation
+                labelArchive!.text = listStations[indexFromList(listStations, Key: pidObject!.inventoryStationCode) ?? 0].value
             }
             
             var labelStatus = cell?.viewWithTag(4) as? UILabel

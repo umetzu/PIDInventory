@@ -44,7 +44,6 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     @IBOutlet weak var insertMissing: UISwitch!
     @IBOutlet weak var insertWaterDamage: UISwitch!
     @IBOutlet weak var insertOther: UISwitch!
-    @IBOutlet weak var insertComments: UITextView!
     
     @IBOutlet weak var standRusted: UISwitch!
     @IBOutlet weak var standRustedBasePlate: UISwitch!
@@ -124,7 +123,6 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             insertMissing.on = currentPIDObject.insertMissing
             insertWaterDamage.on = currentPIDObject.insertWaterDamage
             insertOther.on = currentPIDObject.insertOther
-            insertComments.text = currentPIDObject.insertComments
         } else {
             currentPIDObject.insertCategory = listInsertCategories[insertPickerViewCategory.selectedRowInComponent(0)].key
             var row = insertPickerViewCategory.selectedRowInComponent(1)
@@ -137,7 +135,6 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.insertMissing = insertMissing.on
             currentPIDObject.insertWaterDamage = insertWaterDamage.on
             currentPIDObject.insertOther = insertOther.on
-            currentPIDObject.insertComments = insertComments.text
             currentPIDObject.insertModified = true
         }
     }

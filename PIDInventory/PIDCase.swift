@@ -15,13 +15,13 @@ struct PIDCaseName {
     static let caseBarcode = "inventoryCaseBarcode"
     static let latitude = "inventoryLatitude"
     static let longitude = "inventoryLongitude"
-    static let station = "inventoryStation"
+    static let stationCode = "inventoryStationCode"
     static let modified = "inventoryModified"
 }
 
 class PIDCase: NSManagedObject {
 
-    @NSManaged var inventoryStation: String
+    @NSManaged var inventoryStationCode: String
     @NSManaged var inventoryCaseBarcode: String
     @NSManaged var caseBroken: Bool
     @NSManaged var caseColor: String
@@ -38,7 +38,6 @@ class PIDCase: NSManagedObject {
     @NSManaged var coverOther: Bool
     @NSManaged var id: Int32
     @NSManaged var insertBarcode: String
-    @NSManaged var insertComments: String
     @NSManaged var insertFaded: Bool
     @NSManaged var insertMissing: Bool
     @NSManaged var insertName: String
@@ -111,7 +110,6 @@ func toJSON(caseList: [PIDCase]) -> NSDictionary {
             "coverNoCover" : item.coverNoCover,
             "coverOther" : item.coverOther,
             "insertBarcode" : item.insertBarcode,
-            "insertComments" : item.insertComments,
             "insertFaded" : item.insertFaded,
             "insertMissing" : item.insertMissing,
             "insertName" : item.insertName,
@@ -147,7 +145,7 @@ func toJSON(caseList: [PIDCase]) -> NSDictionary {
             "locationModified" : item.locationModified,
             "standModified" : item.standModified,
             "inventoryModified" : item.inventoryModified,
-            "inventoryStation" : item.inventoryStation,
+            "inventoryStationCode" : item.inventoryStationCode,
             "inventoryPhoto1Date" : item.inventoryPhoto1Date,
             "inventoryPhoto2Date" : item.inventoryPhoto2Date
         ]

@@ -20,7 +20,6 @@
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="insertBarcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertCategory" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="insertComments" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="insertFaded" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="insertMissing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -41,6 +40,7 @@
         <attribute name="inventoryPhoto2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryPhoto2Date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryStation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inventoryStationCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inventoryUser" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationAdjacentTVM" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="locationCasesInCluster" optional="YES" attributeType="String" syncable="YES"/>

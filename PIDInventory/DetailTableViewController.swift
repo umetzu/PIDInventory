@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class DetailTableViewController: UITableViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate {
+class DetailTableViewController: UITableViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
     
@@ -31,7 +31,73 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     @IBOutlet weak var labelLocationModified: UILabel!
     @IBOutlet weak var labelStandModified: UILabel!
     
+    @IBOutlet weak var labelStation: UILabel!
+    @IBOutlet weak var pickerStation: UIPickerView!
+    var isPickerVisible = false
+    
     var currentTag = 101
+    
+    //MARK: - UITableViewDelegate
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var tag = tableView.cellForRowAtIndexPath(indexPath)!.tag ?? 0
+        
+        if tag == 10 {
+            changePickerCellVisibility(!isPickerVisible)
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var height = super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        
+        if indexPath.row > 0 {
+            var path = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
+            var cell = super.tableView(tableView, cellForRowAtIndexPath: path)
+            var tag = cell.tag
+            if tag == 10 {
+                height = isPickerVisible ? 162 : 0
+            }
+        }
+        
+        return height
+    }
+    
+    //MARK: - UIPickerView
+    func changePickerCellVisibility(shouldDisplay: Bool) {
+        if shouldDisplay {
+            isPickerVisible = true
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+            UIView.animateWithDuration(0.25, animations: { self.pickerStation.alpha = 1 })
+            
+        }
+        else {
+            isPickerVisible  = false
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            UIView.animateWithDuration(0.25, animations: { self.pickerStation.alpha = 0 })
+        }
+    }
+    
+    // MARK: - UIPickerViewDataSource
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return listStations.count
+    }
+    
+    // MARK: - UIPickerViewDelegate
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        return listStations[row].value
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        labelStation.text = listStations[row].value
+    }
     
     // Mark: Actions
     @IBAction func unwindToDetailTableViewController(segue: UIStoryboardSegue) {
@@ -140,6 +206,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         currentPIDObject?.inventoryComments = textViewComments.text
         currentPIDObject?.inventoryModified = true
         currentPIDObject?.inventoryDate = formatter.stringFromDate(NSDate())
+        currentPIDObject?.inventoryStationCode = listStations[pickerStation.selectedRowInComponent(0)].key
         
         appDelegate.saveContext()
         
@@ -152,6 +219,12 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     }
     
     func fillValues() {
+        changePickerCellVisibility(false)
+        
+        
+        var stationIndex = 0
+        
+        
         if (currentID == -1) {
             currentPIDObject = appDelegate.createPIDCase()
             currentPIDObject!.id = appDelegate.lastID(PIDCaseName.name) + 1
@@ -160,8 +233,9 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
                 currentPIDObject?.inventoryLongitude = appDelegate.lastUserLocation!.longitude
             }
         } else {
-            
             currentPIDObject = appDelegate.querySingle(PIDCaseName.name, ByID: currentID)
+            
+            stationIndex = indexFromList(listStations, Key: currentPIDObject!.inventoryStationCode) ?? 0
             
             textFieldCaseBarcode.text = currentPIDObject?.inventoryCaseBarcode
             labelCaseName.text = currentPIDObject?.inventoryCaseNameArchive
@@ -178,6 +252,9 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
                 (viewImageView2.viewWithTag(102) as UIImageView).image = image2
             }
         }
+        
+        pickerStation.selectRow(stationIndex, inComponent: 0, animated: false)
+        labelStation.text = listStations[stationIndex].value
         
         setAnnotation(currentPIDObject!)
     }
@@ -237,12 +314,6 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    // MARK: Table View
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    }
-    
     
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

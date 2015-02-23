@@ -176,6 +176,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return count ?? 0
     }
     
+    func count(name: String, aCondition: String, aValue: Bool) -> Int {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ "id" ]
+        request.predicate = NSPredicate(format: "%K == %@", aCondition, NSNumber(bool: aValue))
+        request.resultType = NSFetchRequestResultType.CountResultType
+        var count = self.managedObjectContext?.countForFetchRequest(request, error: nil)
+        return count ?? 0
+    }
+    
     func querySingle<T>(name: String, ByID id: Int) -> T? {
         var request = NSFetchRequest(entityName: name)
         request.fetchLimit = 1
@@ -340,6 +349,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return []
     }
     
+    func queryList(name: String, ToRetrieve aProperty: String, condition1: String, value1: String, condition2: String, value2: [String], SortBy aSorting: String) -> [Int] {
+        var request = NSFetchRequest(entityName: name)
+        request.propertiesToFetch = [ aProperty ]
+        request.resultType = NSFetchRequestResultType.DictionaryResultType
+        
+        var predicates:[NSPredicate] = []
+        
+        var p1 = NSPredicate(format: "%K contains[c] %@", condition1, value1)!
+        predicates.append(p1)
+        
+        if value2.count > 0 {
+            var p2 = NSPredicate(format: "%K IN $IDLIST", condition2)!.predicateWithSubstitutionVariables(["IDLIST":value2])
+            predicates.append(p2)
+        }
+        
+        request.predicate = NSCompoundPredicate(type: .OrPredicateType, subpredicates: predicates)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: aSorting, ascending: true)]
+        
+        var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
+        
+        if objects != nil {
+            return objects!.valueForKey(aProperty) as [Int]
+        }
+        
+        return []
+    }
+    
     func queryList(name: String, ToRetrieve aProperty: String, conditions: [String], aValue: String, SortBy aSorting: String) -> [Int] {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ aProperty ]
@@ -431,57 +468,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
     
-    func downloadFromService(serviceAddress: String, method: String, objectCreator: (() -> NSManagedObject)?) -> Bool {
+    func queryService(serviceAddress: String, _ method: String, _ interval:NSTimeInterval = 15) -> AnyObject? {
         var error: NSError?
         var url = NSURL(string: serviceAddress + method)
         var response: NSURLResponse?
         
         if url == nil {
-            return false
+            return nil
         }
         
-        var interval: NSTimeInterval = objectCreator == nil ? 1 : 15
         var request = NSURLRequest(URL: url!, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: interval)
         var data =  NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
         
         if data == nil || error != nil {
-            return false
+            return nil
         }
         
         var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error) as? NSDictionary
         
         if dataList == nil && error != nil {
-            return false
+            return nil
         }
         
         var results:AnyObject? = dataList!.valueForKey(method + "Result")
         
         if results == nil {
-            return false
+            return nil
         }
+        
+        return results
+    }
+    
+    func downloadFromService(serviceAddress: String, method: String, objectCreator: (() -> NSManagedObject)?) -> Bool {
         
         if let creator = objectCreator {
-            for data in results! as [NSDictionary] {
-                var item = creator()
-                
-                for (key, value) in data {
-                    var keyName = key as NSString
-                    if item.respondsToSelector(NSSelectorFromString(keyName)) {
-                        item.setValue(value, forKey: keyName)
+            if let results = queryService(serviceAddress, method) as? [NSDictionary] {
+                for data in results {
+                    var item = creator()
+                    
+                    for (key, value) in data {
+                        var keyName = key as NSString
+                        if item.respondsToSelector(NSSelectorFromString(keyName)) {
+                            item.setValue(value, forKey: keyName)
+                        }
                     }
                 }
-            }
-            return true
-        } else {
-            var value = results! as? Int
-            
-            if value != nil && value! == 1 {
                 return true
             }
+            return false
+        } else {
+            if let value = queryService(serviceAddress, method, 1) as? Int {
+                if value == 1 {
+                    return true
+                }
+            }
+            return false
         }
-        
-        return false
     }
+    
     
     func createPIDInsert() -> PIDInsert {
         var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDInsertName.name,
@@ -518,7 +562,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pidObject.coverNoCover = false
         pidObject.coverOther = false
         pidObject.insertBarcode = ""
-        pidObject.insertComments = ""
         pidObject.insertFaded = false
         pidObject.insertMissing = false
         pidObject.insertName = ""
@@ -554,7 +597,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pidObject.locationModified = false
         pidObject.standModified = false
         pidObject.inventoryModified = false
-        pidObject.inventoryStation = ""
+        pidObject.inventoryStationCode = ""
         pidObject.inventoryPhoto1Date = ""
         pidObject.inventoryPhoto2Date = ""
      
