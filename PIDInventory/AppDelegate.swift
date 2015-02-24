@@ -414,7 +414,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return self.managedObjectContext?.executeFetchRequest(request, error: nil)
     }
     
-    func sendToService(serviceAddress: String, method: String, objectToSend: NSDictionary) -> Bool {
+    func sendToService(serviceAddress: String, method: String, pidCase: PIDCase, onSuccess: ((PIDCase) -> Void)!, onError: (() -> Void)!) -> Bool {
         var error: NSError?
         var url = NSURL(string: serviceAddress + method)
         var response: NSURLResponse?
@@ -423,11 +423,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
         
-        var jsonData = NSJSONSerialization.dataWithJSONObject(objectToSend, options: nil, error: &error)
+        var objectToSend = toJSON(pidCase)
         
-        //var s = NSString(data: jsonData!, encoding: NSUTF8StringEncoding)
-      
-        //println(s)
+        var jsonData = NSJSONSerialization.dataWithJSONObject(objectToSend, options: nil, error: &error)
         
         if jsonData == nil || error != nil {
             return false
@@ -440,91 +438,133 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.HTTPBody = jsonData
         
+        let queue:NSOperationQueue = NSOperationQueue()
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler:{ (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            
+            var error2: NSError?
+            
+            if data == nil || error != nil {
+                onError()
+                return
+            }
+    
+            var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error2) as? NSDictionary
+    
+            if dataList == nil && error2 != nil {
+                onError()
+                return
+            }
+    
+            var results:AnyObject? = dataList!.valueForKey(method + "Result")
+    
+            if results == nil {
+                onError()
+                return
+            }
+            
+            var value = results! as? Int
+            
+            if value != nil && value! == 1 {
+                onSuccess(pidCase)
+                return
+            }
+    
+        })
         
-        var data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
-
-        if data == nil || error != nil {
-            return false
-        }
-        
-        var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error) as? NSDictionary
-        
-        if dataList == nil && error != nil {
-            return false
-        }
-        
-        var results:AnyObject? = dataList!.valueForKey(method + "Result")
-        
-        if results == nil {
-            return false
-        }
-        
-        var value = results! as? Int
-        
-        if value != nil && value! == 1 {
-            return true
-        }
-        
-        return false
+        return true
     }
     
-    func queryService(serviceAddress: String, _ method: String, _ interval:NSTimeInterval = 15) -> AnyObject? {
-        var error: NSError?
+    //func queryService(serviceAddress: String, _ method: String, _ interval:NSTimeInterval = 15) -> AnyObject? {
+    func queryService(serviceAddress: String, _ method: String, _ onSuccess: ((AnyObject?) -> Void)!, _ onError: (() -> Void)?, _ interval:NSTimeInterval = 15) -> Bool? {
         var url = NSURL(string: serviceAddress + method)
         var response: NSURLResponse?
         
         if url == nil {
-            return nil
+            return false
         }
         
         var request = NSURLRequest(URL: url!, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: interval)
-        var data =  NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
         
-        if data == nil || error != nil {
-            return nil
-        }
+        let queue:NSOperationQueue = NSOperationQueue()
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler:{ (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            var error: NSError?
+            
+            if data == nil || error != nil {
+                if onError != nil {
+                    onError!()
+                }
+                return
+            }
+    
+            var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error) as? NSDictionary
+    
+            if dataList == nil && error != nil {
+                if onError != nil {
+                    onError!()
+                }
+                return
+            }
+    
+            var results:AnyObject? = dataList!.valueForKey(method + "Result")
+            
+            if results == nil {
+                if onError != nil {
+                    onError!()
+                }
+                return
+            }
+            
+            onSuccess(results)
+        })
         
-        var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error) as? NSDictionary
+        return true
+//        var data =  NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
+//        
+//        if data == nil || error != nil {
+//            return nil
+//        }
+//        
+//        var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error) as? NSDictionary
+//        
+//        if dataList == nil && error != nil {
+//            return nil
+//        }
+//        
+//        var results:AnyObject? = dataList!.valueForKey(method + "Result")
+//        
+//        if results == nil {
+//            return nil
+//        }
         
-        if dataList == nil && error != nil {
-            return nil
-        }
-        
-        var results:AnyObject? = dataList!.valueForKey(method + "Result")
-        
-        if results == nil {
-            return nil
-        }
-        
-        return results
+//        return results
     }
     
-    func downloadFromService(serviceAddress: String, method: String, objectCreator: (() -> NSManagedObject)?) -> Bool {
-        
-        if let creator = objectCreator {
-            if let results = queryService(serviceAddress, method) as? [NSDictionary] {
-                for data in results {
-                    var item = creator()
-                    
-                    for (key, value) in data {
-                        var keyName = key as NSString
-                        if item.respondsToSelector(NSSelectorFromString(keyName)) {
-                            item.setValue(value, forKey: keyName)
-                        }
-                    }
-                }
-                return true
-            }
-            return false
-        } else {
-            if let value = queryService(serviceAddress, method, 1) as? Int {
-                if value == 1 {
-                    return true
-                }
-            }
-            return false
-        }
-    }
+//    func downloadFromService(serviceAddress: String, method: String, objectCreator: (() -> NSManagedObject)?) -> Bool {
+//        
+//        if let creator = objectCreator {
+//            if let results = queryService(serviceAddress, method) as? [NSDictionary] {
+//                for data in results {
+//                    var item = creator()
+//                    
+//                    for (key, value) in data {
+//                        var keyName = key as NSString
+//                        if item.respondsToSelector(NSSelectorFromString(keyName)) {
+//                            item.setValue(value, forKey: keyName)
+//                        }
+//                    }
+//                }
+//                return true
+//            }
+//            return false
+//        } else {
+//            if let value = queryService(serviceAddress, method, 1) as? Int {
+//                if value == 1 {
+//                    return true
+//                }
+//            }
+//            return false
+//        }
+//    }
     
     
     func createPIDInsert() -> PIDInsert {

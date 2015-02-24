@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import SystemConfiguration
 
 class RefreshTableViewController: UITableViewController, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate {
@@ -101,69 +102,162 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             }
         }
     }
+    
+    var recordsToProcess = 0
+    var recordsProcessed = 0
+    var recordsFailed = 0
+    var processing = false
 
     func uploadData() {
         if let caseList = appDelegate.queryList(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) {
             if caseList.count > 0 {
-                for c in caseList {
-                    var selectedRow = pickerViewUsers.selectedRowInComponent(0)
-                    c.inventoryUser = listUsernames[selectedRow][0]
-                    
-                    var jsonList = toJSON(c)
-                    
-                    var statusUpload = appDelegate.sendToService(serviceAddress, method: "PostCaseList", objectToSend: jsonList)
-                    
-                    if !statusUpload {
-                        jsonProcessError()
-                        return
+                if !processing {
+                    processing = true
+                    recordsToProcess = caseList.count
+                    for c in caseList {
+                        
+                        var selectedRow = pickerViewUsers.selectedRowInComponent(0)
+                        c.inventoryUser = listUsernames[selectedRow][0]
+                        
+                        var statusUpload = appDelegate.sendToService(serviceAddress, method: "PostCaseList", pidCase: c, onSuccess: uploadDataSuccess, onError: uploadDataError)
+                        
+                        if !statusUpload {
+                            recordsProcessed = 0
+                            onProcessError()
+                            return
+                        }
                     }
-                    
-                    appDelegate.deleteObject(c)
-                    
-                    appDelegate.saveContext()
                 }
             }
         }
     }
     
-    func downloadData() {
-        appDelegate.deleteAllManagedObjects()
+    func uploadDataSuccess(c: PIDCase) {
+        ++recordsProcessed
+        checkIfUploadDone()
         
-        if let userList = appDelegate.queryService(serviceAddress, "GetUserList") as? [NSArray] {
+        appDelegate.deleteObject(c)
+        appDelegate.saveContext()
+    }
+    
+    func uploadDataError() {
+        ++recordsFailed
+        checkIfUploadDone()
+        
+        appDelegate.rollBack()
+    }
+    
+    func checkIfUploadDone() {
+        if recordsProcessed + recordsFailed == recordsToProcess {
+            println("\(recordsProcessed) processed  \(recordsFailed) errors")
+            
+            processing = false
+            recordsToProcess = 0
+            recordsProcessed = 0
+            recordsFailed = 0
+        }
+    }
+    
+    func downloadData() {
+        if !processing {
+            processing = true
+            appDelegate.deleteAllManagedObjects()
+            
+            appDelegate.queryService(serviceAddress, "GetUserList", onSuccessUsers, onProcessError, 1)
+        }
+    }
+    
+    func onProcessError() {
+        appDelegate.rollBack()
+        processing = false
+        UIAlertView(title: "Connection Error", message: "Process not completed, no changes occurred", delegate: nil, cancelButtonTitle: "OK").show()
+    }
+    
+    func onSuccessUsers(x: AnyObject?) {
+        if let results = x as? [NSArray] {
             listUsernames.removeAll(keepCapacity: false)
             
-            for user in userList {
+            for user in results {
                 listUsernames.append([user[0] as String, user[1] as String])
             }
             
             NSUserDefaults.standardUserDefaults().setObject(listUsernames, forKey: "usernameList")
             
             refreshPickerViewUsers()
-        }
-        
-        var statusInsert = appDelegate.downloadFromService(serviceAddress, method: "GetInsertList", objectCreator:appDelegate.createPIDInsert)
-        
-        if !statusInsert {
-            jsonProcessError()
-            return
-        }
-        
-        var statusCase = appDelegate.downloadFromService(serviceAddress, method: "GetCaseList", objectCreator:appDelegate.createPIDCase)
-        
-        if !statusCase {
-            jsonProcessError()
-            return
-        }
-        
-        if statusInsert && statusCase {
-            appDelegate.saveContext()
-            clearDirectory()
+            
+            appDelegate.queryService(serviceAddress, "GetInsertList", onSuccessInsert, onProcessError)
+        } else {
+            onProcessError()
         }
     }
     
-    func jsonProcessError() {
-        appDelegate.rollBack()
-        UIAlertView(title: "Connection Error", message: "Process not completed, no changes occurred", delegate: nil, cancelButtonTitle: "OK").show()
+    func onSuccessInsert(x: AnyObject?) {
+        if onSuccessList(x, creator:appDelegate.createPIDInsert) {
+            appDelegate.queryService(serviceAddress, "GetCaseList", onSuccessCase, onProcessError)
+        } else {
+            onProcessError()
+        }
+    }
+    
+    func onSuccessCase(x: AnyObject?) {
+        if onSuccessList(x, creator:appDelegate.createPIDCase) {
+            appDelegate.saveContext()
+            clearDirectory()
+            processing = false
+        } else {
+            onProcessError()
+        }
+    }
+    
+    func onSuccessList(x: AnyObject?,  creator: (() -> NSManagedObject)) -> Bool  {
+        if let results = x as? [NSDictionary] {
+            for data in results {
+                var item = creator()
+                
+                for (key, value) in data {
+                    var keyName = key as NSString
+                    if item.respondsToSelector(NSSelectorFromString(keyName)) {
+                        item.setValue(value, forKey: keyName)
+                    }
+                }
+            }
+            return true
+        }
+        return false
+    }
+    
+    func onSuccessCheckConnection (x: AnyObject?)  {
+        if let result = x as? Int {
+            isAlive = result == 1
+        } else {
+            isAlive = false
+        }
+        refreshStatus()
+    }
+    
+    func onFailCheckConnection () {
+        isAlive = false
+        refreshStatus()
+    }
+    
+    func refreshStatus() {
+        var statusText = isAlive ? "Up": "Down"
+        toolBarLabel.title = "Server: \(server) - Status: \(statusText)"
+        
+        toolBarLabel.tintColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+        
+        cellUpload.selectionStyle = isAlive ? .Blue : .None
+        cellDownload.selectionStyle = isAlive ? .Blue : .None
+        
+        var labelUpload = cellUpload?.viewWithTag(1) as? UILabel
+        if labelUpload != nil {
+            labelUpload!.textColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+        }
+        
+        var labelDownload = cellDownload?.viewWithTag(1) as? UILabel
+        if labelDownload != nil {
+            labelDownload!.textColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+        }
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -216,26 +310,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func checkConnection() {
-        isAlive = appDelegate.downloadFromService(serviceAddress, method: "Alive", objectCreator:nil)
-        
-        var statusText = isAlive ? "Up": "Down"
-        toolBarLabel.title = "Server: \(server) - Status: \(statusText)"
-        
-        toolBarLabel.tintColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
-        
-        cellUpload.selectionStyle = isAlive ? .Blue : .None
-        cellDownload.selectionStyle = isAlive ? .Blue : .None
-        
-        var labelUpload = cellUpload?.viewWithTag(1) as? UILabel
-        if labelUpload != nil {
-            labelUpload!.textColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
-        }
-        
-        var labelDownload = cellDownload?.viewWithTag(1) as? UILabel
-        if labelDownload != nil {
-            labelDownload!.textColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
-        }
-       
+        appDelegate.queryService(serviceAddress, "Alive", onSuccessCheckConnection, onFailCheckConnection)
     }
     
     override func viewDidLoad() {
