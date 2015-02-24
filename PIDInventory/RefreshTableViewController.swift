@@ -163,7 +163,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             processing = true
             appDelegate.deleteAllManagedObjects()
             
-            appDelegate.queryService(serviceAddress, "GetUserList", onSuccessUsers, onProcessError, 1)
+            appDelegate.queryService(serviceAddress, "GetUserList", onSuccessUsers, onProcessError)
         }
     }
     
@@ -241,22 +241,24 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func refreshStatus() {
-        var statusText = isAlive ? "Up": "Down"
-        toolBarLabel.title = "Server: \(server) - Status: \(statusText)"
-        
-        toolBarLabel.tintColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
-        
-        cellUpload.selectionStyle = isAlive ? .Blue : .None
-        cellDownload.selectionStyle = isAlive ? .Blue : .None
-        
-        var labelUpload = cellUpload?.viewWithTag(1) as? UILabel
-        if labelUpload != nil {
-            labelUpload!.textColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
-        }
-        
-        var labelDownload = cellDownload?.viewWithTag(1) as? UILabel
-        if labelDownload != nil {
-            labelDownload!.textColor = isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+        dispatch_async(dispatch_get_main_queue()) {
+            var statusText = self.isAlive ? "Up": "Down"
+            self.toolBarLabel.title = "Server: \(self.server) - Status: \(statusText)"
+            
+            self.toolBarLabel.tintColor = self.isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+            
+            self.cellUpload.selectionStyle = self.isAlive ? .Blue : .None
+            self.cellDownload.selectionStyle = self.isAlive ? .Blue : .None
+            
+            var labelUpload = self.cellUpload?.viewWithTag(1) as? UILabel
+            if labelUpload != nil {
+                labelUpload!.textColor = self.isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+            }
+            
+            var labelDownload = self.cellDownload?.viewWithTag(1) as? UILabel
+            if labelDownload != nil {
+                labelDownload!.textColor = self.isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+            }
         }
     }
     
@@ -310,7 +312,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func checkConnection() {
-        appDelegate.queryService(serviceAddress, "Alive", onSuccessCheckConnection, onFailCheckConnection)
+        appDelegate.queryService(serviceAddress, "Alive", onSuccessCheckConnection, onFailCheckConnection, 1)
     }
     
     override func viewDidLoad() {
