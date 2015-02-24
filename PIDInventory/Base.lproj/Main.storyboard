@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="dbw-iX-an2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="dbw-iX-an2">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -87,13 +87,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" tag="1" contentMode="left" text="PID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aA9-oJ-o9G" userLabel="PIDValue">
-                                                    <rect key="frame" x="82" y="12" width="309" height="19.5"/>
+                                                    <rect key="frame" x="50.5" y="12" width="340.5" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" tag="2" contentMode="left" text="Insert" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RjW-90-Ozc" userLabel="InsertValue">
-                                                    <rect key="frame" x="82" y="32" width="309" height="14.5"/>
+                                                    <rect key="frame" x="50.5" y="32" width="340.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -134,7 +134,7 @@
                                                 <constraint firstItem="999-pJ-O10" firstAttribute="leading" secondItem="IY8-A4-I65" secondAttribute="leadingMargin" constant="8" id="O7k-Ym-jQz"/>
                                                 <constraint firstItem="hZg-xr-6vS" firstAttribute="leading" secondItem="999-pJ-O10" secondAttribute="leading" id="TzO-Lv-B9j"/>
                                                 <constraint firstAttribute="centerY" secondItem="c0f-69-w3J" secondAttribute="centerY" id="XsO-cm-WJj"/>
-                                                <constraint firstItem="aA9-oJ-o9G" firstAttribute="leading" secondItem="999-pJ-O10" secondAttribute="trailing" constant="40" id="bUe-CD-nAe"/>
+                                                <constraint firstItem="aA9-oJ-o9G" firstAttribute="leading" secondItem="999-pJ-O10" secondAttribute="trailing" constant="8" id="bUe-CD-nAe"/>
                                                 <constraint firstItem="aA9-oJ-o9G" firstAttribute="leading" secondItem="RjW-90-Ozc" secondAttribute="leading" id="cPG-Ie-Zu0"/>
                                                 <constraint firstItem="YXt-7W-dTe" firstAttribute="leading" secondItem="c0f-69-w3J" secondAttribute="trailing" id="jl3-D1-lFx"/>
                                                 <constraint firstItem="999-pJ-O10" firstAttribute="top" secondItem="IY8-A4-I65" secondAttribute="topMargin" constant="4" id="q2t-bZ-YvK"/>
@@ -2141,7 +2141,7 @@
         <image name="barcode" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="TG0-ze-Dny"/>
         <segue reference="gwN-Oi-nmQ"/>
-        <segue reference="ceP-EF-o2U"/>
     </inferredMetricsTieBreakers>
 </document>
