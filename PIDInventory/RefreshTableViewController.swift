@@ -283,19 +283,19 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             var statusText = localIsAlive ? "Up": "Down"
             self.toolBarLabel.title = "Server: \(self.server) - Status: \(statusText)"
             
-            self.toolBarLabel.tintColor = localIsAlive ? self.view.tintColor : UIColor.lightGrayColor()
+            self.toolBarLabel.tintColor = localIsAlive ? blueColor : UIColor.lightGrayColor()
             
             self.cellUpload.selectionStyle = localIsAlive ? .Blue : .None
             self.cellDownload.selectionStyle = localIsAlive ? .Blue : .None
             
             var labelUpload = self.cellUpload?.viewWithTag(1) as? UILabel
             if labelUpload != nil {
-                labelUpload!.textColor = localIsAlive ? self.view.tintColor : UIColor.lightGrayColor()
+                labelUpload!.textColor = localIsAlive ? blueColor : UIColor.lightGrayColor()
             }
             
             var labelDownload = self.cellDownload?.viewWithTag(1) as? UILabel
             if labelDownload != nil {
-                labelDownload!.textColor = localIsAlive ? self.view.tintColor : UIColor.lightGrayColor()
+                labelDownload!.textColor = localIsAlive ? blueColor : UIColor.lightGrayColor()
             }
         }
     }

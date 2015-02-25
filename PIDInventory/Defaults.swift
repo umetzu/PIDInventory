@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+var blueColor = UIColor(red: 0, green: 0.478431, blue: 1, alpha: 1)
+
 // MARK: - Image Functions
 func documentsPathForFileName(name: String) -> String {
     let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);

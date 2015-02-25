@@ -178,7 +178,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.tintColor = UIApplication.sharedApplication().delegate?.window!!.tintColor
+        navigationController?.navigationBar.tintColor = blueColor//UIApplication.sharedApplication().delegate?.window!!.tintColor
         navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
     }
     
