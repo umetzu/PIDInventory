@@ -115,11 +115,12 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         picker.delegate = self
         var imageView = sender.view as UIImageView
         
-        var actionSheet  = UIActionSheet(title: imageView.tag == 101 ? "Photo 1" : "Photo 2", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        var actionSheet  = UIActionSheet(title: imageView.tag == 101 ? "Photo 1" : "Photo 2", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         actionSheet.tag = imageView.tag
-       
+        
         actionSheet.addButtonWithTitle("Take Photo")
         
+        actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle("Cancel")
         var view = imageView.tag == 101 ? viewImageView1 : viewImageView2
         actionSheet.showFromRect(imageView.frame, inView: view, animated: true)
 
@@ -128,14 +129,12 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     // MARK: - UIActionSheetDelegate
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         if actionSheet.tag == 10 {
-            if buttonIndex != 0 {
+            if buttonIndex != actionSheet.cancelButtonIndex {
                 openInMaps()
             }
         } else {
-            switch buttonIndex {
-            case 1:
+            if buttonIndex != actionSheet.cancelButtonIndex {
                 callImagePicker(actionSheet.tag)
-            default: break
             }
         }
     }
@@ -273,8 +272,13 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         
-        var actionSheet  = UIActionSheet(title: "Get Directions", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "Open in Maps App")
+        var actionSheet  = UIActionSheet(title: "Get Directions", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         actionSheet.tag = 10
+        
+        actionSheet.addButtonWithTitle("Open in Maps App")
+        
+        actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle("Cancel")
+        
         actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
         
         mapView.deselectAnnotation(view.annotation, animated: false)

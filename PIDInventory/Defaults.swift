@@ -32,7 +32,14 @@ func clearDirectory() {
 }
 
 func savePicture(image: UIImage) -> String {
-    let imageData = UIImageJPEGRepresentation(image, 0.5)
+    
+    var size = CGSize(width: image.size.width / 2, height: image.size.height / 2)
+    UIGraphicsBeginImageContext(size)
+    image.drawInRect(CGRectMake(0, 0, size.width, size.height))
+    var newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    let imageData = UIImageJPEGRepresentation(newImage, 0.5)
     let relativePath = "image_\(NSDate.timeIntervalSinceReferenceDate()).jpg"
     let path = documentsPathForFileName(relativePath)
     imageData.writeToFile(path, atomically: true)
@@ -58,7 +65,7 @@ func base64FromPicturePath(path: String) -> String {
 }
 
 func completedText(status: Bool) -> String {
-    return status ? "😌" : "😨"
+    return status ? "😁" : "😨"
 }
 
 func keysFromValue(list:[(key: String, value: String)], Value value:String) -> [String] {

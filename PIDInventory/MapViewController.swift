@@ -116,7 +116,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
             return
         }
         
-        var actionSheet  = UIActionSheet(title: "Sharing with", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        var actionSheet  = UIActionSheet(title: "Sharing with", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        
         
         annotationTitles = annotations[view.annotation as MKPointAnnotation]!
         
@@ -125,6 +126,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         for x in annotationTitles {
             actionSheet.addButtonWithTitle(x.0)
         }
+        
+        actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle("Cancel")
         
         actionSheet.showFromRect(view.frame, inView: mapView, animated: true)
         
@@ -135,10 +138,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     // MARK: - UIActionSheetDelegate
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if (actionSheet.tag == 1 ) {
-            if (buttonIndex == 0 ) {
+            if (buttonIndex == actionSheet.cancelButtonIndex) {
                 annotationTitles.removeAll()
             } else {
-                var id = annotationTitles[buttonIndex - 1].1
+                var id = annotationTitles[buttonIndex].1
                 performSegueWithIdentifier("segueToDetail", sender: id)
             }
         }

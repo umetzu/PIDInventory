@@ -47,7 +47,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     @IBAction func changeServer(sender: UIBarButtonItem) {
-        if processing {
+        if !processing {
             var alert = UIAlertView(title: "Server Address", message:"Server:Port", delegate:self, cancelButtonTitle:"Cancel", otherButtonTitles: "OK")
             alert.tag = 10
             alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
@@ -71,11 +71,11 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     //MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.section == 0 && indexPath.row == 0) {
-                changePickerCellVisibility(!isPickerVisible)
-        }
-    
         if !processing {
+            if (indexPath.section == 0 && indexPath.row == 0) {
+                    changePickerCellVisibility(!isPickerVisible)
+            }
+            
             if (indexPath.section == 2 && isAlive) {
                 
                 var title = indexPath.row == 0 ? "Data upload" : "Data overwrite"
@@ -98,8 +98,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
                     if appDelegate.count(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) > 0 {
                         uploadData()
                     } else {
-                        //labelProcessing.text = "There are n"
-                        UIAlertView(title: "No data to upload", message: "There are not any PID with a modified status", delegate: nil, cancelButtonTitle: "OK").show()
+                        labelProcessing.text = "There are no changes to upload"
                     }
                 case 1:
                     downloadData()
@@ -122,11 +121,13 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
                     processing = true
                     self.labelProcessing.text = "Processing..."
                     recordsToProcess = caseList.count
+                    
+                    var selectedRow = pickerViewUsers.selectedRowInComponent(0)
+                    var user = listUsernames[selectedRow][0]
+                    
                     for c in caseList {
-                        
-                        var selectedRow = pickerViewUsers.selectedRowInComponent(0)
-                        c.inventoryUser = listUsernames[selectedRow][0]
-                        
+                        c.inventoryUser = user
+                    
                         var statusUpload = appDelegate.sendToService(serviceAddress, method: "PostCaseList", pidCase: c, onSuccess: uploadDataSuccess, onError: uploadDataError)
                         
                         if !statusUpload {
@@ -144,15 +145,19 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         ++recordsProcessed
         checkIfUploadDone()
         
-        appDelegate.deleteObject(c)
-        appDelegate.saveContext()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.appDelegate.deleteObject(c)
+            self.appDelegate.saveContext()
+        }
     }
     
     func uploadDataError() {
         ++recordsFailed
         checkIfUploadDone()
         
-        appDelegate.rollBack()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.appDelegate.rollBack()
+        }
     }
     
     func checkIfUploadDone() {
@@ -161,7 +166,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             var y = recordsFailed
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.labelProcessing.text = "\(x) records were uploaded - \(y) errors"
+                self.labelProcessing.text = "\(x) records were uploaded" + (y > 0 ? " \(y) errors" : "")
             }
             
             processing = false
@@ -255,22 +260,25 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func onSuccessCheckConnection (x: AnyObject?)  {
-        if let result = x as? Int {
-            isAlive = result == 1
-        } else {
-            isAlive = false
+         if !processing {
+            if let result = x as? Int {
+                isAlive = result == 1
+            } else {
+                isAlive = false
+            }
+            refreshStatus()
         }
-        refreshStatus()
     }
     
     func onFailCheckConnection () {
-        isAlive = false
-        refreshStatus()
+        if !processing {
+            isAlive = false
+            refreshStatus()
+        }
     }
     
     func refreshStatus() {
         var localIsAlive = isAlive
-        
         dispatch_async(dispatch_get_main_queue()) {
             var statusText = localIsAlive ? "Up": "Down"
             self.toolBarLabel.title = "Server: \(self.server) - Status: \(statusText)"
