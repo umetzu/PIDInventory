@@ -175,11 +175,14 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     }   
     
     func saveChanges(sender: UIBarButtonItem) {
-        if textFieldCaseBarcode.text.isEmpty {
-            UIAlertView(title: "Missing Barcode", message: "Please provide a Case Barcode",
-                delegate: nil, cancelButtonTitle: "Ok").show()
+        var trimmedBarcode = textFieldCaseBarcode.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        var valueBarcode = trimmedBarcode.toInt() ?? -1
+        
+        if trimmedBarcode.isEmpty {
+            UIAlertView(title: "Missing Barcode", message: "Please provide a Case Barcode", delegate: nil, cancelButtonTitle: "OK").show()
+        } else if valueBarcode < 0 || valueBarcode > 99999 {
+            UIAlertView(title: "Wrong Barcode", message: "Barcode should be a number between 0 and 99999", delegate: nil, cancelButtonTitle: "OK").show()
         } else {
-            
             var m1 = currentPIDObject!.caseModified
             var m2 = currentPIDObject!.coverModified
             var m3 = currentPIDObject!.insertModified

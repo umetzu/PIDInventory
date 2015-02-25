@@ -797,6 +797,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="16" y="11" width="42.5" height="19.5"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="caseWidth" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBv-Yp-DFe">
                                                     <rect key="frame" x="507" y="12" width="77" height="20"/>
@@ -1681,6 +1684,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Oer-Zh-CSs" userLabel="labelProcessing">
+                            <rect key="frame" x="0.0" y="-21" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <sections>
                             <tableViewSection id="ouC-R3-5oY">
                                 <cells>
@@ -1836,6 +1846,7 @@
                         <outlet property="cellDownload" destination="eaD-6v-xd2" id="fO8-os-Jdo"/>
                         <outlet property="cellPicker" destination="0hB-Gx-a8j" id="S11-bE-IGS"/>
                         <outlet property="cellUpload" destination="OPb-T3-CPF" id="fFp-ZJ-xQc"/>
+                        <outlet property="labelProcessing" destination="Oer-Zh-CSs" id="ifv-N7-1CT"/>
                         <outlet property="labelSelectedUsername" destination="Omy-1c-ICA" id="MQc-oY-ZlD"/>
                         <outlet property="pickerViewUsers" destination="K77-r6-sRt" id="aTS-if-Ji9"/>
                         <outlet property="toolBarLabel" destination="H4S-r9-INF" id="35A-Os-sdh"/>

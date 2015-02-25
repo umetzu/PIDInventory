@@ -99,27 +99,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }()
     
     lazy var managedObjectContext: NSManagedObjectContext? = {
-        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.persistentStoreCoordinator
         if coordinator == nil {
             return nil
         }
+        
         var managedObjectContext = NSManagedObjectContext()
+        //var managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
-        }()
+    }()
     
     // MARK: - Core Data Saving support
     
     func saveContext () {
+        if NSThread.isMainThread() {
         if let moc = self.managedObjectContext {
             var error: NSError? = nil
             if moc.hasChanges && !moc.save(&error) {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 NSLog("Unresolved error \(error), \(error!.userInfo)")
-                abort()
+                UIAlertView(title: "Database Error", message: "No changes were persisted", delegate: nil, cancelButtonTitle: "OK").show()
             }
+        }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.saveContext()
+            })
         }
     }
     
@@ -474,7 +479,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    //func queryService(serviceAddress: String, _ method: String, _ interval:NSTimeInterval = 15) -> AnyObject? {
     func queryService(serviceAddress: String, _ method: String, _ onSuccess: ((AnyObject?) -> Void)!, _ onError: (() -> Void)?, _ interval:NSTimeInterval = 15) -> Bool? {
         var url = NSURL(string: serviceAddress + method)
         var response: NSURLResponse?
@@ -518,58 +522,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         
         return true
-//        var data =  NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
-//        
-//        if data == nil || error != nil {
-//            return nil
-//        }
-//        
-//        var dataList = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers, error: &error) as? NSDictionary
-//        
-//        if dataList == nil && error != nil {
-//            return nil
-//        }
-//        
-//        var results:AnyObject? = dataList!.valueForKey(method + "Result")
-//        
-//        if results == nil {
-//            return nil
-//        }
-        
-//        return results
     }
-    
-//    func downloadFromService(serviceAddress: String, method: String, objectCreator: (() -> NSManagedObject)?) -> Bool {
-//        
-//        if let creator = objectCreator {
-//            if let results = queryService(serviceAddress, method) as? [NSDictionary] {
-//                for data in results {
-//                    var item = creator()
-//                    
-//                    for (key, value) in data {
-//                        var keyName = key as NSString
-//                        if item.respondsToSelector(NSSelectorFromString(keyName)) {
-//                            item.setValue(value, forKey: keyName)
-//                        }
-//                    }
-//                }
-//                return true
-//            }
-//            return false
-//        } else {
-//            if let value = queryService(serviceAddress, method, 1) as? Int {
-//                if value == 1 {
-//                    return true
-//                }
-//            }
-//            return false
-//        }
-//    }
     
     
     func createPIDInsert() -> PIDInsert {
-        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDInsertName.name,
-            inManagedObjectContext: self.managedObjectContext!) as PIDInsert
+        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDInsertName.name, inManagedObjectContext: self.managedObjectContext!) as PIDInsert
         
         pidObject.id = 0
         pidObject.barcode = ""
@@ -582,8 +539,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
     func createPIDCase() -> PIDCase {
-        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDCaseName.name,
-            inManagedObjectContext: self.managedObjectContext!) as PIDCase
+        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDCaseName.name, inManagedObjectContext: self.managedObjectContext!) as PIDCase
         
         pidObject.id = 0
         

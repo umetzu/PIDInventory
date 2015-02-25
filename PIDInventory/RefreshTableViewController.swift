@@ -19,11 +19,17 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     @IBOutlet weak var cellUpload: UITableViewCell!
     @IBOutlet weak var cellDownload: UITableViewCell!
-    
+    @IBOutlet weak var labelProcessing: UILabel!
     @IBOutlet weak var pickerViewUsers: UIPickerView!
     @IBOutlet weak var toolBarLabel: UIBarButtonItem!
     @IBOutlet weak var cellPicker: UITableViewCell!
     @IBOutlet weak var labelSelectedUsername: UILabel!
+    
+    var recordsToProcess = 0
+    var recordsProcessed = 0
+    var recordsFailed = 0
+    var processing = false
+    
     var isPickerVisible = true
 
     var listUsernames:[[String]] = [["Other", "Other "]]
@@ -41,10 +47,12 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     @IBAction func changeServer(sender: UIBarButtonItem) {
-        var alert = UIAlertView(title: "Server Address", message:"Server:Port", delegate:self, cancelButtonTitle:"Cancel", otherButtonTitles: "OK")
-        alert.tag = 10
-        alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
-        alert.show()
+        if processing {
+            var alert = UIAlertView(title: "Server Address", message:"Server:Port", delegate:self, cancelButtonTitle:"Cancel", otherButtonTitles: "OK")
+            alert.tag = 10
+            alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
+            alert.show()
+        }
     }
     
     // MARK: - UIPickerViewDataSource
@@ -66,15 +74,18 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         if (indexPath.section == 0 && indexPath.row == 0) {
                 changePickerCellVisibility(!isPickerVisible)
         }
-        
-        if (indexPath.section == 2 && isAlive) {
-            var title = indexPath.row == 0 ? "Data upload" : "Data overwrite"
-            var message = indexPath.row == 0 ? "All modifications will be sent to the server, do you want to proceed?" : "Any modifications will be lost, are you sure you want to proceed?"
-            var tag = indexPath.row
-            
-            var alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
-            alert.tag = tag
-            alert.show()
+    
+        if !processing {
+            if (indexPath.section == 2 && isAlive) {
+                
+                var title = indexPath.row == 0 ? "Data upload" : "Data overwrite"
+                var message = indexPath.row == 0 ? "All modifications will be sent to the server, do you want to proceed?" : "Any modifications will be lost, are you sure you want to proceed?"
+                var tag = indexPath.row
+                
+                var alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
+                alert.tag = tag
+                alert.show()
+            }
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -87,6 +98,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
                     if appDelegate.count(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) > 0 {
                         uploadData()
                     } else {
+                        //labelProcessing.text = "There are n"
                         UIAlertView(title: "No data to upload", message: "There are not any PID with a modified status", delegate: nil, cancelButtonTitle: "OK").show()
                     }
                 case 1:
@@ -102,17 +114,13 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             }
         }
     }
-    
-    var recordsToProcess = 0
-    var recordsProcessed = 0
-    var recordsFailed = 0
-    var processing = false
 
     func uploadData() {
         if let caseList = appDelegate.queryList(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) {
             if caseList.count > 0 {
                 if !processing {
                     processing = true
+                    self.labelProcessing.text = "Processing..."
                     recordsToProcess = caseList.count
                     for c in caseList {
                         
@@ -149,7 +157,12 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     func checkIfUploadDone() {
         if recordsProcessed + recordsFailed == recordsToProcess {
-            println("\(recordsProcessed) processed  \(recordsFailed) errors")
+            var x = recordsProcessed
+            var y = recordsFailed
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.labelProcessing.text = "\(x) records were uploaded - \(y) errors"
+            }
             
             processing = false
             recordsToProcess = 0
@@ -158,19 +171,33 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         }
     }
     
+    func onProcessError() {
+        appDelegate.rollBack()
+        processing = false
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.labelProcessing.text = "Connection error, no changes were saved"
+        }
+    }
+    
+    func onDownloadSuccess(pids: Int) {
+        appDelegate.saveContext()
+        clearDirectory()
+        processing = false
+        dispatch_async(dispatch_get_main_queue()) {
+            self.labelProcessing.text = "\(pids) records were downloaded"
+        }
+        
+    }
+    
     func downloadData() {
         if !processing {
             processing = true
+            self.labelProcessing.text = "Processing..."
             appDelegate.deleteAllManagedObjects()
             
             appDelegate.queryService(serviceAddress, "GetUserList", onSuccessUsers, onProcessError)
         }
-    }
-    
-    func onProcessError() {
-        appDelegate.rollBack()
-        processing = false
-        UIAlertView(title: "Connection Error", message: "Process not completed, no changes occurred", delegate: nil, cancelButtonTitle: "OK").show()
     }
     
     func onSuccessUsers(x: AnyObject?) {
@@ -192,7 +219,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func onSuccessInsert(x: AnyObject?) {
-        if onSuccessList(x, creator:appDelegate.createPIDInsert) {
+        if onSuccessList(x, creator:appDelegate.createPIDInsert) >= 0 {
             appDelegate.queryService(serviceAddress, "GetCaseList", onSuccessCase, onProcessError)
         } else {
             onProcessError()
@@ -200,30 +227,31 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func onSuccessCase(x: AnyObject?) {
-        if onSuccessList(x, creator:appDelegate.createPIDCase) {
-            appDelegate.saveContext()
-            clearDirectory()
-            processing = false
+        var pids = onSuccessList(x, creator:appDelegate.createPIDCase)
+        if  pids >= 0{
+            onDownloadSuccess(pids)
         } else {
             onProcessError()
         }
     }
     
-    func onSuccessList(x: AnyObject?,  creator: (() -> NSManagedObject)) -> Bool  {
+    func onSuccessList(x: AnyObject?,  creator: (() -> NSManagedObject)) -> Int  {
         if let results = x as? [NSDictionary] {
-            for data in results {
-                var item = creator()
-                
-                for (key, value) in data {
-                    var keyName = key as NSString
-                    if item.respondsToSelector(NSSelectorFromString(keyName)) {
-                        item.setValue(value, forKey: keyName)
+            dispatch_async(dispatch_get_main_queue(), {
+                for data in results {
+                    var item = creator()
+                    
+                    for (key, value) in data {
+                        var keyName = key as NSString
+                        if item.respondsToSelector(NSSelectorFromString(keyName)) {
+                            item.setValue(value, forKey: keyName)
+                        }
                     }
                 }
-            }
-            return true
+            })
+            return results.count
         }
-        return false
+        return -1
     }
     
     func onSuccessCheckConnection (x: AnyObject?)  {
@@ -241,23 +269,25 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func refreshStatus() {
+        var localIsAlive = isAlive
+        
         dispatch_async(dispatch_get_main_queue()) {
-            var statusText = self.isAlive ? "Up": "Down"
+            var statusText = localIsAlive ? "Up": "Down"
             self.toolBarLabel.title = "Server: \(self.server) - Status: \(statusText)"
             
-            self.toolBarLabel.tintColor = self.isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+            self.toolBarLabel.tintColor = localIsAlive ? self.view.tintColor : UIColor.lightGrayColor()
             
-            self.cellUpload.selectionStyle = self.isAlive ? .Blue : .None
-            self.cellDownload.selectionStyle = self.isAlive ? .Blue : .None
+            self.cellUpload.selectionStyle = localIsAlive ? .Blue : .None
+            self.cellDownload.selectionStyle = localIsAlive ? .Blue : .None
             
             var labelUpload = self.cellUpload?.viewWithTag(1) as? UILabel
             if labelUpload != nil {
-                labelUpload!.textColor = self.isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+                labelUpload!.textColor = localIsAlive ? self.view.tintColor : UIColor.lightGrayColor()
             }
             
             var labelDownload = self.cellDownload?.viewWithTag(1) as? UILabel
             if labelDownload != nil {
-                labelDownload!.textColor = self.isAlive ? self.view.tintColor : UIColor.lightGrayColor()
+                labelDownload!.textColor = localIsAlive ? self.view.tintColor : UIColor.lightGrayColor()
             }
         }
     }
@@ -342,6 +372,9 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
         if identifier == "startInventorySegue" {
+            if processing {
+                return false
+            }
             if appDelegate.count(PIDInsertName.name) == 0 {
                 UIAlertView(title: "No Inserts available", message: "Please download PID from server first", delegate: nil, cancelButtonTitle: "OK").show()
                 return false
