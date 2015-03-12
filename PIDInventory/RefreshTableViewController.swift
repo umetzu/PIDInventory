@@ -24,6 +24,8 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     @IBOutlet weak var toolBarLabel: UIBarButtonItem!
     @IBOutlet weak var cellPicker: UITableViewCell!
     @IBOutlet weak var labelSelectedUsername: UILabel!
+    @IBOutlet weak var labelDBDetails: UILabel!
+    @IBOutlet weak var labelModifiedDetails: UILabel!
     
     var recordsToProcess = 0
     var recordsProcessed = 0
@@ -71,15 +73,25 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     //MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
         if !processing {
             if (indexPath.section == 0 && indexPath.row == 0) {
                     changePickerCellVisibility(!isPickerVisible)
             }
             
-            if (indexPath.section == 2 && isAlive) {
+            if (indexPath.section == 3 && isAlive) {
                 
-                var title = indexPath.row == 0 ? "Data upload" : "Data overwrite"
-                var message = indexPath.row == 0 ? "All modifications will be sent to the server, do you want to proceed?" : "Any modifications will be lost, are you sure you want to proceed?"
+                if indexPath.row != 0 {
+                    if appDelegate.count(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) == 0 {
+                        labelProcessing.text = "There are no changes to upload"
+                        return
+                    }
+                }
+                
+                var title = indexPath.row != 0 ? "Data upload" : "Data overwrite"
+                var message = indexPath.row != 0 ? "All modifications will be sent to the server, do you want to proceed?" : "Any modifications will be lost, are you sure you want to proceed?"
                 var tag = indexPath.row
                 
                 var alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
@@ -87,20 +99,14 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
                 alert.show()
             }
         }
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex != 0 {
             switch alertView.tag {
-                case 0:
-                    if appDelegate.count(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true) > 0 {
-                        uploadData()
-                    } else {
-                        labelProcessing.text = "There are no changes to upload"
-                    }
                 case 1:
+                    uploadData()
+                case 0:
                     downloadData()
                 default:
                     if let textField = alertView.textFieldAtIndex(0) {
@@ -166,7 +172,16 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             var y = recordsFailed
             
             dispatch_async(dispatch_get_main_queue()) {
+                
+                self.appDelegate.deleteAllManagedObjects()
+                self.appDelegate.saveContext()
+                
                 self.labelProcessing.text = "\(x) records were uploaded" + (y > 0 ? " \(y) errors" : "")
+                
+                NSUserDefaults.standardUserDefaults().setObject("", forKey: "downloadDate")
+                self.refreshDBLabel()
+                
+                self.pickerViewUsers.reloadAllComponents()
             }
             
             processing = false
@@ -186,13 +201,40 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     }
     
     func onDownloadSuccess(pids: Int) {
-        appDelegate.saveContext()
         clearDirectory()
-        processing = false
+        
         dispatch_async(dispatch_get_main_queue()) {
+            
+            self.appDelegate.saveContext()
+            
             self.labelProcessing.text = "\(pids) records were downloaded"
+            
+            let timestamp = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle)
+            NSUserDefaults.standardUserDefaults().setObject(timestamp, forKey: "downloadDate")
+            self.refreshDBLabel()
+            
+            self.pickerViewUsers.reloadAllComponents()
         }
         
+        processing = false
+    }
+    
+    func refreshDBLabel() {
+        var message = ""
+        var message2 = ""
+        var downloadDate = NSUserDefaults.standardUserDefaults().stringForKey("downloadDate")
+        
+        if downloadDate != nil && !downloadDate!.isEmpty {
+            message = "Last Download \(downloadDate!)"
+            var count = appDelegate.count(PIDCaseName.name, aCondition: PIDCaseName.modified, aValue: true)
+            message2 = "Modified Records: \(count)"
+        } else {
+            message = "Empty DB"
+            message2 = "Modified records: 0"
+        }
+        
+        labelDBDetails.text = message
+        labelModifiedDetails.text = message2
     }
     
     func downloadData() {
@@ -337,6 +379,8 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
         super.viewWillAppear(animated)
         self.navigationController?.toolbarHidden = false
         self.navigationController?.navigationBarHidden = true
+        
+        refreshDBLabel()
         
         timerConnectionCheck = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("checkConnection"), userInfo: nil, repeats: true)
         

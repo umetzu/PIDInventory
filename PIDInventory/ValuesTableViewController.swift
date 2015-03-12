@@ -141,15 +141,13 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     
     func setInsertCategoryNameDate(category: String, name: String, date: String) {
         var categoryIndex = indexFromList(listInsertCategories, Key: category) ?? 0
-        insertPickerViewCategory.selectRow(categoryIndex, inComponent: 0, animated: false)
-        
-        insertCategory.text = listInsertCategories[categoryIndex].value
-        
         retrieveInsertNameList(listInsertCategories[categoryIndex].key)
-        
         var nameIndex = find(insertNameList, name) ?? 0
+        
+        insertPickerViewCategory.selectRow(categoryIndex, inComponent: 0, animated: false)
         insertPickerViewCategory.selectRow(nameIndex, inComponent: 1, animated: false)
         
+        insertCategory.text = listInsertCategories[categoryIndex].value
         insertName.text = insertNameList[nameIndex]
         
         var newDate = date.toInt() == 0 ? NSDate() : formatter.dateFromString(date)!
@@ -373,14 +371,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        var tag = pickerView.tag
-        
-        if pickerView.tag == 200 && component == 1 {
-            var category = (picker(pickerView.tag).picker as UIPickerView).selectedRowInComponent(0)
-            retrieveInsertNameList(listInsertCategories[category].key)
-            tag = 300
-        }
-        
+        var tag = pickerView.tag == 200 && component == 1 ? 300 : pickerView.tag
         return pickerCount(tag)
     }
     
@@ -393,6 +384,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView.tag == 200 {
             if component == 0 {
+                retrieveInsertNameList(listInsertCategories[row].key)
                 (picker(pickerView.tag).picker as UIPickerView).reloadComponent(1)
             }
             

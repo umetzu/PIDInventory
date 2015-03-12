@@ -67,7 +67,7 @@ func base64FromPicturePath(path: String) -> String {
 }
 
 func completedText(status: Bool) -> String {
-    return status ? "😁" : "😨"
+    return status ? "🔵" : "🔴"
 }
 
 func keysFromValue(list:[(key: String, value: String)], Value value:String) -> [String] {

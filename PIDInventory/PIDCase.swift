@@ -75,6 +75,7 @@ class PIDCase: NSManagedObject {
     @NSManaged var locationModified: Bool
     @NSManaged var standModified: Bool
     @NSManaged var inventoryModified: Bool
+    
 
 }
 
