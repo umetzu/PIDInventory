@@ -233,12 +233,21 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
         
         var properties: [(property: String, value: String)] = [(PIDInsertName.insertCategory, category), (PIDInsertName.insertName, name), (PIDInsertName.insertDate, date)]
         
-        var insertFromBarcode: PIDInsert? = appDelegate.querySingle(PIDInsertName.name, ByProperty: PIDInsertName.insertBarcode, aValue: barcode)
+        var x = barcode.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        var y = x.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        var z = x.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        
+        
+        var insertFromBarcode: PIDInsert? = appDelegate.querySingle(PIDInsertName.name, ByProperty: PIDInsertName.insertBarcode, aValue: y)
+        var insertFromBarcode2: PIDInsert? = appDelegate.querySingle(PIDInsertName.name, ByProperty: PIDInsertName.insertBarcode, aValue: z)
         var insertFromName: PIDInsert? = appDelegate.querySingle(PIDInsertName.name, Properties: properties)
         
         if fromBarcode {
             if insertFromBarcode != nil {
                 setInsertCategoryNameDate(insertFromBarcode!.category, name: insertFromBarcode!.name, date: insertFromBarcode!.date)
+            }
+            if insertFromBarcode2 != nil {
+                setInsertCategoryNameDate(insertFromBarcode2!.category, name: insertFromBarcode2!.name, date: insertFromBarcode2!.date)
             }
         } else {
             if insertFromName != nil {
