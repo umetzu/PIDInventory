@@ -11,7 +11,7 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDelegate {
 
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var userLocationZoomed = false
     var annotations = [MKPointAnnotation:[String, Int, Bool]]()
     var annotationTitles = [String, Int, Bool]()
@@ -52,8 +52,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         
                         var x2 = x.coordinate.longitude
                         var y2 = x.coordinate.latitude
-                        var x1 = pidObject[PIDCaseName.longitude] as Double
-                        var y1 = pidObject[PIDCaseName.latitude] as Double
+                        var x1 = pidObject[PIDCaseName.longitude] as! Double
+                        var y1 = pidObject[PIDCaseName.latitude] as! Double
                         var c = 0.0
                         
                         return x1 >= x2 - c && x1 <= x2 + c && y1 >= y2 - c && y1 <= y2 + c
@@ -65,14 +65,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
                         annotation = annotationInPlace[0]
                     } else {
                         annotation = MKPointAnnotation()
-                        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject[PIDCaseName.latitude] as Double , longitude: pidObject[PIDCaseName.longitude] as Double)
+                        annotation.coordinate = CLLocationCoordinate2D(latitude: pidObject[PIDCaseName.latitude] as! Double , longitude: pidObject[PIDCaseName.longitude] as! Double)
                     }
                     
                     annotations[annotation] = annotations[annotation] ?? [String,Int, Bool]()
                     
-                    var modified = pidObject[PIDCaseName.modified] as Bool
+                    var modified = pidObject[PIDCaseName.modified] as! Bool
                     
-                    annotations[annotation]!.append("PID: \(pidObject[PIDCaseName.caseBarcode] as String) - \(completedText(pidObject[PIDCaseName.modified] as Bool))", pidObject[PIDCaseName.id] as Int, pidObject[PIDCaseName.modified] as Bool)
+                    annotations[annotation]!.append("PID: \(pidObject[PIDCaseName.caseBarcode] as! String) - \(completedText(pidObject[PIDCaseName.modified] as! Bool))", pidObject[PIDCaseName.id] as! Int, pidObject[PIDCaseName.modified] as! Bool)
                 }
             }
             
@@ -89,7 +89,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         
         var pinIdentifier = "customPin"
         
-        var pin = mapView.dequeueReusableAnnotationViewWithIdentifier(pinIdentifier) as MKPinAnnotationView?
+        var pin = mapView.dequeueReusableAnnotationViewWithIdentifier(pinIdentifier) as! MKPinAnnotationView?
         
         if (pin == nil) {
             pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: pinIdentifier)
@@ -99,7 +99,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         
         var completed = true
         
-        for x in annotations[annotation as MKPointAnnotation]! {
+        for x in annotations[annotation as! MKPointAnnotation]! {
             if !x.2 {
                 completed = false
             }
@@ -119,7 +119,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
         var actionSheet  = UIActionSheet(title: "Sharing with", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         
         
-        annotationTitles = annotations[view.annotation as MKPointAnnotation]!
+        annotationTitles = annotations[view.annotation as! MKPointAnnotation]!
         
         actionSheet.tag = 1
         
@@ -164,7 +164,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIActionSheetDeleg
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let dest = segue.destinationViewController as? DetailTableViewController {
-            dest.currentID = sender as Int
+            dest.currentID = sender as! Int
         }
     }
 }

@@ -11,7 +11,7 @@ import CoreData
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var pidObjectsID: [Int] = []
     
     @IBOutlet weak var textFieldPID: UITextField!
@@ -38,7 +38,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var cellIdentifier = "pidCell"
-        var cell = tableViewPID.dequeueReusableCellWithIdentifier(cellIdentifier) as UITableViewCell?
+        var cell = tableViewPID.dequeueReusableCellWithIdentifier(cellIdentifier) as! UITableViewCell?
         
         if (cell == nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: cellIdentifier)
@@ -107,7 +107,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true);
     }
 }

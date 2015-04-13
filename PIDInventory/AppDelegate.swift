@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.umetzu.test" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as NSURL
+        return urls[urls.count-1] as! NSURL
         }()
     
     lazy var managedObjectModel: NSManagedObjectModel = {
@@ -84,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
             coordinator = nil
             // Report any error we got.
-            let dict = NSMutableDictionary()
+            var dict = [String: AnyObject]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
@@ -140,8 +140,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data Operations
     func deleteAllManagedObjects() {
         for entityName in managedObjectModel.entitiesByName.keys {
-            let request = NSFetchRequest(entityName: entityName as String)
-            let response = self.managedObjectContext?.executeFetchRequest(request, error: nil) as [NSManagedObject]
+            let request = NSFetchRequest(entityName: entityName as! String)
+            let response = self.managedObjectContext?.executeFetchRequest(request, error: nil) as! [NSManagedObject]
             for item in response {
                 managedObjectContext?.deleteObject(item)
             }
@@ -167,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var result = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if (result?.count > 0) {
-            return (result![0]["id"] as NSNumber).intValue
+            return (result![0]["id"] as! NSNumber).intValue
         }
         
         return 0
@@ -210,7 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var predicates:[NSPredicate] = []
         
         for x in Properties {
-            var p = NSPredicate(format: "%K ==[c] %@", x.property, x.value)!
+            var p = NSPredicate(format: "%K ==[c] %@", x.property, x.value)
             
             predicates.append(p)
         }
@@ -248,13 +248,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var result = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if (result?.count > 0) {
-            return result![0][aProperty] as String
+            return result![0][aProperty] as! String
         }
         
         return ""
     }
     
-    func querySingle(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: Int) -> Bool {
+    func querySingleInt(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: Int) -> Bool {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ aProperty ]
         request.fetchLimit = 1
@@ -263,7 +263,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var result = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if (result?.count > 0) {
-            return result![0][aProperty] as Bool
+            return result![0][aProperty] as! Bool
         }
         
         return false
@@ -300,7 +300,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-            return objects!.valueForKey(aProperty) as [String]
+            return objects!.valueForKey(aProperty) as! [String]
         }
         
         return []
@@ -315,7 +315,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-            return objects!.valueForKey(aProperty) as [Int]
+            return objects!.valueForKey(aProperty) as! [Int]
         }
         
         return []
@@ -332,13 +332,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-            return objects!.valueForKey(aProperty) as [String]
+            return objects!.valueForKey(aProperty) as! [String]
         }
         
         return []
     }
     
-    func queryList(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String, SortBy aSorting: String) -> [Int] {
+    func queryListInt(name: String, ToRetrieve aProperty: String, aCondition: String, aValue: String, SortBy aSorting: String) -> [Int] {
         var request = NSFetchRequest(entityName: name)
         request.propertiesToFetch = [ aProperty ]
         request.resultType = NSFetchRequestResultType.DictionaryResultType
@@ -348,7 +348,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-            return objects!.valueForKey(aProperty) as [Int]
+            return objects!.valueForKey(aProperty) as! [Int]
         }
         
         return []
@@ -361,11 +361,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var predicates:[NSPredicate] = []
         
-        var p1 = NSPredicate(format: "%K contains[c] %@", condition1, value1)!
+        var p1 = NSPredicate(format: "%K contains[c] %@", condition1, value1)
         predicates.append(p1)
         
         if value2.count > 0 {
-            var p2 = NSPredicate(format: "%K IN $IDLIST", condition2)!.predicateWithSubstitutionVariables(["IDLIST":value2])
+            var p2 = NSPredicate(format: "%K IN $IDLIST", condition2).predicateWithSubstitutionVariables(["IDLIST":value2])
             predicates.append(p2)
         }
         
@@ -376,7 +376,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-            return objects!.valueForKey(aProperty) as [Int]
+            return objects!.valueForKey(aProperty) as! [Int]
         }
         
         return []
@@ -390,7 +390,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var predicates:[NSPredicate] = []
         
         for x in conditions {
-            var p = NSPredicate(format: "%K contains[c] %@", x, aValue)!
+            var p = NSPredicate(format: "%K contains[c] %@", x, aValue)
             
             predicates.append(p)
         }
@@ -402,7 +402,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var objects: NSArray? = self.managedObjectContext?.executeFetchRequest(request, error: nil)
         
         if objects != nil {
-                return objects!.valueForKey(aProperty) as [Int]
+                return objects!.valueForKey(aProperty) as! [Int]
         }
         
         return []
@@ -438,7 +438,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var request = NSMutableURLRequest(URL: url!, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 240)
         request.HTTPMethod = "POST"
-        request.setValue(NSString(format: "%d", jsonData!.length), forHTTPHeaderField:"Content-Length")
+        request.setValue(NSString(format: "%d", jsonData!.length) as String, forHTTPHeaderField:"Content-Length")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.HTTPBody = jsonData
@@ -479,7 +479,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func queryService(serviceAddress: String, _ method: String, _ onSuccess: ((AnyObject?) -> Void)!, _ onError: (() -> Void)?, _ interval:NSTimeInterval = 15) -> Bool? {
+    func queryService(serviceAddress: String, _ method: String, _ onSuccess: ((AnyObject?) -> Void)!, _ onError: (() -> Void)?, _ interval:NSTimeInterval ) -> Bool? {
         var url = NSURL(string: serviceAddress + method)
         var response: NSURLResponse?
         
@@ -526,7 +526,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func createPIDInsert() -> PIDInsert {
-        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDInsertName.name, inManagedObjectContext: self.managedObjectContext!) as PIDInsert
+        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDInsertName.name, inManagedObjectContext: self.managedObjectContext!) as! PIDInsert
         
         pidObject.id = 0
         pidObject.barcode = ""
@@ -539,7 +539,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
     func createPIDCase() -> PIDCase {
-        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDCaseName.name, inManagedObjectContext: self.managedObjectContext!) as PIDCase
+        var pidObject = NSEntityDescription.insertNewObjectForEntityForName(PIDCaseName.name, inManagedObjectContext: self.managedObjectContext!) as! PIDCase
         
         pidObject.id = 0
         

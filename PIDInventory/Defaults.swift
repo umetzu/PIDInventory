@@ -14,7 +14,7 @@ var blueColor = UIColor(red: 0, green: 0.478431, blue: 1, alpha: 1)
 // MARK: - Image Functions
 func documentsPathForFileName(name: String) -> String {
     let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
-    let path = paths[0] as String;
+    let path = paths[0] as! String;
     let fullPath = path.stringByAppendingPathComponent(name)
     
     return fullPath

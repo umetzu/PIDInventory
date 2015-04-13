@@ -26,7 +26,7 @@ class TabBarViewController: UITabBarController {
         var source: AnyObject = segue.sourceViewController
         if (source is CameraViewController) {
             if let dest = selectedViewController as? ListViewController {
-                dest.textFieldPID.text = (source as CameraViewController).capturedCode
+                dest.textFieldPID.text = (source as! CameraViewController).capturedCode
             } 
         }
     }

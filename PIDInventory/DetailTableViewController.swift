@@ -11,7 +11,7 @@ import MapKit
 
 class DetailTableViewController: UITableViewController, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     var currentID = 0
     var currentPIDObject: PIDCase?
@@ -101,7 +101,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     
     // Mark: Actions
     @IBAction func unwindToDetailTableViewController(segue: UIStoryboardSegue) {
-        var scanned = (segue.sourceViewController as CameraViewController).capturedCode
+        var scanned = (segue.sourceViewController as! CameraViewController).capturedCode
         
         textFieldCaseBarcode.text = scanned
         
@@ -113,7 +113,7 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
     
     @IBAction func imageViewTapped(sender: UITapGestureRecognizer) {
         picker.delegate = self
-        var imageView = sender.view as UIImageView
+        var imageView = sender.view as! UIImageView
         
         var actionSheet  = UIActionSheet(title: imageView.tag == 101 ? "Photo 1" : "Photo 2", delegate: self, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         actionSheet.tag = imageView.tag
@@ -149,12 +149,12 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
         }
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!)
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject])
     {
         picker.dismissViewControllerAnimated(true, completion: nil)
         
         var view = currentTag == 101 ? viewImageView1 : viewImageView2
-        var imageView = view.viewWithTag(currentTag) as UIImageView
+        var imageView = view.viewWithTag(currentTag) as! UIImageView
         
         imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
@@ -247,11 +247,11 @@ class DetailTableViewController: UITableViewController, UIActionSheetDelegate, U
             var image2 = readPicture(currentPIDObject!.inventoryPhoto2)
             
             if image1 != nil {
-                (viewImageView1.viewWithTag(101) as UIImageView).image = image1
+                (viewImageView1.viewWithTag(101) as! UIImageView).image = image1
             }
             
             if image2 != nil {
-                (viewImageView2.viewWithTag(102) as UIImageView).image = image2
+                (viewImageView2.viewWithTag(102) as! UIImageView).image = image2
             }
         }
         

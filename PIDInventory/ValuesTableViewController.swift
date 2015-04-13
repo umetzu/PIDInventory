@@ -10,7 +10,7 @@ import UIKit
 
 class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
 
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     var currentPIDObject: PIDCase!
     var pickersVisibility: [Bool] = [true, true, true, true]
@@ -205,7 +205,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     }
     
     @IBAction func unwindToValuesTableViewController(segue: UIStoryboardSegue) {
-        var scanned = (segue.sourceViewController as CameraViewController).capturedCode
+        var scanned = (segue.sourceViewController as! CameraViewController).capturedCode
         insertBarcode.text = scanned
         insertBarcodeChanged(insertBarcode)
         
@@ -394,7 +394,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
         if pickerView.tag == 200 {
             if component == 0 {
                 retrieveInsertNameList(listInsertCategories[row].key)
-                (picker(pickerView.tag).picker as UIPickerView).reloadComponent(1)
+                (picker(pickerView.tag).picker as! UIPickerView).reloadComponent(1)
             }
             
             pickerLabel(300)!.text = pickerValue(300, row: pickerView.selectedRowInComponent(1))
@@ -419,7 +419,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
         
         var newString = NSString(format: "%@%@", textField.text, string)
         
-        var number = nf.numberFromString(newString)
+        var number = nf.numberFromString(newString as String)
         
         if let n = number {
             return Int(n) >= textField.tag && Int(n) < 7

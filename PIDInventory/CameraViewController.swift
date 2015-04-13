@@ -49,7 +49,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
         if (device.hasTorch) {
-            var button = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+            var button = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
             
             var image = UIImage(named:"flash")?.imageWithRenderingMode(.Automatic)
             button.setImage(image, forState: .Normal)
@@ -98,7 +98,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                 
                 capturedCode = metadataObject.stringValue
                 
-                var barCodeObject = preview.transformedMetadataObjectForMetadataObject(metadataObject as AVMetadataObject) as AVMetadataMachineReadableCodeObject
+                var barCodeObject = preview.transformedMetadataObjectForMetadataObject(metadataObject as! AVMetadataObject) as! AVMetadataMachineReadableCodeObject
                 
                 outline.path = createPathFromPoints(barCodeObject.corners).CGPath
                 
@@ -125,13 +125,13 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         var path = UIBezierPath()
         
         var p0 = CGPoint()
-        CGPointMakeWithDictionaryRepresentation(points[0] as CFDictionary, &p0)
+        CGPointMakeWithDictionaryRepresentation(points[0] as! CFDictionary, &p0)
         path.moveToPoint(p0)
         
         
         for var i = 1; i < points.count; i++ {
             var pX = CGPoint()
-            CGPointMakeWithDictionaryRepresentation(points[i] as CFDictionary, &pX)
+            CGPointMakeWithDictionaryRepresentation(points[i] as! CFDictionary, &pX)
             path.addLineToPoint(pX)
         }
         

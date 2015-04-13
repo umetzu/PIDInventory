@@ -12,7 +12,7 @@ import SystemConfiguration
 
 class RefreshTableViewController: UITableViewController, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate {
 
-    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     var timerConnectionCheck: NSTimer?
     var isAlive = false
@@ -243,7 +243,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             self.labelProcessing.text = "Processing..."
             appDelegate.deleteAllManagedObjects()
             
-            appDelegate.queryService(serviceAddress, "GetUserList", onSuccessUsers, onProcessError)
+            appDelegate.queryService(serviceAddress, "GetUserList", onSuccessUsers, onProcessError, 15)
         }
     }
     
@@ -252,14 +252,14 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
             listUsernames.removeAll(keepCapacity: false)
             
             for user in results {
-                listUsernames.append([user[0] as String, user[1] as String])
+                listUsernames.append([user[0] as! String, user[1] as! String])
             }
             
             NSUserDefaults.standardUserDefaults().setObject(listUsernames, forKey: "usernameList")
             
             refreshPickerViewUsers()
             
-            appDelegate.queryService(serviceAddress, "GetInsertList", onSuccessInsert, onProcessError)
+            appDelegate.queryService(serviceAddress, "GetInsertList", onSuccessInsert, onProcessError, 15)
         } else {
             onProcessError()
         }
@@ -267,7 +267,7 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
     
     func onSuccessInsert(x: AnyObject?) {
         if onSuccessList(x, creator:appDelegate.createPIDInsert) >= 0 {
-            appDelegate.queryService(serviceAddress, "GetCaseList", onSuccessCase, onProcessError)
+            appDelegate.queryService(serviceAddress, "GetCaseList", onSuccessCase, onProcessError, 15)
         } else {
             onProcessError()
         }
@@ -289,9 +289,9 @@ class RefreshTableViewController: UITableViewController, UITableViewDelegate, UI
                     var item = creator()
                     
                     for (key, value) in data {
-                        var keyName = key as NSString
-                        if item.respondsToSelector(NSSelectorFromString(keyName)) {
-                            item.setValue(value, forKey: keyName)
+                        var keyName = key as! NSString
+                        if item.respondsToSelector(NSSelectorFromString(keyName as String)) {
+                            item.setValue(value, forKey: keyName as String)
                         }
                     }
                 }
