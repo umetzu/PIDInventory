@@ -1604,6 +1604,50 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="ygD-dU-Cjg">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ygD-dU-Cjg" id="43E-sy-9oh">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Bolt Count" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqg-91-0aA">
+                                                    <rect key="frame" x="16" y="15" width="78" height="13"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dO-KU-f1v">
+                                                    <rect key="frame" x="299" y="8" width="1" height="1"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="FhR-sI-ohL"/>
+                                                        <constraint firstAttribute="width" constant="1" id="xGc-VH-zdM"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gBC-zh-Igv">
+                                                    <rect key="frame" x="300" y="7" width="254" height="30"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" keyboardAppearance="alert"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="8gk-2D-eXc" id="yVc-lb-Ekv"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="gBC-zh-Igv" secondAttribute="centerY" id="5Hx-5L-Bib"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="gBC-zh-Igv" secondAttribute="trailing" constant="38" id="F8h-sy-RpU"/>
+                                                <constraint firstItem="gBC-zh-Igv" firstAttribute="leading" secondItem="9dO-KU-f1v" secondAttribute="trailing" id="HWC-PL-GmG"/>
+                                                <constraint firstItem="uqg-91-0aA" firstAttribute="leading" secondItem="43E-sy-9oh" secondAttribute="leadingMargin" constant="8" id="K2A-Sk-iOO"/>
+                                                <constraint firstAttribute="centerY" secondItem="uqg-91-0aA" secondAttribute="centerY" id="KHy-Hy-g6L"/>
+                                                <constraint firstItem="gBC-zh-Igv" firstAttribute="top" secondItem="43E-sy-9oh" secondAttribute="topMargin" constant="-1" id="TcF-o8-Fce"/>
+                                                <constraint firstItem="uqg-91-0aA" firstAttribute="top" secondItem="43E-sy-9oh" secondAttribute="topMargin" constant="7" id="ZgQ-wp-pj9"/>
+                                                <constraint firstItem="9dO-KU-f1v" firstAttribute="top" secondItem="43E-sy-9oh" secondAttribute="topMargin" id="iP2-QC-RBo"/>
+                                                <constraint firstAttribute="centerX" secondItem="9dO-KU-f1v" secondAttribute="centerX" id="q6x-ym-Lll"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Severity" id="ViR-7h-PqA">
@@ -1639,6 +1683,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="standBolt" destination="gBC-zh-Igv" id="8se-jq-RWg"/>
                         <outlet property="standBroken" destination="giz-4X-mbj" id="T4R-1k-vOs"/>
                         <outlet property="standGraffiti" destination="Ke9-mI-nxl" id="0qE-PU-5Gd"/>
                         <outlet property="standOther" destination="yv3-YA-gMK" id="iAb-CJ-5Rr"/>
