@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14D87h" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D131" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="PIDCase" representedClassName="PIDInventory.PIDCase" syncable="YES">
         <attribute name="caseBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="caseColor" optional="YES" attributeType="String" syncable="YES"/>
@@ -49,6 +49,7 @@
         <attribute name="locationMountType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationOrientation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="locationPositionInCluster" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="standBolt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="standBroken" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standGraffiti" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="standModified" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -75,7 +76,7 @@
         </compoundIndexes>
     </entity>
     <elements>
-        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="870"/>
+        <element name="PIDCase" positionX="-63" positionY="-18" width="128" height="885"/>
         <element name="PIDInsert" positionX="-63" positionY="135" width="128" height="118"/>
     </elements>
 </model>

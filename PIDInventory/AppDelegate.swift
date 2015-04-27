@@ -569,6 +569,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pidObject.standSeverity = ""
         pidObject.standGraffiti = false
         pidObject.standOther = false
+        pidObject.standBolt = ""
         pidObject.standRusted = false
         pidObject.standRustedBasePlate = false
         pidObject.inventoryDate = "00000000"

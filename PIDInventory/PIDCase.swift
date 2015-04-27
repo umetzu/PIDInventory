@@ -75,6 +75,7 @@ class PIDCase: NSManagedObject {
     @NSManaged var locationModified: Bool
     @NSManaged var standModified: Bool
     @NSManaged var inventoryModified: Bool
+    @NSManaged var standBolt: String
     
 
 }
@@ -122,6 +123,7 @@ func toJSON(caseList: [PIDCase]) -> NSDictionary {
             "standSeverity" : item.standSeverity,
             "standGraffiti" : item.standGraffiti,
             "standOther" : item.standOther,
+            "standBolt" : item.standBolt,
             "standRusted" : item.standRusted,
             "standRustedBasePlate" : item.standRustedBasePlate,
             "inventoryDate" : item.inventoryDate,

@@ -51,6 +51,7 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
     @IBOutlet weak var standGraffiti: UISwitch!
     @IBOutlet weak var standOther: UISwitch!
     @IBOutlet weak var standSeverity: UISegmentedControl!
+    @IBOutlet weak var standBolt: UITextField!
     
     @IBOutlet weak var locationPickerView: UIPickerView!
     @IBOutlet weak var locationDescription: UILabel!
@@ -164,6 +165,8 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             standGraffiti.on = currentPIDObject.standGraffiti
             standOther.on = currentPIDObject.standOther
             standSeverity.selectedSegmentIndex = indexFromList(listSeverities, Key: currentPIDObject.standSeverity) ?? 0
+            
+            standBolt.text = currentPIDObject.standBolt
         } else {
             currentPIDObject.standRusted = standRusted.on
             currentPIDObject.standRustedBasePlate = standRustedBasePlate.on
@@ -172,6 +175,8 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
             currentPIDObject.standOther = standOther.on
             currentPIDObject.standSeverity = listSeverities[standSeverity.selectedSegmentIndex].key
             currentPIDObject.standModified = true
+            
+            currentPIDObject.standBolt = standBolt.text
         }
     }
     
@@ -422,7 +427,11 @@ class ValuesTableViewController: UITableViewController, UIPickerViewDataSource, 
         var number = nf.numberFromString(newString as String)
         
         if let n = number {
-            return Int(n) >= textField.tag && Int(n) < 7
+            if textField.tag == 8 {
+                return Int(n) >= 0 && Int(n) < 20
+            } else {
+                return Int(n) >= textField.tag && Int(n) < 7
+            }
         }
         
         return false
